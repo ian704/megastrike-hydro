@@ -13,10 +13,9 @@ requiredEnv.forEach((key) => {
 module.exports = {
   env: process.env.NODE_ENV || 'development',
 
-  // Use DATABASE_URL for Render Postgres
   db: {
     connectionString: process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: false } // required for Render Postgres
+    ssl: { rejectUnauthorized: false } // Required for Render Postgres
   },
 
   jwtSecret: process.env.JWT_SECRET,

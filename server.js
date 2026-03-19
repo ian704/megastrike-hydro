@@ -201,6 +201,25 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', timestamp: new Date() });
 });
 
+app.post('/api/consultations', async (req, res) => {
+  try {
+    const { name, phone, email, service, details } = req.body;
+
+    const { rows } = await pool.query(
+      `INSERT INTO consultations (name, phone, email, service, details)
+       VALUES ($1, $2, $3, $4, $5)
+       RETURNING *`,
+      [name, phone, email, service, details]
+    );
+
+    res.json({ success: true, consultation: rows[0] });
+
+  } catch (error) {
+    console.error('Consultation error:', error);
+    res.status(500).json({ success: false, error: 'Failed to submit consultation' });
+  }
+});
+
 // ==========================
 // STATIC FILES
 // ==========================
