@@ -1,21 +1,14 @@
-// db.js
 const { Pool } = require('pg');
+const config = require('./config');
 
-// Use Render DATABASE_URL with SSL
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false } // required for Render Postgres
-});
+const pool = new Pool(config.db);
 
-// ==========================
-// Initialize Tables
-// ==========================
+// Initialize tables (same as before)
 const initTables = async () => {
   const client = await pool.connect();
   try {
     console.log('📡 Connected to PostgreSQL');
 
-    // USERS TABLE
     await client.query(`
       CREATE TABLE IF NOT EXISTS users (
         id SERIAL PRIMARY KEY,
@@ -31,7 +24,6 @@ const initTables = async () => {
       );
     `);
 
-    // CONSULTATIONS TABLE
     await client.query(`
       CREATE TABLE IF NOT EXISTS consultations (
         id SERIAL PRIMARY KEY,
@@ -55,7 +47,6 @@ const initTables = async () => {
   }
 };
 
-// Run on startup
 initTables();
 
 module.exports = pool;
