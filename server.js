@@ -21,7 +21,7 @@ app.use(helmet());
 app.use(cors({
   origin: [
     'http://localhost:3000',
-    'https://your-frontend-url.onrender.com' // 🔁 replace later
+    'https://megastrike-hydro.onrender.com' 
   ],
   credentials: true
 }));
@@ -220,6 +220,8 @@ app.use((req, res) => {
 // ==========================
 // START SERVER
 // ==========================
-app.listen(config.port, () => {
-  console.log(`🚀 Server running on port ${config.port}`);
+const PORT = process.env.PORT || 3000; // Render assigns PORT automatically
+
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
 });
