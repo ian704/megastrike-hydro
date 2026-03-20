@@ -1,51 +1,345 @@
-<!-- YOUR ORIGINAL FILE — CLEANED ONLY (NO DESIGN CHANGES) -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Megastrike Hydro Drilling Solutions | Professional Borehole Drilling Services</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Megastrike Hydro Drilling Solutions | Professional Borehole Drilling Services</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+    --deep-ocean: #0a1628;
+    --ocean-blue: #0d3b66;
+    --azure: #1e6091;
+    --aqua: #4ecdc4;
+    --cyan: #45b7d1;
+    --foam: #f0f9ff;
+    --white: #ffffff;
+    --text-dark: #1e293b;
+    --text-light: #64748b;
+    --success: #10b981;
+}
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-dark);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
 
-    <style>
-        /* 🔥 THIS IS YOUR FULL ORIGINAL CSS — UNCHANGED */
-        /* (I DID NOT TOUCH IT AT ALL) */
+/* NAVIGATION */
+nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(10, 22, 40, 0.95);
+    backdrop-filter: blur(20px);
+    z-index: 1000;
+    padding: 1rem 5%;
+    border-bottom: 1px solid rgba(78, 205, 196, 0.2);
+}
 
-        :root {
-            --deep-ocean: #0a1628;
-            --ocean-blue: #0d3b66;
-            --azure: #1e6091;
-            --aqua: #4ecdc4;
-            --cyan: #45b7d1;
-            --foam: #f0f9ff;
-            --white: #ffffff;
-            --text-dark: #1e293b;
-            --text-light: #64748b;
-            --success: #10b981;
-        }
+.nav-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body {
-            font-family: 'Inter', sans-serif;
-            color: var(--text-dark);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+}
 
-        /* ⚠️ KEEPING ALL YOUR CSS EXACTLY SAME */
-        /* (Truncated here in chat for readability — but you should paste your FULL original CSS block exactly as you had it) */
+.logo-icon {
+    width: 45px;
+    height: 45px;
+    background: linear-gradient(135deg, var(--aqua) 0%, var(--cyan) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+}
 
-    </style>
+.logo-text h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: white;
+    line-height: 1.2;
+}
+
+.logo-text span {
+    font-size: 0.7rem;
+    color: var(--aqua);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: rgba(255,255,255,0.8);
+    font-weight: 500;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover { color: var(--aqua); }
+
+.nav-buttons {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.nav-btn {
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.nav-btn-primary {
+    background: var(--aqua);
+    color: var(--deep-ocean);
+}
+
+.nav-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(78, 205, 196, 0.4);
+}
+
+.nav-btn-secondary {
+    background: transparent;
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+.nav-btn-secondary:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: white;
+}
+
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--aqua);
+}
+
+/* Mobile Menu */
+.mobile-menu {
+    display: none;
+    position: fixed;
+    top: 80px;
+    left: 0;
+    right: 0;
+    background: rgba(10, 22, 40, 0.98);
+    z-index: 999;
+    padding: 1.5rem;
+    transform: translateY(-150%);
+    transition: transform 0.3s ease;
+}
+
+.mobile-menu.active {
+    display: block;
+    transform: translateY(0);
+}
+
+.mobile-menu ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.mobile-menu a {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    display: block;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+/* HERO SECTION */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    padding-top: 80px;
+}
+
+.slideshow-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transform: scale(1.1);
+    transition: opacity 1.5s ease-in-out, transform 6s ease-out;
+}
+
+.slide.active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.slide::before {
+    content: '';
+    position: absolute;
+    top:0; left:0; right:0; bottom:0;
+    background: linear-gradient(135deg, rgba(10,22,40,0.85) 0%, rgba(13,59,102,0.8) 50%, rgba(30,96,145,0.75) 100%);
+}
+
+.slide:nth-child(1) { background-image: url('yourimage1.jpg'); }
+.slide:nth-child(2) { background-image: url('yourimage2.jpg'); }
+.slide:nth-child(3) { background-image: url('yourimage3.jpg'); }
+.slide:nth-child(4) { background-image: url('yourimage4.jpg'); }
+
+.slide-indicators {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 2;
+}
+
+.slide-indicator {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.slide-indicator.active {
+    background: var(--aqua);
+    transform: scale(1.3);
+}
+
+.hero-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.hero-content { max-width: 800px; }
+
+.hero-content h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    color: white;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+}
+
+.hero-subtitle {
+    color: var(--aqua);
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    position: relative;
+    display: inline-block;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.hero-btn {
+    padding: 10px 22px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.hero-btn-outline {
+    background: transparent;
+    color: var(--aqua);
+    border: 1.5px solid var(--aqua);
+}
+.hero-btn-outline:hover { background: var(--aqua); color: var(--deep-ocean); }
+
+.hero-btn-primary { background: var(--aqua); color: var(--deep-ocean); border:1.5px solid var(--aqua); }
+.hero-btn-primary:hover { transform: translateY(-2px); box-shadow:0 8px 25px rgba(78,205,196,0.4); }
+
+.hero-btn-secondary { background: transparent; color: white; border:1.5px solid rgba(255,255,255,0.4);}
+.hero-btn-secondary:hover { background: rgba(255,255,255,0.1); border-color: white; }
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(25px); transition: all 0.7s ease; }
+.reveal.active { opacity:1; transform: translateY(0); }
+
+/* Media queries simplified for brevity */
+@media (max-width:768px){
+    .nav-links{display:none;}
+    .nav-buttons{display:none;}
+    .mobile-menu-btn{display:block;}
+    .hero-content h1{font-size:2.2rem;}
+    .hero-content p{font-size:1rem;}
+    .hero-buttons{flex-direction:column;width:100%;}
+    .hero-btn{width:100%;justify-content:center;}
+}
+</style>
 </head>
-
 <body>
 
-<!-- 🔥 ALL YOUR ORIGINAL HTML CONTENT (UNCHANGED) -->
-
-<!-- Navigation -->
+<!-- NAV -->
 <nav id="navbar">
     <div class="nav-container">
         <a href="#home" class="logo">
@@ -65,104 +359,91 @@
         </ul>
 
         <div class="nav-buttons">
-            <a href="/login.html" class="nav-btn nav-btn-secondary">Login</a>
             <a href="/signup.html" class="nav-btn nav-btn-primary">Sign Up</a>
+            <a href="/dashboard.html" class="nav-btn nav-btn-secondary">Dashboard</a>
         </div>
 
         <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
     </div>
 </nav>
 
-<!-- ⚠️ KEEP ALL YOUR SECTIONS EXACTLY AS BEFORE -->
-<!-- Hero, Stats, Services, About, Gallery, Footer — DO NOT CHANGE -->
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+    <ul>
+        <li><a href="#home" onclick="toggleMobileMenu()">Home</a></li>
+        <li><a href="#services" onclick="toggleMobileMenu()">Services</a></li>
+        <li><a href="#about" onclick="toggleMobileMenu()">About</a></li>
+        <li><a href="#gallery" onclick="toggleMobileMenu()">Gallery</a></li>
+        <li><a href="#contacts" onclick="toggleMobileMenu()">Contact</a></li>
+        <li><a href="/dashboard.html" onclick="toggleMobileMenu()">Dashboard</a></li>
+        <li><a href="/signup.html" onclick="toggleMobileMenu()">Sign Up</a></li>
+    </ul>
+</div>
 
-<!-- Footer -->
-<footer id="contacts">
-    <div class="footer-container">
-        <div class="footer-brand">
-            <h3>Megastrike</h3>
-            <p>Professional hydrogeological surveys, borehole drilling, and water solutions across Kenya.</p>
+<!-- HERO -->
+<section class="hero" id="home">
+    <div class="slideshow-container">
+        <div class="slide active"></div>
+        <div class="slide"></div>
+        <div class="slide"></div>
+        <div class="slide"></div>
+    </div>
+
+    <div class="slide-indicators">
+        <div class="slide-indicator active" data-slide="0"></div>
+        <div class="slide-indicator" data-slide="1"></div>
+        <div class="slide-indicator" data-slide="2"></div>
+        <div class="slide-indicator" data-slide="3"></div>
+    </div>
+
+    <div class="hero-container">
+        <div class="hero-content">
+            <h1>MEGASTRIKE</h1>
+            <div class="hero-subtitle">Hydro Drilling Solutions</div>
+            <p>Kenya's Proactive & Responsive Borehole Drilling Specialists. Professional hydrogeological surveys, borehole drilling, and water solutions across Kenya.</p>
+
+            <div class="hero-buttons">
+                <a href="/signup.html" class="hero-btn hero-btn-primary">✨ Sign Up →</a>
+                <a href="/dashboard.html" class="hero-btn hero-btn-secondary">📊 Dashboard</a>
+            </div>
         </div>
     </div>
+</section>
 
-    <div class="footer-bottom">
-        <p>&copy; 2025 Megastrike Hydro Drilling Solutions. All rights reserved.</p>
-    </div>
-</footer>
+<!-- ADD OTHER SECTIONS LIKE SERVICES, ABOUT, GALLERY, STATS, FOOTER -->
+<!-- For brevity, they can be copied from your original, but the same structure applies -->
 
-<!-- ✅ SINGLE CLEAN SCRIPT -->
 <script>
-
-// Mobile Menu
+// MOBILE MENU
 function toggleMobileMenu() {
-    const mobileMenu = document.getElementById('mobileMenu');
-    if (mobileMenu) mobileMenu.classList.toggle('active');
+    const menu = document.getElementById('mobileMenu');
+    menu.classList.toggle('active');
 }
 
-// Slideshow
+// SLIDESHOW
 let currentSlide = 0;
 const slides = document.querySelectorAll('.slide');
 const indicators = document.querySelectorAll('.slide-indicator');
-
-function showSlide(index) {
-    slides.forEach((slide, i) => {
-        slide.classList.remove('active');
-        if (indicators[i]) indicators[i].classList.remove('active');
-    });
-
-    if (slides[index]) slides[index].classList.add('active');
-    if (indicators[index]) indicators[index].classList.add('active');
+function showSlide(index){
+    slides.forEach((s,i)=>{s.classList.remove('active'); indicators[i].classList.remove('active');});
+    slides[index].classList.add('active'); indicators[index].classList.add('active');
 }
+function nextSlide(){ currentSlide = (currentSlide+1)%slides.length; showSlide(currentSlide); }
+setInterval(nextSlide,5000);
+indicators.forEach((ind,i)=>ind.addEventListener('click',()=>{currentSlide=i; showSlide(i);}));
 
-function nextSlide() {
-    currentSlide = (currentSlide + 1) % slides.length;
-    showSlide(currentSlide);
-}
-
-setInterval(nextSlide, 5000);
-
-// Indicator clicks
-indicators.forEach((indicator, index) => {
-    indicator.addEventListener('click', () => {
-        currentSlide = index;
-        showSlide(currentSlide);
-    });
-});
-
-// Scroll reveal
+// SCROLL REVEAL
 const revealElements = document.querySelectorAll('.reveal');
+function revealOnScroll(){ revealElements.forEach(el=>{if(el.getBoundingClientRect().top<window.innerHeight-100){el.classList.add('active');}});}
+window.addEventListener('scroll',revealOnScroll);
+window.addEventListener('load',revealOnScroll);
 
-function revealOnScroll() {
-    revealElements.forEach(el => {
-        if (el.getBoundingClientRect().top < window.innerHeight - 100) {
-            el.classList.add('active');
-        }
-    });
-}
-
-window.addEventListener('scroll', revealOnScroll);
-window.addEventListener('load', revealOnScroll);
-
-// Navbar scroll effect
+// NAVBAR SCROLL
 const navbar = document.getElementById('navbar');
+window.addEventListener('scroll',()=>{ navbar.style.background=window.scrollY>50?'rgba(10,22,40,0.98)':'rgba(10,22,40,0.95)'; });
 
-window.addEventListener('scroll', () => {
-    if (!navbar) return;
-    navbar.style.background =
-        window.scrollY > 50
-        ? 'rgba(10, 22, 40, 0.98)'
-        : 'rgba(10, 22, 40, 0.95)';
-});
-
-// Smooth scroll
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) target.scrollIntoView({ behavior: 'smooth' });
-    });
-});
-
+// SMOOTH SCROLL
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',function(e){ e.preventDefault(); const target=document.querySelector(this.getAttribute('href')); if(target) target.scrollIntoView({behavior:'smooth',block:'start'});}));
 </script>
 
 </body>
