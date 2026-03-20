@@ -614,178 +614,158 @@
     </main>
 
     <script>
-        // Check authentication on page load
-        document.addEventListener('DOMContentLoaded', async () => {
-            const token = localStorage.getItem('token');
-            
-            if (!token) {
-                // Not logged in, redirect to login
-                window.location.href = '/login';
-                return;
-            }
-            
-            try {
-                // Verify token and get user data
-                const response = await fetch('/api/auth/me', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                
-                if (!response.ok) {
-                    throw new Error('Invalid token');
-                }
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    displayUserData(data.user);
-                    loadDashboardData();
-                } else {
-                    throw new Error('Failed to load user data');
-                }
-                
-            } catch (error) {
-                console.error('Auth error:', error);
-                // Token invalid, clear and redirect
-                localStorage.removeItem('token');
-                localStorage.removeItem('user');
-                window.location.href = '/login';
-            }
+        
+        // ==========================
+// Auth & Initial Load
+// ==========================
+document.addEventListener('DOMContentLoaded', async () => {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+        window.location.href = '/login';
+        return;
+    }
+
+    try {
+        const user = await fetchUser(token);
+        displayUserData(user);
+        await loadDashboardData(token); // load stats
+    } catch (err) {
+        console.error('Auth error:', err);
+        localStorage.removeItem('token');
+        window.location.href = '/login';
+    }
+});
+
+// ==========================
+// Fetch user from server
+// ==========================
+async function fetchUser(token) {
+    const res = await fetch('/api/auth/me', {
+        headers: { 'Authorization': `Bearer ${token}` }
+    });
+
+    const data = await res.json();
+
+    if (!data.success) throw new Error('Failed to load user');
+    return data.user;
+}
+
+// ==========================
+// Display user data
+// ==========================
+function displayUserData(user) {
+    const fullName = `${user.first_name} ${user.last_name}`;
+    document.getElementById('userName').textContent = fullName;
+    document.getElementById('welcomeName').textContent = user.first_name;
+    document.getElementById('profileName').textContent = fullName;
+    document.getElementById('profileEmail').textContent = user.email;
+    document.getElementById('userRole').textContent = user.role === 'admin' ? 'Administrator' : 'Client';
+
+    const initials = `${user.first_name[0]}${user.last_name[0]}`.toUpperCase();
+    document.getElementById('userAvatar').textContent = initials;
+
+    document.getElementById('editFirstName').value = user.first_name;
+    document.getElementById('editLastName').value = user.last_name;
+    document.getElementById('editEmail').value = user.email;
+    document.getElementById('editPhone').value = user.phone || '';
+
+    document.getElementById('loadingState').classList.add('hidden');
+    document.getElementById('mainContent').classList.remove('hidden');
+}
+
+// ==========================
+// Dashboard Stats Loader
+// ==========================
+async function loadDashboardData(token) {
+    try {
+        const res = await fetch('/api/user/dashboard', {
+            headers: { 'Authorization': `Bearer ${token}` }
         });
+        const data = await res.json();
+        if (data.success) {
+            const consultations = data.consultations || [];
+            document.getElementById('totalRequests').textContent = consultations.length;
 
-        function displayUserData(user) {
-            // Update all user name displays
-            const fullName = `${user.first_name} ${user.last_name}`;
-            document.getElementById('userName').textContent = fullName;
-            document.getElementById('welcomeName').textContent = user.first_name;
-            document.getElementById('profileName').textContent = fullName;
-            document.getElementById('profileEmail').textContent = user.email;
-            document.getElementById('userRole').textContent = user.role === 'admin' ? 'Administrator' : 'Client';
-            
-            // Update avatar with initials
-            const initials = `${user.first_name[0]}${user.last_name[0]}`.toUpperCase();
-            document.getElementById('userAvatar').textContent = initials;
-            
-            // Fill profile form
-            document.getElementById('editFirstName').value = user.first_name;
-            document.getElementById('editLastName').value = user.last_name;
-            document.getElementById('editEmail').value = user.email;
-            document.getElementById('editPhone').value = user.phone || '';
-            
-            // Show main content
-            document.getElementById('loadingState').classList.add('hidden');
-            document.getElementById('mainContent').classList.remove('hidden');
+            const pending = consultations.filter(c => c.status === 'pending').length;
+            const completed = consultations.filter(c => c.status === 'completed').length;
+
+            document.getElementById('pendingRequests').textContent = pending;
+            document.getElementById('completedRequests').textContent = completed;
         }
+    } catch (err) {
+        console.error('Dashboard load error:', err);
+    }
+}
 
-        async function loadDashboardData() {
-            const token = localStorage.getItem('token');
-            
-            try {
-                const response = await fetch('/api/user/dashboard', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    const consultations = data.consultations || [];
-                    document.getElementById('totalRequests').textContent = consultations.length;
-                    
-                    // Count by status (adjust based on your actual status values)
-                    const pending = consultations.filter(c => c.status === 'pending').length;
-                    const completed = consultations.filter(c => c.status === 'completed').length;
-                    
-                    document.getElementById('pendingRequests').textContent = pending;
-                    document.getElementById('completedRequests').textContent = completed;
-                }
-            } catch (error) {
-                console.error('Dashboard error:', error);
-            }
-        }
+// ==========================
+// Profile Update
+// ==========================
+document.getElementById('profileForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-        // Profile form submission
-        document.getElementById('profileForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            // Hide alerts
+    const token = localStorage.getItem('token');
+    const saveBtn = document.getElementById('saveBtn');
+    const originalContent = saveBtn.innerHTML;
+
+    document.getElementById('successAlert').classList.remove('show');
+    document.getElementById('errorAlert').classList.remove('show');
+
+    saveBtn.disabled = true;
+    saveBtn.innerHTML = '<span>Saving...</span> <span>⏳</span>';
+
+    try {
+        const res = await fetch('/api/auth/profile', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                firstName: document.getElementById('editFirstName').value,
+                lastName: document.getElementById('editLastName').value,
+                phone: document.getElementById('editPhone').value
+            })
+        });
+        const data = await res.json();
+
+        if (!data.success) throw new Error(data.error || 'Update failed');
+
+        // Refetch user to stay fully synced
+        const updatedUser = await fetchUser(token);
+        displayUserData(updatedUser);
+        await loadDashboardData(token);
+
+        saveBtn.innerHTML = '<span>Saved!</span> <span>✓</span>';
+        saveBtn.style.background = 'var(--success)';
+        document.getElementById('successAlert').classList.add('show');
+
+        setTimeout(() => {
+            saveBtn.innerHTML = originalContent;
+            saveBtn.style.background = '';
+            saveBtn.disabled = false;
             document.getElementById('successAlert').classList.remove('show');
-            document.getElementById('errorAlert').classList.remove('show');
-            
-            const token = localStorage.getItem('token');
-            const saveBtn = document.getElementById('saveBtn');
-            const originalContent = saveBtn.innerHTML;
-            
-            saveBtn.disabled = true;
-            saveBtn.innerHTML = '<span>Saving...</span> <span>⏳</span>';
-            
-            try {
-                const response = await fetch('/api/auth/profile', {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({
-                        firstName: document.getElementById('editFirstName').value,
-                        lastName: document.getElementById('editLastName').value,
-                        phone: document.getElementById('editPhone').value
-                    })
-                });
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    // Update displayed info
-                    const newFirstName = document.getElementById('editFirstName').value;
-                    const newLastName = document.getElementById('editLastName').value;
-                    const newName = `${newFirstName} ${newLastName}`;
-                    
-                    document.getElementById('userName').textContent = newName;
-                    document.getElementById('welcomeName').textContent = newFirstName;
-                    document.getElementById('profileName').textContent = newName;
-                    document.getElementById('userAvatar').textContent = `${newFirstName[0]}${newLastName[0]}`.toUpperCase();
-                    
-                    // Update stored user data
-                    const user = JSON.parse(localStorage.getItem('user'));
-                    user.firstName = newFirstName;
-                    user.lastName = newLastName;
-                    user.phone = document.getElementById('editPhone').value;
-                    localStorage.setItem('user', JSON.stringify(user));
-                    
-                    // Show success
-                    saveBtn.innerHTML = '<span>Saved!</span> <span>✓</span>';
-                    saveBtn.style.background = 'var(--success)';
-                    document.getElementById('successAlert').classList.add('show');
-                    
-                    setTimeout(() => {
-                        saveBtn.innerHTML = originalContent;
-                        saveBtn.style.background = '';
-                        saveBtn.disabled = false;
-                        document.getElementById('successAlert').classList.remove('show');
-                    }, 3000);
-                } else {
-                    throw new Error(data.error || 'Update failed');
-                }
-            } catch (error) {
-                console.error('Profile update error:', error);
-                document.getElementById('errorAlert').querySelector('span:last-child').textContent = error.message;
-                document.getElementById('errorAlert').classList.add('show');
-                
-                saveBtn.innerHTML = originalContent;
-                saveBtn.disabled = false;
-            }
-        });
+        }, 3000);
 
-        function logout() {
-            if (confirm('Are you sure you want to logout?')) {
-                localStorage.removeItem('token');
-                localStorage.removeItem('user');
-                window.location.href = '/login';
-            }
-        }
+    } catch (err) {
+        console.error('Profile update error:', err);
+        document.getElementById('errorAlert').querySelector('span:last-child').textContent = err.message;
+        document.getElementById('errorAlert').classList.add('show');
+        saveBtn.innerHTML = originalContent;
+        saveBtn.disabled = false;
+    }
+});
+
+// ==========================
+// Logout
+// ==========================
+function logout() {
+    if (confirm('Are you sure you want to logout?')) {
+        localStorage.removeItem('token');
+        window.location.href = '/login';
+    }
+}
+
     </script>
 
 </body>

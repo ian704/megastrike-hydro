@@ -639,7 +639,7 @@ const response = await fetch(`${BACKEND_URL}/api/auth/signup`, {
         if (data.success) {
             // Save token to localStorage
             localStorage.setItem('token', data.token);
-            localStorage.setItem('user', JSON.stringify(data.user));
+            
             
             submitBtn.classList.add('success');
             submitBtn.innerHTML = '<span>Success! Redirecting...</span> <span>✓</span>';

@@ -170,6 +170,35 @@ app.get('/api/auth/me', authenticateToken, async (req, res) => {
   }
 });
 
+// UPDATE PROFILE
+app.put('/api/auth/profile', authenticateToken, async (req, res) => {
+  try {
+    const { firstName, lastName, phone } = req.body;
+    const { userId } = req.user;
+
+    if (!firstName || !lastName) {
+      return res.status(400).json({ success: false, error: 'First and last name are required' });
+    }
+
+    const { rows } = await pool.query(
+      `UPDATE users
+       SET first_name = $1, last_name = $2, phone = $3
+       WHERE id = $4
+       RETURNING id, first_name, last_name, email, phone, role`,
+      [firstName, lastName, phone || null, userId]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ success: false, error: 'User not found' });
+    }
+
+    res.json({ success: true, user: rows[0] });
+  } catch (error) {
+    console.error('Profile update error:', error);
+    res.status(500).json({ success: false, error: 'Server error updating profile' });
+  }
+});
+
 // ==========================
 // DASHBOARD
 // ==========================
