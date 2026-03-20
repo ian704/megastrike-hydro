@@ -31,55 +31,23 @@
         }
 
         /* NAVIGATION */
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(10, 22, 40, 0.98);
-            backdrop-filter: blur(20px);
-            padding: 0.75rem 5%;
-            border-bottom: 1px solid rgba(233, 196, 106, 0.2);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-        }
+        
+.nav-brand {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
 
-        .nav-brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-        }
+.nav-logo-img {
+    height: 55px;
+    width: auto;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    transition: transform 0.3s ease;
+}
 
-        .nav-brand-icon {
-            width: 45px;
-            height: 45px;
-            background: linear-gradient(135deg, var(--gold) 0%, var(--orange) 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            box-shadow: 0 4px 15px rgba(233, 196, 106, 0.3);
-        }
-
-        .nav-brand-text h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.3rem;
-            color: white;
-            line-height: 1.2;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .nav-brand-text span {
-            font-size: 0.65rem;
-            color: var(--gold);
-            font-weight: 600;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
+.nav-brand:hover .nav-logo-img {
+    transform: scale(1.05);
+}
 
         .nav-user {
             display: flex;
@@ -825,6 +793,12 @@
         }
 
         /* Footer */
+        .footer-logo-img {
+    height: 45px;
+    width: auto;
+    opacity: 0.9;
+}
+
         .footer {
             background: var(--deep-navy);
             border-top: 1px solid rgba(233, 196, 106, 0.1);
@@ -945,6 +919,10 @@
                 justify-content: center;
             }
 
+            .nav-logo-img {
+        height: 45px;
+    }
+
             .profile-header {
                 flex-direction: column;
                 text-align: center;
@@ -955,13 +933,11 @@
 <body>
 
     <nav class="navbar">
-        <a href="/" class="nav-brand">
-            <div class="nav-brand-icon">💧</div>
-            <div class="nav-brand-text">
-                <h1>Megastrike</h1>
-                <span>Hydro Drilling Solutions</span>
-            </div>
-        </a>
+
+       <a href="/" class="nav-brand">
+    <img src="images/logo.png" alt="Megastrike Hydro Drilling Solutions" class="nav-logo-img">
+</a>
+
         <div class="nav-user">
             <div class="user-info" id="userInfo">
                 <div class="user-name" id="userName">Loading...</div>
@@ -1191,11 +1167,10 @@
 
     <!-- FOOTER -->
     <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-brand">
-                <span style="font-size: 1.5rem;">💧</span>
-                <h3>Megastrike Hydro Drilling Solutions</h3>
-            </div>
+        <div class="footer-brand">
+    <img src="images/logo.png" alt="Megastrike" class="footer-logo-img">
+</div>
+
             <div class="footer-links">
                 <a href="index.html">Home</a>
                 <a href="index.html#services">Services</a>

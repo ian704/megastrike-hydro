@@ -48,41 +48,21 @@ nav {
     justify-content: space-between;
     align-items: center;
 }
-
-.logo {
+    .logo {
     display: flex;
     align-items: center;
-    gap: 12px;
     text-decoration: none;
 }
 
-.logo-icon {
-    width: 45px;
-    height: 45px;
-    background: linear-gradient(135deg, var(--gold) 0%, var(--orange) 100%);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.3rem;
-    box-shadow: 0 4px 15px rgba(244, 162, 97, 0.3);
+.logo-img {
+    height: 55px;
+    width: auto;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    transition: transform 0.3s ease;
 }
 
-.logo-text h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.4rem;
-    color: white;
-    line-height: 1.2;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.logo-text span {
-    font-size: 0.65rem;
-    color: var(--gold);
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
+.logo:hover .logo-img {
+    transform: scale(1.05);
 }
 
 .nav-links {
@@ -445,7 +425,11 @@ nav {
     .hero-buttons{flex-direction:column;width:100%; align-items: center;}
     .hero-btn{width:100%; max-width: 280px;}
     .hero-features{display: none;}
+    .logo-img {
+        height: 42px;
+    }
 }
+
 
 /* ===============================
    SECTIONS GENERAL
@@ -755,15 +739,9 @@ nav {
 <body>
 
 <!-- NAV -->
-<nav id="navbar">
-    <div class="nav-container">
-        <a href="#home" class="logo">
-            <div class="logo-icon">💧</div>
-            <div class="logo-text">
-                <h1>Megastrike</h1>
-                <span>Hydro Drilling Solutions</span>
-            </div>
-        </a>
+<a href="#home" class="logo">
+    <img src="images/logo.png" alt="Megastrike Hydro Drilling Solutions" class="logo-img">
+</a>
 
         <ul class="nav-links">
             <li><a href="#home">Home</a></li>
