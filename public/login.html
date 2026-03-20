@@ -836,11 +836,13 @@ form.addEventListener('submit', async function(e) {
     submitBtn.disabled = true;
     
     try {
-        const response = await fetch('http://localhost:5000/api/auth/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
-        });
+        const BACKEND_URL = 'https://megastrike-hydro.onrender.com';
+
+const response = await fetch(`${BACKEND_URL}/api/auth/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password })
+});
         
         const data = await response.json();
         
@@ -863,7 +865,7 @@ form.addEventListener('submit', async function(e) {
             
             // Redirect to dashboard
             setTimeout(() => {
-                window.location.href = '/dashboard';
+                window.location.href = '/dashboard.html';
             }, 1000);
         } else {
             throw new Error(data.error || 'Login failed');

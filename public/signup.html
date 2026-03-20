@@ -627,12 +627,13 @@ form.addEventListener('submit', async function(e) {
     submitBtn.innerHTML = '<span>Creating account...</span> <span>⏳</span>';
     
     try {
-        const response = await fetch('http://localhost:5000/api/auth/signup', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ firstName, lastName, email, phone, password })
-        });
-        
+        const BACKEND_URL = 'https://megastrike-hydro.onrender.com'; 
+
+const response = await fetch(`${BACKEND_URL}/api/auth/signup`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ firstName, lastName, email, phone, password })
+});
         const data = await response.json();
         
         if (data.success) {
@@ -645,7 +646,7 @@ form.addEventListener('submit', async function(e) {
             
             // Redirect to dashboard after 1.5 seconds
             setTimeout(() => {
-                window.location.href = '/dashboard';
+                window.location.href = '/dashboard.html';
             }, 1500);
         } else {
             throw new Error(data.error || 'Registration failed');

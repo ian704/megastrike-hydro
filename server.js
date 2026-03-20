@@ -17,13 +17,10 @@ const app = express();
 // ==========================
 app.use(helmet());
 
-// Restrict CORS (IMPORTANT for production)
+// Restrict CORS ( for production)
 app.use(cors({
-  origin: [
-    'http://localhost:3000',
-    'https://megastrike-hydro.onrender.com' 
-  ],
-  credentials: true
+  origin: 'https://megastrike-hydro.onrender.com', //  live frontend URL
+  credentials: true // allow cookies/auth headers
 }));
 
 app.use(express.json());
@@ -223,11 +220,14 @@ app.post('/api/consultations', async (req, res) => {
 // ==========================
 // STATIC FILES
 // ==========================
+const path = require('path');
+
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', (req, res) =>
-  res.sendFile(path.join(__dirname, 'public', 'index.html'))
-);
+// Serve index.html for the root
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 // ==========================
 // 404
