@@ -3,19 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sign Up | AquaTech Solutions</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<title>Sign Up | Megastrike Hydro Drilling Solutions</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
-    --deep-ocean: #0a1628;
-    --ocean-blue: #0d3b66;
-    --azure: #1e6091;
-    --aqua: #4ecdc4;
-    --cyan: #45b7d1;
-    --foam: #f0f9ff;
+    --deep-navy: #0a1628;
+    --navy: #0d1b2a;
+    --ocean-blue: #1b263b;
+    --azure: #415a77;
+    --gold: #e9c46a;
+    --orange: #f4a261;
     --white: #ffffff;
-    --glass: rgba(255, 255, 255, 0.1);
-    --glass-border: rgba(255, 255, 255, 0.2);
+    --text-light: #e0e1dd;
+    --text-muted: #778da9;
     --success: #10b981;
     --warning: #f59e0b;
     --error: #dc2626;
@@ -29,7 +29,7 @@
 
 body {
     font-family: 'Inter', sans-serif;
-    background: linear-gradient(135deg, var(--deep-ocean) 0%, var(--ocean-blue) 50%, var(--azure) 100%);
+    background: linear-gradient(135deg, var(--deep-navy) 0%, var(--navy) 50%, var(--ocean-blue) 100%);
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -37,58 +37,55 @@ body {
     padding: 20px;
     position: relative;
     overflow-x: hidden;
+    color: var(--text-light);
 }
 
 /* Animated Background */
-.wave-container {
+.bg-pattern {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden;
+    background-image: 
+        radial-gradient(circle at 20% 50%, rgba(233, 196, 106, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(244, 162, 97, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(233, 196, 106, 0.02) 0%, transparent 50%);
     z-index: 0;
-    opacity: 0.4;
+    pointer-events: none;
 }
 
-.wave {
+/* Gold accent line */
+.container::before {
+    content: '';
     position: absolute;
-    bottom: 0;
+    top: 0;
     left: 0;
-    width: 200%;
-    height: 200px;
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%234ecdc4' fill-opacity='0.3' d='M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,181.3C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
-    background-size: 50% 100%;
-    animation: wave 20s linear infinite;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--gold), var(--orange), var(--gold));
+    background-size: 200% 100%;
+    animation: shimmer 3s linear infinite;
 }
 
-.wave:nth-child(2) {
-    bottom: 10px;
-    opacity: 0.5;
-    animation: wave 15s linear infinite reverse;
-    height: 180px;
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
 }
 
-@keyframes wave {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-}
-
-/* Glassmorphism Container */
+/* Container */
 .container {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(27, 38, 59, 0.95);
     backdrop-filter: blur(20px);
-    padding: 40px;
-    border-radius: 24px;
+    padding: 50px 40px;
     width: 100%;
     max-width: 480px;
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25), 
-                0 0 0 1px rgba(255, 255, 255, 0.3) inset;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), 
+                0 0 0 1px rgba(233, 196, 106, 0.1) inset;
     position: relative;
     z-index: 10;
     animation: slideUp 0.6s ease-out;
-    max-height: 90vh;
-    overflow-y: auto;
+    border: 1px solid rgba(233, 196, 106, 0.1);
 }
 
 @keyframes slideUp {
@@ -105,47 +102,63 @@ body {
 /* Logo Section */
 .logo {
     text-align: center;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
 }
 
 .logo-icon {
-    width: 50px;
-    height: 50px;
-    background: linear-gradient(135deg, var(--aqua) 0%, var(--cyan) 100%);
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--orange) 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
-    margin: 0 auto 10px;
-    box-shadow: 0 8px 25px rgba(78, 205, 196, 0.3);
+    font-size: 1.8rem;
+    margin: 0 auto 15px;
+    box-shadow: 0 8px 25px rgba(233, 196, 106, 0.3);
     animation: pulse 2s infinite;
 }
 
 @keyframes pulse {
-    0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(78, 205, 196, 0.4); }
-    50% { transform: scale(1.05); box-shadow: 0 0 20px 10px rgba(78, 205, 196, 0.2); }
+    0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(233, 196, 106, 0.4); }
+    50% { transform: scale(1.05); box-shadow: 0 0 20px 10px rgba(233, 196, 106, 0.2); }
 }
 
 .logo h1 {
     font-family: 'Playfair Display', serif;
-    color: var(--ocean-blue);
+    color: white;
     font-size: 1.6rem;
     font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 5px;
 }
 
 .logo p {
-    color: #64748b;
-    font-size: 0.85rem;
-    margin-top: 3px;
+    color: var(--gold);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 3px;
 }
 
 h2 {
     text-align: center;
-    margin-bottom: 25px;
-    color: var(--text-dark);
+    margin-bottom: 30px;
+    color: white;
     font-weight: 600;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+h2::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 2px;
+    background: var(--gold);
+    margin: 15px auto 0;
 }
 
 /* Form Grid */
@@ -157,7 +170,7 @@ h2 {
 
 .form-group {
     position: relative;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 .form-group.full-width {
@@ -166,10 +179,10 @@ h2 {
 
 .input-icon {
     position: absolute;
-    left: 14px;
+    left: 16px;
     top: 50%;
     transform: translateY(-50%);
-    color: #94a3b8;
+    color: var(--text-muted);
     font-size: 1rem;
     transition: color 0.3s ease;
     pointer-events: none;
@@ -177,47 +190,50 @@ h2 {
 
 input {
     width: 100%;
-    padding: 12px 12px 12px 42px;
-    border: 2px solid #e2e8f0;
-    border-radius: 10px;
+    padding: 14px 14px 14px 48px;
+    border: 1px solid rgba(233, 196, 106, 0.2);
+    border-radius: 0;
     font-family: 'Inter', sans-serif;
     font-size: 0.95rem;
     transition: all 0.3s ease;
-    background: var(--white);
+    background: rgba(10, 22, 40, 0.5);
+    color: white;
 }
 
 input:focus {
     outline: none;
-    border-color: var(--aqua);
-    box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.1);
-    transform: translateY(-1px);
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(233, 196, 106, 0.1);
 }
 
 input:focus + .input-icon {
-    color: var(--aqua);
+    color: var(--gold);
+}
+
+input::placeholder {
+    color: var(--text-muted);
 }
 
 .password-toggle {
     position: absolute;
-    right: 12px;
+    right: 16px;
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
-    color: #94a3b8;
+    color: var(--text-muted);
     font-size: 1rem;
     transition: color 0.3s ease;
     user-select: none;
 }
 
 .password-toggle:hover {
-    color: var(--ocean-blue);
+    color: var(--gold);
 }
 
 /* Password Strength Indicator */
 .password-strength {
-    height: 4px;
-    background: #e2e8f0;
-    border-radius: 2px;
+    height: 3px;
+    background: rgba(233, 196, 106, 0.1);
     margin-top: 8px;
     overflow: hidden;
     display: none;
@@ -231,7 +247,6 @@ input:focus + .input-icon {
     height: 100%;
     width: 0;
     transition: all 0.3s ease;
-    border-radius: 2px;
 }
 
 .strength-bar.weak { width: 33%; background: var(--error); }
@@ -241,7 +256,7 @@ input:focus + .input-icon {
 .strength-text {
     font-size: 0.8rem;
     margin-top: 5px;
-    color: #64748b;
+    color: var(--text-muted);
     display: none;
 }
 
@@ -253,10 +268,10 @@ input:focus + .input-icon {
 .terms {
     display: flex;
     align-items: flex-start;
-    gap: 10px;
-    margin: 20px 0;
+    gap: 12px;
+    margin: 25px 0;
     font-size: 0.9rem;
-    color: #64748b;
+    color: var(--text-muted);
     cursor: pointer;
 }
 
@@ -264,78 +279,73 @@ input:focus + .input-icon {
     width: auto;
     padding: 0;
     margin-top: 3px;
-    accent-color: var(--aqua);
+    accent-color: var(--gold);
     cursor: pointer;
 }
 
 .terms a {
-    color: var(--azure);
+    color: var(--gold);
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 600;
+    transition: color 0.3s ease;
 }
 
 .terms a:hover {
+    color: var(--orange);
     text-decoration: underline;
 }
 
 /* Button Styling */
-button {
+button[type="submit"] {
     width: 100%;
-    padding: 14px;
-    background: linear-gradient(135deg, var(--ocean-blue) 0%, var(--azure) 100%);
-    color: white;
-    border: none;
-    border-radius: 12px;
+    padding: 16px;
+    background: var(--gold);
+    color: var(--deep-navy);
+    border: 2px solid var(--gold);
+    border-radius: 0;
     cursor: pointer;
-    font-size: 1.05rem;
-    font-weight: 600;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 10px;
     margin-top: 10px;
 }
 
-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-    transition: left 0.5s;
-}
-
-button:hover::before {
-    left: 100%;
-}
-
-button:hover {
+button[type="submit"]:hover {
+    background: transparent;
+    color: var(--gold);
     transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(13, 59, 102, 0.3);
+    box-shadow: 0 10px 30px rgba(233, 196, 106, 0.2);
 }
 
-button:disabled {
+button[type="submit"]:disabled {
     opacity: 0.6;
     cursor: not-allowed;
     transform: none;
 }
 
-button.success {
-    background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+button[type="submit"].success {
+    background: var(--success);
+    border-color: var(--success);
+    color: white;
 }
 
 /* Divider */
 .divider {
     display: flex;
     align-items: center;
-    margin: 20px 0;
-    color: #94a3b8;
-    font-size: 0.85rem;
+    margin: 30px 0;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
 .divider::before,
@@ -343,72 +353,76 @@ button.success {
     content: '';
     flex: 1;
     height: 1px;
-    background: #e2e8f0;
+    background: rgba(233, 196, 106, 0.2);
 }
 
 .divider span {
-    padding: 0 10px;
+    padding: 0 15px;
 }
 
 /* Social Signup */
 .social-signup {
     display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
+    gap: 12px;
+    margin-bottom: 25px;
 }
 
 .social-btn {
     flex: 1;
-    padding: 10px;
-    border: 2px solid #e2e8f0;
-    background: white;
-    border-radius: 8px;
+    padding: 12px;
+    border: 1px solid rgba(233, 196, 106, 0.2);
+    background: rgba(10, 22, 40, 0.5);
+    border-radius: 0;
     cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #64748b;
+    font-size: 1rem;
+    font-weight: 700;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .social-btn:hover {
-    border-color: var(--aqua);
-    background: var(--foam);
+    border-color: var(--gold);
+    background: rgba(233, 196, 106, 0.1);
+    color: var(--gold);
     transform: translateY(-2px);
 }
 
 /* Footer */
-p {
+.footer-text {
     text-align: center;
-    color: #64748b;
+    color: var(--text-muted);
     font-size: 0.9rem;
-    margin-top: 15px;
+    margin-top: 20px;
 }
 
-a {
-    color: var(--azure);
+.footer-text a {
+    color: var(--gold);
     text-decoration: none;
     font-weight: 600;
     transition: color 0.3s ease;
 }
 
-a:hover {
-    color: var(--ocean-blue);
+.footer-text a:hover {
+    color: var(--orange);
     text-decoration: underline;
 }
 
 /* Error/Success Messages */
 .message {
-    padding: 12px;
-    border-radius: 8px;
+    padding: 14px;
+    border-radius: 0;
     font-size: 0.9rem;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     display: none;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     animation: slideDown 0.3s ease;
+    border-left: 3px solid;
 }
 
 @keyframes slideDown {
@@ -427,19 +441,21 @@ a:hover {
 }
 
 .message.error {
-    background: #fee2e2;
-    color: var(--error);
+    background: rgba(220, 38, 38, 0.1);
+    color: #ef4444;
+    border-left-color: var(--error);
 }
 
 .message.success {
-    background: #d1fae5;
+    background: rgba(16, 185, 129, 0.1);
     color: var(--success);
+    border-left-color: var(--success);
 }
 
 /* Responsive */
 @media (max-width: 480px) {
     .container {
-        padding: 30px 20px;
+        padding: 40px 25px;
     }
     
     .form-row {
@@ -447,7 +463,32 @@ a:hover {
     }
     
     .logo h1 {
-        font-size: 1.4rem;
+        font-size: 1.3rem;
+    }
+    
+    h2 {
+        font-size: 1.1rem;
+    }
+}
+
+/* Input Animation on Load */
+.form-group {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.form-group:nth-child(1) { animation-delay: 0.1s; }
+.form-group:nth-child(2) { animation-delay: 0.15s; }
+.form-group:nth-child(3) { animation-delay: 0.2s; }
+.form-group:nth-child(4) { animation-delay: 0.25s; }
+.form-group:nth-child(5) { animation-delay: 0.3s; }
+.form-group:nth-child(6) { animation-delay: 0.35s; }
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 </style>
@@ -455,16 +496,13 @@ a:hover {
 
 <body>
 
-<div class="wave-container">
-    <div class="wave"></div>
-    <div class="wave"></div>
-</div>
+<div class="bg-pattern"></div>
 
 <div class="container">
     <div class="logo">
         <div class="logo-icon">💧</div>
-        <h1>MegaStrike</h1>
-        <p>Water You Can Trust; Borehole Drilling With Excellence</p>
+        <h1>Megastrike</h1>
+        <p>Hydro Drilling Solutions</p>
     </div>
 
     <div class="message error" id="errorMsg">
@@ -472,7 +510,7 @@ a:hover {
         <span>Please fill in all required fields</span>
     </div>
 
-    <h2>Create Your Account</h2>
+    <h2>Create Account</h2>
 
     <form action="/signup" method="POST" id="signupForm">
         <div class="form-row">
@@ -524,7 +562,7 @@ a:hover {
     </form>
 
     <div class="divider">
-        <span>or sign up with</span>
+        <span>OR</span>
     </div>
 
     <div class="social-signup">
@@ -532,7 +570,7 @@ a:hover {
         <button type="button" class="social-btn" title="Microsoft">M</button>
     </div>
 
-    <p>Already have an account? <a href="login.html">Sign in</a></p>
+    <p class="footer-text">Already have an account? <a href="login.html">Sign in</a></p>
 </div>
 
 <script>
@@ -592,12 +630,11 @@ const form = document.getElementById('signupForm');
 const submitBtn = document.getElementById('submitBtn');
 const errorMsg = document.getElementById('errorMsg');
 const confirmPassword = document.getElementById('confirmPassword');
-// REPLACE the existing form event listener with this:
+
 form.addEventListener('submit', async function(e) {
     e.preventDefault();
     errorMsg.classList.remove('show');
     
-    // Validation
     const firstName = document.getElementById('firstName').value.trim();
     const lastName = document.getElementById('lastName').value.trim();
     const email = document.getElementById('email').value.trim();
@@ -621,7 +658,6 @@ form.addEventListener('submit', async function(e) {
         return;
     }
     
-    // Loading state
     const originalContent = submitBtn.innerHTML;
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<span>Creating account...</span> <span>⏳</span>';
@@ -629,22 +665,20 @@ form.addEventListener('submit', async function(e) {
     try {
         const BACKEND_URL = 'https://megastrike-hydro.onrender.com'; 
 
-const response = await fetch(`${BACKEND_URL}/api/auth/signup`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ firstName, lastName, email, phone, password })
-});
+        const response = await fetch(`${BACKEND_URL}/api/auth/signup`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ firstName, lastName, email, phone, password })
+        });
+        
         const data = await response.json();
         
         if (data.success) {
-            // Save token to localStorage
             localStorage.setItem('token', data.token);
-            
             
             submitBtn.classList.add('success');
             submitBtn.innerHTML = '<span>Success! Redirecting...</span> <span>✓</span>';
             
-            // Redirect to dashboard after 1.5 seconds
             setTimeout(() => {
                 window.location.href = '/dashboard.html';
             }, 1500);
@@ -664,19 +698,17 @@ function showError(msg) {
     errorMsg.classList.add('show');
 }
 
-// Real-time password match checking
 confirmPassword.addEventListener('input', function() {
     if (this.value !== passwordInput.value) {
         this.style.borderColor = 'var(--error)';
     } else {
-        this.style.borderColor = 'var(--aqua)';
+        this.style.borderColor = 'var(--gold)';
     }
 });
 
-// Input focus effects
 document.querySelectorAll('input').forEach(input => {
     input.addEventListener('focus', function() {
-        this.style.borderColor = '#e2e8f0';
+        this.style.borderColor = 'rgba(233, 196, 106, 0.2)';
     });
 });
 </script>
