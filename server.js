@@ -11,10 +11,22 @@ const helmet = require('helmet');
 
 const app = express();
 
+
 // ==========================
-// Middleware
+// Security Middleware with Relaxed CSP
 // ==========================
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "blob:"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      imgSrc: ["'self'", "data:", "blob:"],
+      connectSrc: ["'self'"],
+    },
+  },
+}));
 
 // Restrict CORS ( for production)
 app.use(cors({

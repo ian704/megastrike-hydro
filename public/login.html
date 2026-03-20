@@ -849,6 +849,7 @@ const response = await fetch(`${BACKEND_URL}/api/auth/login`, {
         if (data.success) {
             // Save token
             localStorage.setItem('token', data.token);
+            localStorage.removeItem('user'); 
             
             // Handle remember me
             if (remember) {

@@ -1,14 +1,15 @@
+// db.js
 const { Pool } = require('pg');
 const config = require('./config');
 
 const pool = new Pool(config.db);
 
-// Initialize tables (same as before)
 const initTables = async () => {
   const client = await pool.connect();
   try {
     console.log('📡 Connected to PostgreSQL');
 
+    // USERS TABLE
     await client.query(`
       CREATE TABLE IF NOT EXISTS users (
         id SERIAL PRIMARY KEY,
@@ -24,6 +25,7 @@ const initTables = async () => {
       );
     `);
 
+    // CONSULTATIONS TABLE
     await client.query(`
       CREATE TABLE IF NOT EXISTS consultations (
         id SERIAL PRIMARY KEY,
