@@ -16,10 +16,11 @@
             --white: #ffffff;
             --success: #10b981;
             --error: #ef4444;
+            --warning: #f59e0b;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+
         body {
             font-family: 'Inter', sans-serif;
             background: var(--foam);
@@ -175,6 +176,10 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.95rem;
         }
 
         .btn-primary {
@@ -258,6 +263,200 @@
             font-size: 0.9rem;
         }
 
+        /* ===============================
+           CONSULTATION SECTION
+        =============================== */
+        .consultation-section {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 2px solid #f1f5f9;
+            margin-bottom: 3rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--deep-ocean);
+        }
+
+        .new-consultation-btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, var(--aqua) 0%, var(--cyan) 100%);
+            color: var(--deep-ocean);
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .new-consultation-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(78, 205, 196, 0.4);
+        }
+
+        .consultation-form {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: var(--deep-ocean);
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 14px 18px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--aqua);
+            box-shadow: 0 0 0 4px rgba(78, 205, 196, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .submit-consultation-btn {
+            padding: 16px 32px;
+            background: linear-gradient(135deg, var(--ocean-blue) 0%, var(--azure) 100%);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            justify-self: start;
+        }
+
+        .submit-consultation-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(13, 59, 102, 0.3);
+        }
+
+        .submit-consultation-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Consultation List */
+        .consultation-list {
+            margin-top: 2rem;
+        }
+
+        .consultation-list h4 {
+            color: var(--deep-ocean);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .consultation-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .consultation-table th,
+        .consultation-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .consultation-table th {
+            background: var(--foam);
+            font-weight: 600;
+            color: var(--ocean-blue);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .consultation-table tr:hover {
+            background: var(--foam);
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-completed {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-in-progress {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #64748b;
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Profile Section */
         .profile-section {
             background: white;
             border-radius: 20px;
@@ -317,42 +516,6 @@
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 1.5rem;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .form-group.full-width {
-            grid-column: 1 / -1;
-        }
-
-        .form-group label {
-            font-weight: 600;
-            color: var(--deep-ocean);
-            font-size: 0.9rem;
-        }
-
-        .form-group input {
-            padding: 14px 18px;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            font-family: inherit;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--aqua);
-            box-shadow: 0 0 0 4px rgba(78, 205, 196, 0.1);
-        }
-
-        .form-group input:disabled {
-            background: #f1f5f9;
-            cursor: not-allowed;
         }
 
         .save-btn {
@@ -446,6 +609,78 @@
             }
         }
 
+        /* ===============================
+           PRE TAG FIX
+        =============================== */
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            max-width: 100%;
+            background: #f4f4f4;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--aqua);
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: var(--deep-ocean);
+            overflow-x: auto;
+        }
+
+        /* ===============================
+           FOOTER
+        =============================== */
+        .footer {
+            background: var(--deep-ocean);
+            color: white;
+            padding: 40px 5%;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .footer-brand h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--aqua);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--aqua);
+        }
+
+        .footer-copyright {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.85rem;
+        }
+
         @media (max-width: 768px) {
             .welcome-section {
                 flex-direction: column;
@@ -453,34 +688,60 @@
                 gap: 1.5rem;
                 padding: 2rem;
             }
-            
+
             .welcome-text h2 {
                 font-size: 1.8rem;
             }
-            
-            .profile-form {
+
+            .profile-form,
+            .consultation-form {
                 grid-template-columns: 1fr;
             }
-            
+
             .quick-actions {
                 flex-direction: column;
                 width: 100%;
             }
-            
+
             .btn {
                 width: 100%;
                 justify-content: center;
             }
-            
+
             .nav-user {
                 gap: 0.75rem;
             }
-            
+
             .user-info {
                 display: none;
             }
+
+            .section-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .consultation-table {
+                font-size: 0.85rem;
+            }
+
+            .consultation-table th,
+            .consultation-table td {
+                padding: 0.75rem 0.5rem;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
         }
     </style>
+<base target="_blank">
 </head>
 <body>
 
@@ -507,14 +768,14 @@
     </div>
 
     <main id="mainContent" class="main-content hidden">
-        
+
         <section class="welcome-section">
             <div class="welcome-text">
                 <h2>Welcome back, <span id="welcomeName">Client</span>! 👋</h2>
                 <p>Manage your borehole consultation requests and account settings</p>
             </div>
             <div class="quick-actions">
-                <a href="/#consultation" class="btn btn-primary">New Consultation →</a>
+                <button class="btn btn-primary" onclick="showConsultationForm()">New Consultation →</button>
                 <a href="/#services" class="btn btn-secondary">Our Services</a>
             </div>
         </section>
@@ -548,12 +809,93 @@
             </div>
         </div>
 
+        <!-- CONSULTATION SECTION -->
+        <section class="consultation-section" id="consultationSection">
+            <div class="section-header">
+                <h3 class="section-title">💧 Borehole Consultations</h3>
+                <button class="new-consultation-btn" onclick="toggleConsultationForm()">
+                    <span>+</span>
+                    <span>New Request</span>
+                </button>
+            </div>
+
+            <div id="consultationFormContainer" class="hidden">
+                <div class="alert success" id="consultationSuccessAlert">
+                    <span>✓</span>
+                    <span>Consultation request submitted successfully!</span>
+                </div>
+
+                <div class="alert error" id="consultationErrorAlert">
+                    <span>⚠️</span>
+                    <span>Failed to submit consultation request</span>
+                </div>
+
+                <form id="consultationForm" class="consultation-form">
+                    <div class="form-group">
+                        <label for="consultLocation">Project Location *</label>
+                        <input type="text" id="consultLocation" required placeholder="e.g., Kitale, Trans Nzoia County">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="consultLandSize">Land Size (Acres)</label>
+                        <input type="number" id="consultLandSize" step="0.1" placeholder="e.g., 2.5">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="consultServiceType">Service Type *</label>
+                        <select id="consultServiceType" required>
+                            <option value="">Select a service...</option>
+                            <option value="hydrogeological">Hydrogeological Survey</option>
+                            <option value="geological">Geological Survey</option>
+                            <option value="hydrological">Hydrological Survey</option>
+                            <option value="drilling">Borehole Drilling & Casing</option>
+                            <option value="yield">Yield Testing</option>
+                            <option value="pump">Pump Installation</option>
+                            <option value="tower">Water Tower Construction</option>
+                            <option value="inspection">Borehole Inspection</option>
+                            <option value="full">Full Package (Survey + Drilling + Installation)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="consultBudget">Estimated Budget (KES)</label>
+                        <input type="number" id="consultBudget" placeholder="e.g., 500000">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="consultDescription">Project Description *</label>
+                        <textarea id="consultDescription" required placeholder="Describe your project requirements, timeline, and any specific needs..."></textarea>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <button type="submit" class="submit-consultation-btn" id="submitConsultationBtn">
+                            <span>Submit Request</span>
+                            <span>→</span>
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="toggleConsultationForm()" style="margin-left: 1rem;">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="consultation-list">
+                <h4>Your Consultation History</h4>
+                <div id="consultationListContainer">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📋</div>
+                        <p>No consultation requests yet. Click "New Request" to get started!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section class="profile-section">
             <div class="alert success" id="successAlert">
                 <span>✓</span>
                 <span>Profile updated successfully!</span>
             </div>
-            
+
             <div class="alert error" id="errorAlert">
                 <span>⚠️</span>
                 <span>Failed to update profile</span>
@@ -568,28 +910,28 @@
             </div>
 
             <span class="section-tag">Edit Profile</span>
-            
+
             <form id="profileForm" class="profile-form">
                 <div class="form-group">
                     <label>First Name</label>
                     <input type="text" id="editFirstName" required>
                 </div>
-                
+
                 <div class="form-group">
                     <label>Last Name</label>
                     <input type="text" id="editLastName" required>
                 </div>
-                
+
                 <div class="form-group">
                     <label>Email Address</label>
                     <input type="email" id="editEmail" disabled title="Email cannot be changed">
                 </div>
-                
+
                 <div class="form-group">
                     <label>Phone Number</label>
                     <input type="tel" id="editPhone" placeholder="+254 7XX XXX XXX">
                 </div>
-                
+
                 <div class="form-group full-width">
                     <button type="submit" class="save-btn" id="saveBtn">
                         <span>Save Changes</span>
@@ -600,6 +942,24 @@
         </section>
 
     </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <span style="font-size: 1.5rem;">💧</span>
+                <h3>Megastrike Hydro Drilling Solutions</h3>
+            </div>
+            <div class="footer-links">
+                <a href="/">Home</a>
+                <a href="/#services">Services</a>
+                <a href="/#about">About</a>
+                <a href="/#contacts">Contact</a>
+                <a href="/dashboard.html">Dashboard</a>
+            </div>
+            <p class="footer-copyright">&copy; 2024 Megastrike. All rights reserved.</p>
+        </div>
+    </footer>
 
     <script>
         // ==========================
@@ -622,6 +982,7 @@
                 const user = await fetchUser(token);
                 displayUserData(user);
                 await loadDashboardData(token);
+                await loadConsultations(token);
             } catch (err) {
                 console.error('Auth error:', err);
                 localStorage.removeItem('token');
@@ -691,6 +1052,150 @@
         }
 
         // ==========================
+        // Consultation Functions
+        // ==========================
+        function toggleConsultationForm() {
+            const formContainer = document.getElementById('consultationFormContainer');
+            formContainer.classList.toggle('hidden');
+            if (!formContainer.classList.contains('hidden')) {
+                document.getElementById('consultLocation').focus();
+            }
+        }
+
+        function showConsultationForm() {
+            const formContainer = document.getElementById('consultationFormContainer');
+            formContainer.classList.remove('hidden');
+            document.getElementById('consultationSection').scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('consultLocation').focus();
+        }
+
+        async function loadConsultations(token) {
+            try {
+                const res = await fetch(`${BACKEND_URL}/api/consultations`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+
+                if (data.success && data.consultations && data.consultations.length > 0) {
+                    renderConsultationList(data.consultations);
+                }
+            } catch (err) {
+                console.error('Load consultations error:', err);
+            }
+        }
+
+        function renderConsultationList(consultations) {
+            const container = document.getElementById('consultationListContainer');
+
+            const tableHTML = `
+                <table class="consultation-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Location</th>
+                            <th>Service</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${consultations.map(c => `
+                            <tr>
+                                <td>${new Date(c.created_at).toLocaleDateString()}</td>
+                                <td>${c.location}</td>
+                                <td>${formatServiceType(c.service_type)}</td>
+                                <td><span class="status-badge status-${c.status}">${c.status}</span></td>
+                                <td><button onclick="viewConsultation('${c.id}')" style="padding: 6px 12px; background: var(--aqua); border: none; border-radius: 6px; cursor: pointer; font-size: 0.85rem;">View</button></td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+
+            container.innerHTML = tableHTML;
+        }
+
+        function formatServiceType(type) {
+            const types = {
+                'hydrogeological': 'Hydrogeological Survey',
+                'geological': 'Geological Survey',
+                'hydrological': 'Hydrological Survey',
+                'drilling': 'Borehole Drilling',
+                'yield': 'Yield Testing',
+                'pump': 'Pump Installation',
+                'tower': 'Water Tower',
+                'inspection': 'Inspection',
+                'full': 'Full Package'
+            };
+            return types[type] || type;
+        }
+
+        function viewConsultation(id) {
+            alert('View consultation details - ID: ' + id);
+        }
+
+        // Consultation Form Submit
+        document.getElementById('consultationForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const token = localStorage.getItem('token');
+            const submitBtn = document.getElementById('submitConsultationBtn');
+            const originalContent = submitBtn.innerHTML;
+
+            document.getElementById('consultationSuccessAlert').classList.remove('show');
+            document.getElementById('consultationErrorAlert').classList.remove('show');
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span>Submitting...</span> <span>⏳</span>';
+
+            const consultationData = {
+                location: document.getElementById('consultLocation').value,
+                land_size: document.getElementById('consultLandSize').value,
+                service_type: document.getElementById('consultServiceType').value,
+                budget: document.getElementById('consultBudget').value,
+                description: document.getElementById('consultDescription').value
+            };
+
+            try {
+                const res = await fetch(`${BACKEND_URL}/api/consultations`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(consultationData)
+                });
+
+                const data = await res.json();
+
+                if (!data.success) throw new Error(data.error || 'Submission failed');
+
+                submitBtn.innerHTML = '<span>Submitted!</span> <span>✓</span>';
+                submitBtn.style.background = 'var(--success)';
+                document.getElementById('consultationSuccessAlert').classList.add('show');
+
+                document.getElementById('consultationForm').reset();
+
+                setTimeout(() => {
+                    toggleConsultationForm();
+                    submitBtn.innerHTML = originalContent;
+                    submitBtn.style.background = '';
+                    submitBtn.disabled = false;
+                    document.getElementById('consultationSuccessAlert').classList.remove('show');
+                    loadDashboardData(token);
+                    loadConsultations(token);
+                }, 2000);
+
+            } catch (err) {
+                console.error('Consultation submit error:', err);
+                document.getElementById('consultationErrorAlert').querySelector('span:last-child').textContent = err.message;
+                document.getElementById('consultationErrorAlert').classList.add('show');
+                submitBtn.innerHTML = originalContent;
+                submitBtn.disabled = false;
+            }
+        });
+
+        // ==========================
         // Profile Update
         // ==========================
         document.getElementById('profileForm').addEventListener('submit', async (e) => {
@@ -719,12 +1224,11 @@
                         phone: document.getElementById('editPhone').value
                     })
                 });
-                
+
                 const data = await res.json();
 
                 if (!data.success) throw new Error(data.error || 'Update failed');
 
-                // Refetch user to stay fully synced
                 const updatedUser = await fetchUser(token);
                 displayUserData(updatedUser);
                 await loadDashboardData(token);
