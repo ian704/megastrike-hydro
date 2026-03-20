@@ -7,13 +7,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --deep-ocean: #0a1628;
-            --ocean-blue: #0d3b66;
-            --azure: #1e6091;
-            --aqua: #4ecdc4;
-            --cyan: #45b7d1;
-            --foam: #f0f9ff;
+            --deep-navy: #0a1628;
+            --navy: #0d1b2a;
+            --ocean-blue: #1b263b;
+            --azure: #415a77;
+            --gold: #e9c46a;
+            --orange: #f4a261;
             --white: #ffffff;
+            --text-light: #e0e1dd;
+            --text-muted: #778da9;
             --success: #10b981;
             --error: #ef4444;
             --warning: #f59e0b;
@@ -23,18 +25,20 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--foam);
+            background: var(--deep-navy);
             min-height: 100vh;
+            color: var(--text-light);
         }
 
+        /* NAVIGATION */
         .navbar {
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(10, 22, 40, 0.98);
             backdrop-filter: blur(20px);
-            padding: 1rem 5%;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+            padding: 0.75rem 5%;
+            border-bottom: 1px solid rgba(233, 196, 106, 0.2);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -49,29 +53,32 @@
         }
 
         .nav-brand-icon {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, var(--aqua) 0%, var(--cyan) 100%);
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--orange) 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            box-shadow: 0 4px 15px rgba(78, 205, 196, 0.3);
+            font-size: 1.3rem;
+            box-shadow: 0 4px 15px rgba(233, 196, 106, 0.3);
         }
 
         .nav-brand-text h1 {
             font-family: 'Playfair Display', serif;
-            font-size: 1.4rem;
-            color: var(--ocean-blue);
+            font-size: 1.3rem;
+            color: white;
             line-height: 1.2;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .nav-brand-text span {
-            font-size: 0.75rem;
-            color: #64748b;
-            font-weight: 500;
-            letter-spacing: 0.5px;
+            font-size: 0.65rem;
+            color: var(--gold);
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
 
         .nav-user {
@@ -86,51 +93,58 @@
 
         .user-name {
             font-weight: 600;
-            color: var(--deep-ocean);
+            color: white;
             font-size: 0.95rem;
         }
 
         .user-role {
             font-size: 0.8rem;
-            color: #64748b;
-            text-transform: capitalize;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .logout-btn {
             padding: 10px 24px;
-            background: var(--error);
-            color: white;
-            border: none;
-            border-radius: 30px;
+            background: transparent;
+            color: var(--error);
+            border: 2px solid var(--error);
+            border-radius: 0;
             cursor: pointer;
-            font-weight: 600;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.8rem;
             transition: all 0.3s ease;
         }
 
         .logout-btn:hover {
+            background: var(--error);
+            color: white;
             transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(239, 68, 68, 0.3);
         }
 
         .main-content {
-            margin-top: 100px;
+            margin-top: 80px;
             padding: 2rem 5%;
             max-width: 1400px;
             margin-left: auto;
             margin-right: auto;
         }
 
+        /* WELCOME SECTION */
         .welcome-section {
-            background: linear-gradient(135deg, var(--deep-ocean) 0%, var(--ocean-blue) 50%, var(--azure) 100%);
+            background: linear-gradient(135deg, rgba(27, 38, 59, 0.9) 0%, rgba(13, 27, 42, 0.9) 100%);
             color: white;
             padding: 3rem;
-            border-radius: 20px;
             margin-bottom: 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: relative;
             overflow: hidden;
+            border: 1px solid rgba(233, 196, 106, 0.1);
         }
 
         .welcome-section::before {
@@ -139,9 +153,15 @@
             top: 0;
             left: 0;
             right: 0;
-            bottom: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%234ecdc4' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-            opacity: 0.3;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gold), var(--orange), var(--gold));
+            background-size: 200% 100%;
+            animation: shimmer 3s linear infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
         }
 
         .welcome-text {
@@ -151,13 +171,20 @@
 
         .welcome-text h2 {
             font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .welcome-text h2 span {
+            color: var(--gold);
         }
 
         .welcome-text p {
-            opacity: 0.9;
+            opacity: 0.8;
             font-size: 1.1rem;
+            color: var(--text-muted);
         }
 
         .quick-actions {
@@ -169,40 +196,46 @@
 
         .btn {
             padding: 14px 28px;
-            border-radius: 30px;
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 700;
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            border: none;
+            border: 2px solid;
             cursor: pointer;
             font-family: inherit;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
         }
 
         .btn-primary {
-            background: var(--aqua);
-            color: var(--deep-ocean);
+            background: var(--gold);
+            color: var(--deep-navy);
+            border-color: var(--gold);
         }
 
         .btn-primary:hover {
+            background: transparent;
+            color: var(--gold);
             transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(78, 205, 196, 0.4);
+            box-shadow: 0 15px 40px rgba(233, 196, 106, 0.2);
         }
 
         .btn-secondary {
             background: transparent;
             color: white;
-            border: 2px solid rgba(255,255,255,0.3);
+            border-color: rgba(255,255,255,0.3);
         }
 
         .btn-secondary:hover {
             background: rgba(255,255,255,0.1);
-            border-color: white;
+            border-color: var(--gold);
+            color: var(--gold);
         }
 
+        /* STATS GRID */
         .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -211,18 +244,34 @@
         }
 
         .stat-card {
-            background: white;
-            border-radius: 20px;
+            background: var(--navy);
             padding: 2rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-            border: 2px solid #f1f5f9;
+            border: 1px solid rgba(233, 196, 106, 0.1);
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gold);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
         }
 
         .stat-card:hover {
             transform: translateY(-5px);
-            border-color: var(--aqua);
-            box-shadow: 0 20px 40px rgba(78, 205, 196, 0.15);
+            border-color: rgba(233, 196, 106, 0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .stat-card:hover::before {
+            transform: scaleX(1);
         }
 
         .stat-header {
@@ -233,45 +282,42 @@
         }
 
         .stat-title {
-            font-size: 1rem;
-            color: #64748b;
-            font-weight: 500;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .stat-icon {
             width: 50px;
             height: 50px;
-            background: linear-gradient(135deg, var(--foam) 0%, white 100%);
-            border-radius: 12px;
+            background: rgba(233, 196, 106, 0.1);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
-            border: 2px solid #e2e8f0;
+            border: 1px solid rgba(233, 196, 106, 0.2);
         }
 
         .stat-value {
             font-size: 2.5rem;
             font-weight: 700;
-            color: var(--ocean-blue);
+            color: white;
             margin-bottom: 0.5rem;
             font-family: 'Playfair Display', serif;
         }
 
         .stat-label {
-            color: #64748b;
+            color: var(--text-muted);
             font-size: 0.9rem;
         }
 
-        /* ===============================
-           CONSULTATION SECTION
-        =============================== */
+        /* CONSULTATION SECTION */
         .consultation-section {
-            background: white;
-            border-radius: 20px;
+            background: var(--navy);
             padding: 2.5rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-            border: 2px solid #f1f5f9;
+            border: 1px solid rgba(233, 196, 106, 0.1);
             margin-bottom: 3rem;
         }
 
@@ -286,27 +332,44 @@
 
         .section-title {
             font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
-            color: var(--deep-ocean);
+            font-size: 1.6rem;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--gold);
         }
 
         .new-consultation-btn {
             padding: 12px 24px;
-            background: linear-gradient(135deg, var(--aqua) 0%, var(--cyan) 100%);
-            color: var(--deep-ocean);
-            border: none;
-            border-radius: 30px;
-            font-weight: 600;
+            background: var(--gold);
+            color: var(--deep-navy);
+            border: 2px solid var(--gold);
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.8rem;
         }
 
         .new-consultation-btn:hover {
+            background: transparent;
+            color: var(--gold);
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(78, 205, 196, 0.4);
         }
 
         .consultation-form {
@@ -328,28 +391,31 @@
 
         .form-group label {
             font-weight: 600;
-            color: var(--deep-ocean);
-            font-size: 0.9rem;
+            color: var(--gold);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .form-group input,
         .form-group select,
         .form-group textarea {
             padding: 14px 18px;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
+            border: 1px solid rgba(233, 196, 106, 0.2);
+            border-radius: 0;
             font-family: inherit;
             font-size: 1rem;
             transition: all 0.3s ease;
-            background: white;
+            background: rgba(10, 22, 40, 0.5);
+            color: white;
         }
 
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
             outline: none;
-            border-color: var(--aqua);
-            box-shadow: 0 0 0 4px rgba(78, 205, 196, 0.1);
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(233, 196, 106, 0.1);
         }
 
         .form-group textarea {
@@ -359,22 +425,25 @@
 
         .submit-consultation-btn {
             padding: 16px 32px;
-            background: linear-gradient(135deg, var(--ocean-blue) 0%, var(--azure) 100%);
-            color: white;
-            border: none;
-            border-radius: 30px;
+            background: var(--gold);
+            color: var(--deep-navy);
+            border: 2px solid var(--gold);
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            justify-self: start;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.85rem;
         }
 
         .submit-consultation-btn:hover {
+            background: transparent;
+            color: var(--gold);
             transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(13, 59, 102, 0.3);
+            box-shadow: 0 10px 30px rgba(233, 196, 106, 0.2);
         }
 
         .submit-consultation-btn:disabled {
@@ -389,16 +458,17 @@
         }
 
         .consultation-list h4 {
-            color: var(--deep-ocean);
+            color: white;
             margin-bottom: 1rem;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
         .consultation-table {
             width: 100%;
             border-collapse: collapse;
-            background: white;
-            border-radius: 12px;
+            background: var(--ocean-blue);
             overflow: hidden;
         }
 
@@ -406,63 +476,68 @@
         .consultation-table td {
             padding: 1rem;
             text-align: left;
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom: 1px solid rgba(233, 196, 106, 0.1);
         }
 
         .consultation-table th {
-            background: var(--foam);
+            background: rgba(233, 196, 106, 0.1);
             font-weight: 600;
-            color: var(--ocean-blue);
-            font-size: 0.9rem;
+            color: var(--gold);
+            font-size: 0.85rem;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
         }
 
         .consultation-table tr:hover {
-            background: var(--foam);
+            background: rgba(233, 196, 106, 0.05);
         }
 
         .status-badge {
             padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-transform: capitalize;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px solid;
         }
 
         .status-pending {
-            background: #fef3c7;
-            color: #92400e;
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+            border-color: var(--warning);
         }
 
         .status-completed {
-            background: #d1fae5;
-            color: #065f46;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border-color: var(--success);
         }
 
         .status-in-progress {
-            background: #dbeafe;
-            color: #1e40af;
+            background: rgba(59, 130, 246, 0.1);
+            color: #60a5fa;
+            border-color: #60a5fa;
         }
 
         .empty-state {
             text-align: center;
             padding: 3rem;
-            color: #64748b;
+            color: var(--text-muted);
+            background: var(--ocean-blue);
+            border: 1px dashed rgba(233, 196, 106, 0.2);
         }
 
         .empty-state-icon {
             font-size: 3rem;
             margin-bottom: 1rem;
+            opacity: 0.5;
         }
 
-        /* Profile Section */
+        /* PROFILE SECTION */
         .profile-section {
-            background: white;
-            border-radius: 20px;
+            background: var(--navy);
             padding: 2.5rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-            border: 2px solid #f1f5f9;
+            border: 1px solid rgba(233, 196, 106, 0.1);
         }
 
         .profile-header {
@@ -471,45 +546,87 @@
             gap: 1.5rem;
             margin-bottom: 2rem;
             padding-bottom: 2rem;
-            border-bottom: 2px solid #f1f5f9;
+            border-bottom: 1px solid rgba(233, 196, 106, 0.1);
+        }
+
+        .profile-avatar-container {
+            position: relative;
+            width: 100px;
+            height: 100px;
         }
 
         .profile-avatar {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, var(--aqua) 0%, var(--cyan) 100%);
-            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--orange) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
-            color: white;
+            font-size: 2.5rem;
+            color: var(--deep-navy);
             font-weight: 700;
-            box-shadow: 0 10px 30px rgba(78, 205, 196, 0.3);
+            box-shadow: 0 10px 30px rgba(233, 196, 106, 0.3);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-avatar-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            cursor: pointer;
+        }
+
+        .profile-avatar-container:hover .profile-avatar-overlay {
+            opacity: 1;
+        }
+
+        .profile-avatar-overlay span {
+            color: white;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
         }
 
         .profile-info h3 {
             font-size: 1.5rem;
-            color: var(--deep-ocean);
+            color: white;
             margin-bottom: 0.25rem;
             font-family: 'Playfair Display', serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
         .profile-info p {
-            color: #64748b;
+            color: var(--text-muted);
         }
 
         .section-tag {
             display: inline-block;
             padding: 8px 20px;
-            background: rgba(78, 205, 196, 0.1);
-            color: var(--aqua);
-            border-radius: 20px;
+            background: rgba(233, 196, 106, 0.1);
+            color: var(--gold);
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             margin-bottom: 1.5rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            border: 1px solid rgba(233, 196, 106, 0.2);
         }
 
         .profile-form {
@@ -520,10 +637,9 @@
 
         .save-btn {
             padding: 16px 32px;
-            background: linear-gradient(135deg, var(--ocean-blue) 0%, var(--azure) 100%);
-            color: white;
-            border: none;
-            border-radius: 30px;
+            background: var(--gold);
+            color: var(--deep-navy);
+            border: 2px solid var(--gold);
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -531,11 +647,16 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.85rem;
         }
 
         .save-btn:hover {
+            background: transparent;
+            color: var(--gold);
             transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(13, 59, 102, 0.3);
+            box-shadow: 0 10px 30px rgba(233, 196, 106, 0.2);
         }
 
         .save-btn:disabled {
@@ -544,22 +665,90 @@
             transform: none;
         }
 
+        /* Profile Picture Upload */
+        .profile-picture-upload {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: rgba(10, 22, 40, 0.5);
+            border: 1px dashed rgba(233, 196, 106, 0.3);
+        }
+
+        .profile-picture-upload h4 {
+            color: var(--gold);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .file-input-wrapper input[type=file] {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .file-input-label {
+            padding: 12px 24px;
+            background: transparent;
+            color: var(--gold);
+            border: 2px solid var(--gold);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .file-input-label:hover {
+            background: var(--gold);
+            color: var(--deep-navy);
+        }
+
+        .file-name {
+            margin-left: 1rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .upload-preview {
+            margin-top: 1rem;
+            max-width: 200px;
+            border: 2px solid rgba(233, 196, 106, 0.2);
+        }
+
+        .upload-preview img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Loading & Alerts */
         .loading {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             font-size: 1.2rem;
-            color: var(--ocean-blue);
+            color: var(--gold);
             flex-direction: column;
             gap: 1rem;
+            background: var(--deep-navy);
         }
 
         .spinner {
             width: 50px;
             height: 50px;
-            border: 4px solid var(--foam);
-            border-top-color: var(--aqua);
+            border: 4px solid rgba(233, 196, 106, 0.1);
+            border-top-color: var(--gold);
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -574,12 +763,12 @@
 
         .alert {
             padding: 14px 20px;
-            border-radius: 12px;
             margin-bottom: 1.5rem;
             display: none;
             align-items: center;
             gap: 10px;
             animation: slideDown 0.4s ease;
+            border-left: 3px solid;
         }
 
         .alert.show {
@@ -587,15 +776,15 @@
         }
 
         .alert.success {
-            background: #f0fdf4;
+            background: rgba(16, 185, 129, 0.1);
             color: var(--success);
-            border: 2px solid #bbf7d0;
+            border-left-color: var(--success);
         }
 
         .alert.error {
-            background: #fef2f2;
+            background: rgba(239, 68, 68, 0.1);
             color: var(--error);
-            border: 2px solid #fecaca;
+            border-left-color: var(--error);
         }
 
         @keyframes slideDown {
@@ -609,30 +798,36 @@
             }
         }
 
-        /* ===============================
-           PRE TAG FIX
-        =============================== */
-        pre {
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            max-width: 100%;
-            background: #f4f4f4;
-            padding: 1rem;
-            border-radius: 8px;
-            border-left: 4px solid var(--aqua);
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
-            line-height: 1.5;
-            color: var(--deep-ocean);
-            overflow-x: auto;
+        /* Auth Required Message */
+        .auth-required {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: var(--navy);
+            border: 1px solid rgba(233, 196, 106, 0.2);
+            margin: 2rem 0;
         }
 
-        /* ===============================
-           FOOTER
-        =============================== */
+        .auth-required h3 {
+            color: var(--gold);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .auth-required p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .auth-required .btn {
+            margin: 0 0.5rem;
+        }
+
+        /* Footer */
         .footer {
-            background: var(--deep-ocean);
+            background: var(--deep-navy);
+            border-top: 1px solid rgba(233, 196, 106, 0.1);
             color: white;
             padding: 40px 5%;
             margin-top: 3rem;
@@ -657,7 +852,9 @@
         .footer-brand h3 {
             font-family: 'Playfair Display', serif;
             font-size: 1.3rem;
-            color: var(--aqua);
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .footer-links {
@@ -666,21 +863,24 @@
         }
 
         .footer-links a {
-            color: rgba(255,255,255,0.7);
+            color: var(--text-muted);
             text-decoration: none;
             transition: color 0.3s ease;
             font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .footer-links a:hover {
-            color: var(--aqua);
+            color: var(--gold);
         }
 
         .footer-copyright {
-            color: rgba(255,255,255,0.5);
+            color: var(--text-muted);
             font-size: 0.85rem;
         }
 
+        /* Responsive */
         @media (max-width: 768px) {
             .welcome-section {
                 flex-direction: column;
@@ -690,7 +890,7 @@
             }
 
             .welcome-text h2 {
-                font-size: 1.8rem;
+                font-size: 1.5rem;
             }
 
             .profile-form,
@@ -721,6 +921,11 @@
                 text-align: center;
             }
 
+            .section-title::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
             .consultation-table {
                 font-size: 0.85rem;
             }
@@ -739,9 +944,13 @@
                 flex-wrap: wrap;
                 justify-content: center;
             }
+
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
         }
     </style>
-<base target="_blank">
 </head>
 <body>
 
@@ -750,11 +959,11 @@
             <div class="nav-brand-icon">💧</div>
             <div class="nav-brand-text">
                 <h1>Megastrike</h1>
-                <span>HYDRO DRILLING SOLUTIONS</span>
+                <span>Hydro Drilling Solutions</span>
             </div>
         </a>
         <div class="nav-user">
-            <div class="user-info">
+            <div class="user-info" id="userInfo">
                 <div class="user-name" id="userName">Loading...</div>
                 <div class="user-role" id="userRole">client</div>
             </div>
@@ -767,16 +976,25 @@
         <div>Loading your dashboard...</div>
     </div>
 
+    <div id="authRequired" class="hidden" style="margin-top: 80px; padding: 2rem 5%;">
+        <div class="auth-required">
+            <h3>🔒 Authentication Required</h3>
+            <p>Please sign in or create an account to access the dashboard and submit consultation requests.</p>
+            <a href="login.html" class="btn btn-primary">Sign In</a>
+            <a href="signup.html" class="btn btn-secondary">Create Account</a>
+        </div>
+    </div>
+
     <main id="mainContent" class="main-content hidden">
 
         <section class="welcome-section">
             <div class="welcome-text">
-                <h2>Welcome back, <span id="welcomeName">Client</span>! 👋</h2>
+                <h2>Welcome back, <span id="welcomeName">Client</span>!</h2>
                 <p>Manage your borehole consultation requests and account settings</p>
             </div>
             <div class="quick-actions">
-                <button class="btn btn-primary" onclick="showConsultationForm()">New Consultation →</button>
-                <a href="/#services" class="btn btn-secondary">Our Services</a>
+                <button class="btn btn-primary" onclick="scrollToConsultation()">New Consultation →</button>
+                <a href="index.html#services" class="btn btn-secondary">Our Services</a>
             </div>
         </section>
 
@@ -812,7 +1030,7 @@
         <!-- CONSULTATION SECTION -->
         <section class="consultation-section" id="consultationSection">
             <div class="section-header">
-                <h3 class="section-title">💧 Borehole Consultations</h3>
+                <h3 class="section-title">Borehole Consultations</h3>
                 <button class="new-consultation-btn" onclick="toggleConsultationForm()">
                     <span>+</span>
                     <span>New Request</span>
@@ -890,7 +1108,8 @@
             </div>
         </section>
 
-        <section class="profile-section">
+        <!-- PROFILE SECTION -->
+        <section class="profile-section" id="profileSection">
             <div class="alert success" id="successAlert">
                 <span>✓</span>
                 <span>Profile updated successfully!</span>
@@ -902,7 +1121,15 @@
             </div>
 
             <div class="profile-header">
-                <div class="profile-avatar" id="userAvatar">M</div>
+                <div class="profile-avatar-container">
+                    <div class="profile-avatar" id="userAvatar">
+                        <span id="avatarInitials">M</span>
+                        <img id="avatarImage" src="" alt="" style="display: none;">
+                    </div>
+                    <div class="profile-avatar-overlay" onclick="document.getElementById('profilePictureInput').click()">
+                        <span>Change<br>Photo</span>
+                    </div>
+                </div>
                 <div class="profile-info">
                     <h3 id="profileName">Megastrike Client</h3>
                     <p id="profileEmail">client@example.com</p>
@@ -939,6 +1166,25 @@
                     </button>
                 </div>
             </form>
+
+            <!-- Profile Picture Upload Section -->
+            <div class="profile-picture-upload">
+                <h4>Update Profile Picture</h4>
+                <div class="file-input-wrapper">
+                    <input type="file" id="profilePictureInput" accept="image/*" onchange="handleProfilePictureSelect(this)">
+                    <label for="profilePictureInput" class="file-input-label">
+                        <span>📷</span>
+                        <span>Choose Photo</span>
+                    </label>
+                    <span class="file-name" id="fileName">No file selected</span>
+                </div>
+                <div class="upload-preview hidden" id="uploadPreview">
+                    <img id="previewImage" src="" alt="Preview">
+                </div>
+                <button type="button" class="btn btn-primary" onclick="uploadProfilePicture()" id="uploadPicBtn" style="margin-top: 1rem;" disabled>
+                    Upload Photo
+                </button>
+            </div>
         </section>
 
     </main>
@@ -951,11 +1197,11 @@
                 <h3>Megastrike Hydro Drilling Solutions</h3>
             </div>
             <div class="footer-links">
-                <a href="/">Home</a>
-                <a href="/#services">Services</a>
-                <a href="/#about">About</a>
-                <a href="/#contacts">Contact</a>
-                <a href="/dashboard.html">Dashboard</a>
+                <a href="index.html">Home</a>
+                <a href="index.html#services">Services</a>
+                <a href="index.html#about">About</a>
+                <a href="index.html#contacts">Contact</a>
+                <a href="dashboard.html">Dashboard</a>
             </div>
             <p class="footer-copyright">&copy; 2024 Megastrike. All rights reserved.</p>
         </div>
@@ -966,6 +1212,8 @@
         // CONFIG - Backend URL
         // ==========================
         const BACKEND_URL = 'https://megastrike-hydro.onrender.com';
+        let currentUser = null;
+        let selectedProfilePicture = null;
 
         // ==========================
         // Auth & Initial Load
@@ -974,21 +1222,28 @@
             const token = localStorage.getItem('token');
 
             if (!token) {
-                window.location.href = '/login';
+                showAuthRequired();
                 return;
             }
 
             try {
                 const user = await fetchUser(token);
+                currentUser = user;
                 displayUserData(user);
                 await loadDashboardData(token);
                 await loadConsultations(token);
             } catch (err) {
                 console.error('Auth error:', err);
                 localStorage.removeItem('token');
-                window.location.href = '/login';
+                showAuthRequired();
             }
         });
+
+        function showAuthRequired() {
+            document.getElementById('loadingState').classList.add('hidden');
+            document.getElementById('authRequired').classList.remove('hidden');
+            document.getElementById('mainContent').classList.add('hidden');
+        }
 
         // ==========================
         // Fetch user from server
@@ -1016,7 +1271,14 @@
             document.getElementById('userRole').textContent = user.role === 'admin' ? 'Administrator' : 'Client';
 
             const initials = `${user.first_name[0]}${user.last_name[0]}`.toUpperCase();
-            document.getElementById('userAvatar').textContent = initials;
+            document.getElementById('avatarInitials').textContent = initials;
+
+            // Load profile picture if exists
+            if (user.profile_picture) {
+                document.getElementById('avatarImage').src = user.profile_picture;
+                document.getElementById('avatarImage').style.display = 'block';
+                document.getElementById('avatarInitials').style.display = 'none';
+            }
 
             document.getElementById('editFirstName').value = user.first_name;
             document.getElementById('editLastName').value = user.last_name;
@@ -1025,6 +1287,88 @@
 
             document.getElementById('loadingState').classList.add('hidden');
             document.getElementById('mainContent').classList.remove('hidden');
+        }
+
+        // ==========================
+        // Profile Picture Upload
+        // ==========================
+        function handleProfilePictureSelect(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                alert('Please select an image file');
+                return;
+            }
+
+            // Validate file size (max 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('File size must be less than 5MB');
+                return;
+            }
+
+            selectedProfilePicture = file;
+            document.getElementById('fileName').textContent = file.name;
+
+            // Show preview
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('previewImage').src = e.target.result;
+                document.getElementById('uploadPreview').classList.remove('hidden');
+                document.getElementById('uploadPicBtn').disabled = false;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function uploadProfilePicture() {
+            if (!selectedProfilePicture) return;
+
+            const token = localStorage.getItem('token');
+            const btn = document.getElementById('uploadPicBtn');
+            const originalText = btn.innerHTML;
+
+            btn.disabled = true;
+            btn.innerHTML = '<span>Uploading...</span>';
+
+            const formData = new FormData();
+            formData.append('profilePicture', selectedProfilePicture);
+
+            try {
+                const res = await fetch(`${BACKEND_URL}/api/auth/profile-picture`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` },
+                    body: formData
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    // Update avatar display
+                    document.getElementById('avatarImage').src = data.profilePictureUrl;
+                    document.getElementById('avatarImage').style.display = 'block';
+                    document.getElementById('avatarInitials').style.display = 'none';
+                    
+                    // Reset form
+                    document.getElementById('profilePictureInput').value = '';
+                    document.getElementById('fileName').textContent = 'No file selected';
+                    document.getElementById('uploadPreview').classList.add('hidden');
+                    selectedProfilePicture = null;
+                    btn.disabled = true;
+
+                    btn.innerHTML = '<span>Uploaded!</span>';
+                    setTimeout(() => {
+                        btn.innerHTML = originalText;
+                    }, 2000);
+                } else {
+                    throw new Error(data.error || 'Upload failed');
+                }
+            } catch (err) {
+                console.error('Upload error:', err);
+                alert('Failed to upload profile picture: ' + err.message);
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+            }
         }
 
         // ==========================
@@ -1054,19 +1398,27 @@
         // ==========================
         // Consultation Functions
         // ==========================
+        function scrollToConsultation() {
+            const section = document.getElementById('consultationSection');
+            section.scrollIntoView({ behavior: 'smooth' });
+            // Optionally open the form
+            // toggleConsultationForm();
+        }
+
         function toggleConsultationForm() {
+            // Check if user is authenticated
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('Please sign in to submit a consultation request');
+                window.location.href = 'login.html';
+                return;
+            }
+
             const formContainer = document.getElementById('consultationFormContainer');
             formContainer.classList.toggle('hidden');
             if (!formContainer.classList.contains('hidden')) {
                 document.getElementById('consultLocation').focus();
             }
-        }
-
-        function showConsultationForm() {
-            const formContainer = document.getElementById('consultationFormContainer');
-            formContainer.classList.remove('hidden');
-            document.getElementById('consultationSection').scrollIntoView({ behavior: 'smooth' });
-            document.getElementById('consultLocation').focus();
         }
 
         async function loadConsultations(token) {
@@ -1105,7 +1457,7 @@
                                 <td>${c.location}</td>
                                 <td>${formatServiceType(c.service_type)}</td>
                                 <td><span class="status-badge status-${c.status}">${c.status}</span></td>
-                                <td><button onclick="viewConsultation('${c.id}')" style="padding: 6px 12px; background: var(--aqua); border: none; border-radius: 6px; cursor: pointer; font-size: 0.85rem;">View</button></td>
+                                <td><button onclick="viewConsultation('${c.id}')" style="padding: 6px 12px; background: var(--gold); border: none; color: var(--deep-navy); cursor: pointer; font-weight: 600; font-size: 0.8rem; text-transform: uppercase;">View</button></td>
                             </tr>
                         `).join('')}
                     </tbody>
@@ -1138,7 +1490,14 @@
         document.getElementById('consultationForm').addEventListener('submit', async (e) => {
             e.preventDefault();
 
+            // Double-check authentication
             const token = localStorage.getItem('token');
+            if (!token) {
+                alert('Please sign in to submit a consultation request');
+                window.location.href = 'login.html';
+                return;
+            }
+
             const submitBtn = document.getElementById('submitConsultationBtn');
             const originalContent = submitBtn.innerHTML;
 
@@ -1172,6 +1531,8 @@
 
                 submitBtn.innerHTML = '<span>Submitted!</span> <span>✓</span>';
                 submitBtn.style.background = 'var(--success)';
+                submitBtn.style.borderColor = 'var(--success)';
+                submitBtn.style.color = 'white';
                 document.getElementById('consultationSuccessAlert').classList.add('show');
 
                 document.getElementById('consultationForm').reset();
@@ -1180,6 +1541,8 @@
                     toggleConsultationForm();
                     submitBtn.innerHTML = originalContent;
                     submitBtn.style.background = '';
+                    submitBtn.style.borderColor = '';
+                    submitBtn.style.color = '';
                     submitBtn.disabled = false;
                     document.getElementById('consultationSuccessAlert').classList.remove('show');
                     loadDashboardData(token);
@@ -1235,11 +1598,15 @@
 
                 saveBtn.innerHTML = '<span>Saved!</span> <span>✓</span>';
                 saveBtn.style.background = 'var(--success)';
+                saveBtn.style.borderColor = 'var(--success)';
+                saveBtn.style.color = 'white';
                 document.getElementById('successAlert').classList.add('show');
 
                 setTimeout(() => {
                     saveBtn.innerHTML = originalContent;
                     saveBtn.style.background = '';
+                    saveBtn.style.borderColor = '';
+                    saveBtn.style.color = '';
                     saveBtn.disabled = false;
                     document.getElementById('successAlert').classList.remove('show');
                 }, 3000);
@@ -1259,7 +1626,7 @@
         function logout() {
             if (confirm('Are you sure you want to logout?')) {
                 localStorage.removeItem('token');
-                window.location.href = '/login';
+                window.location.href = 'index.html';
             }
         }
     </script>
