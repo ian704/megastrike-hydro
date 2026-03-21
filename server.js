@@ -12,6 +12,23 @@ const path = require('path');
 
 const app = express();
 
+const pool = require('./db');
+
+// ==========================
+// DATABASE MIGRATIONS (Auto-fix missing columns)
+// ==========================
+async function runMigrations() {
+  try {
+    await pool.query(`
+      ALTER TABLE users 
+      ADD COLUMN IF NOT EXISTS profile_picture TEXT
+    `);
+    console.log('✅ Migration complete: profile_picture column added');
+  } catch (err) {
+    console.error('Migration error:', err.message);
+  }
+}
+
 // ==========================
 // Security Middleware with Relaxed CSP
 // ==========================
@@ -340,10 +357,13 @@ app.use((req, res) => {
 });
 
 // ==========================
-// START SERVER
+// START SERVER (after migrations)
 // ==========================
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+// Run migrations, then start server
+runMigrations().then(() => {
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+  });
 });
