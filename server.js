@@ -8,9 +8,9 @@ const config = require('./config');
 const { authenticateToken } = require('./middleware/auth');
 const morgan = require('morgan');
 const helmet = require('helmet');
+const path = require('path');
 
 const app = express();
-
 
 // ==========================
 // Security Middleware with Relaxed CSP
@@ -165,7 +165,7 @@ app.post('/api/auth/login', async (req, res) => {
 app.get('/api/auth/me', authenticateToken, async (req, res) => {
   try {
     const { rows } = await pool.query(
-      `SELECT id, first_name, last_name, email, phone, role, created_at 
+      `SELECT id, first_name, last_name, email, phone, role, created_at, profile_picture 
        FROM users WHERE id = $1`,
       [req.user.userId]
     );
@@ -196,7 +196,7 @@ app.put('/api/auth/profile', authenticateToken, async (req, res) => {
       `UPDATE users
        SET first_name = $1, last_name = $2, phone = $3
        WHERE id = $4
-       RETURNING id, first_name, last_name, email, phone, role`,
+       RETURNING id, first_name, last_name, email, phone, role, profile_picture`,
       [firstName, lastName, phone || null, userId]
     );
 
@@ -211,19 +211,124 @@ app.put('/api/auth/profile', authenticateToken, async (req, res) => {
   }
 });
 
+// PROFILE PICTURE UPLOAD (if you have multer configured)
+app.post('/api/auth/profile-picture', authenticateToken, async (req, res) => {
+  try {
+    // Note: You'll need to configure multer for file uploads
+    // This is a placeholder - implement based on your file storage solution
+    const { profilePictureUrl } = req.body;
+    
+    const { rows } = await pool.query(
+      `UPDATE users SET profile_picture = $1 WHERE id = $2 RETURNING profile_picture`,
+      [profilePictureUrl, req.user.userId]
+    );
+
+    res.json({ success: true, profilePictureUrl: rows[0].profile_picture });
+  } catch (error) {
+    console.error('Profile picture update error:', error);
+    res.status(500).json({ success: false, error: 'Server error' });
+  }
+});
+
+// ==========================
+// CONSULTATIONS (AUTHENTICATED)
+// ==========================
+
+// CREATE NEW CONSULTATION
+app.post('/api/consultations', authenticateToken, async (req, res) => {
+  try {
+    const { location, land_size, service_type, budget, description } = req.body;
+    const userId = req.user.userId;
+    const userEmail = req.user.email;
+
+    // Validation
+    if (!location || !service_type || !description) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Location, service type, and description are required' 
+      });
+    }
+
+    const { rows } = await pool.query(
+      `INSERT INTO consultations 
+       (user_id, email, location, land_size, service_type, budget, description, status, created_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, 'pending', NOW())
+       RETURNING *`,
+      [userId, userEmail, location, land_size || null, service_type, budget || null, description]
+    );
+
+    res.status(201).json({
+      success: true,
+      message: 'Consultation submitted successfully',
+      consultation: rows[0]
+    });
+
+  } catch (error) {
+    console.error('Consultation creation error:', error);
+    res.status(500).json({ success: false, error: 'Failed to submit consultation' });
+  }
+});
+
+// GET ALL USER'S CONSULTATIONS
+app.get('/api/consultations', authenticateToken, async (req, res) => {
+  try {
+    const { rows } = await pool.query(
+      `SELECT * FROM consultations 
+       WHERE user_id = $1 
+       ORDER BY created_at DESC`,
+      [req.user.userId]
+    );
+
+    res.json({ 
+      success: true, 
+      consultations: rows 
+    });
+
+  } catch (error) {
+    console.error('Get consultations error:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// GET SINGLE CONSULTATION
+app.get('/api/consultations/:id', authenticateToken, async (req, res) => {
+  try {
+    const { rows } = await pool.query(
+      `SELECT * FROM consultations 
+       WHERE id = $1 AND user_id = $2`,
+      [req.params.id, req.user.userId]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ success: false, error: 'Consultation not found' });
+    }
+
+    res.json({ success: true, consultation: rows[0] });
+
+  } catch (error) {
+    console.error('Get consultation error:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 // ==========================
 // DASHBOARD
 // ==========================
 app.get('/api/user/dashboard', authenticateToken, async (req, res) => {
   try {
+    // Get consultations by user_id only (more secure)
     const { rows } = await pool.query(
       `SELECT * FROM consultations 
-       WHERE email = $1 OR user_id = $2 
+       WHERE user_id = $1 
        ORDER BY created_at DESC`,
-      [req.user.email, req.user.userId]
+      [req.user.userId]
     );
 
-    res.json({ success: true, user: req.user, consultations: rows });
+    res.json({ 
+      success: true, 
+      user: req.user, 
+      consultations: rows 
+    });
 
   } catch (error) {
     console.error('Dashboard error:', error);
@@ -238,29 +343,9 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', timestamp: new Date() });
 });
 
-app.post('/api/consultations', async (req, res) => {
-  try {
-    const { name, phone, email, service, details } = req.body;
-
-    const { rows } = await pool.query(
-      `INSERT INTO consultations (name, phone, email, service, details)
-       VALUES ($1, $2, $3, $4, $5)
-       RETURNING *`,
-      [name, phone, email, service, details]
-    );
-
-    res.json({ success: true, consultation: rows[0] });
-
-  } catch (error) {
-    console.error('Consultation error:', error);
-    res.status(500).json({ success: false, error: 'Failed to submit consultation' });
-  }
-});
-
 // ==========================
 // STATIC FILES
 // ==========================
-const path = require('path');
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -279,7 +364,7 @@ app.use((req, res) => {
 // ==========================
 // START SERVER
 // ==========================
-const PORT = process.env.PORT || 3000; // Render assigns PORT automatically
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
