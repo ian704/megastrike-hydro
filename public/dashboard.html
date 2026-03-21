@@ -955,7 +955,7 @@
                 <div class="user-name" id="userName">Loading...</div>
                 <div class="user-role" id="userRole">client</div>
             </div>
-            <button class="logout-btn" onclick="logout()">Logout</button>
+            <button class="logout-btn" id="logoutBtn">Logout</button>
         </div>
     </nav>
 
@@ -981,7 +981,7 @@
                 <p>Manage your borehole consultation requests and account settings</p>
             </div>
             <div class="quick-actions">
-                <button class="btn btn-primary" onclick="scrollToConsultation()">New Consultation →</button>
+                <button class="btn btn-primary" id="newConsultationBtn">New Consultation →</button>
                 <a href="index.html#services" class="btn btn-secondary">Our Services</a>
             </div>
         </section>
@@ -1019,7 +1019,7 @@
         <section class="consultation-section" id="consultationSection">
             <div class="section-header">
                 <h3 class="section-title">Borehole Consultations</h3>
-                <button class="new-consultation-btn" onclick="toggleConsultationForm()">
+                <button class="new-consultation-btn" id="toggleFormBtn">
                     <span>+</span>
                     <span>New Request</span>
                 </button>
@@ -1078,7 +1078,7 @@
                             <span>Submit Request</span>
                             <span>→</span>
                         </button>
-                        <button type="button" class="btn btn-secondary" onclick="toggleConsultationForm()" style="margin-left: 1rem;">
+                        <button type="button" class="btn btn-secondary" id="cancelFormBtn" style="margin-left: 1rem;">
                             Cancel
                         </button>
                     </div>
@@ -1109,12 +1109,12 @@
             </div>
 
             <div class="profile-header">
-                <div class="profile-avatar-container">
+                <div class="profile-avatar-container" id="avatarContainer">
                     <div class="profile-avatar" id="userAvatar">
                         <span id="avatarInitials">M</span>
                         <img id="avatarImage" src="" alt="" style="display: none;">
                     </div>
-                    <div class="profile-avatar-overlay" onclick="document.getElementById('profilePictureInput').click()">
+                    <div class="profile-avatar-overlay" id="avatarOverlay">
                         <span>Change<br>Photo</span>
                     </div>
                 </div>
@@ -1159,7 +1159,7 @@
             <div class="profile-picture-upload">
                 <h4>Update Profile Picture</h4>
                 <div class="file-input-wrapper">
-                    <input type="file" id="profilePictureInput" accept="image/*" onchange="handleProfilePictureSelect(this)">
+                    <input type="file" id="profilePictureInput" accept="image/*">
                     <label for="profilePictureInput" class="file-input-label">
                         <span>📷</span>
                         <span>Choose Photo</span>
@@ -1169,7 +1169,7 @@
                 <div class="upload-preview hidden" id="uploadPreview">
                     <img id="previewImage" src="" alt="Preview">
                 </div>
-                <button type="button" class="btn btn-primary" onclick="uploadProfilePicture()" id="uploadPicBtn" style="margin-top: 1rem;" disabled>
+                <button type="button" class="btn btn-primary" id="uploadPicBtn" style="margin-top: 1rem;" disabled>
                     Upload Photo
                 </button>
             </div>
@@ -1206,6 +1206,9 @@
         // Auth & Initial Load
         // ==========================
         document.addEventListener('DOMContentLoaded', async () => {
+            // Attach all event listeners
+            attachEventListeners();
+            
             const token = localStorage.getItem('token');
 
             if (!token) {
@@ -1225,6 +1228,39 @@
                 showAuthRequired();
             }
         });
+
+        function attachEventListeners() {
+            // Logout button
+            document.getElementById('logoutBtn')?.addEventListener('click', logout);
+            
+            // New consultation button (welcome section)
+            document.getElementById('newConsultationBtn')?.addEventListener('click', scrollToConsultation);
+            
+            // Toggle form button
+            document.getElementById('toggleFormBtn')?.addEventListener('click', toggleConsultationForm);
+            
+            // Cancel form button
+            document.getElementById('cancelFormBtn')?.addEventListener('click', toggleConsultationForm);
+            
+            // Avatar overlay click
+            document.getElementById('avatarOverlay')?.addEventListener('click', () => {
+                document.getElementById('profilePictureInput')?.click();
+            });
+            
+            // File input change
+            document.getElementById('profilePictureInput')?.addEventListener('change', function() {
+                handleProfilePictureSelect(this);
+            });
+            
+            // Upload picture button
+            document.getElementById('uploadPicBtn')?.addEventListener('click', uploadProfilePicture);
+            
+            // Profile form submit
+            document.getElementById('profileForm')?.addEventListener('submit', handleProfileSubmit);
+            
+            // Consultation form submit
+            document.getElementById('consultationForm')?.addEventListener('submit', handleConsultationSubmit);
+        }
 
         function showAuthRequired() {
             document.getElementById('loadingState').classList.add('hidden');
@@ -1383,7 +1419,7 @@
         }
 
         // ==========================
-        // Consultation Functions - FIXED
+        // Consultation Functions
         // ==========================
         function scrollToConsultation() {
             const token = localStorage.getItem('token');
@@ -1482,7 +1518,7 @@
                                 <td>${formatServiceType(c.service_type)}</td>
                                 <td><span class="status-badge status-${c.status}">${c.status}</span></td>
                                 <td>
-                                    <button onclick="viewConsultation(${c.id})" 
+                                    <button class="view-consultation-btn" data-id="${c.id}" 
                                         style="padding: 6px 12px; background: var(--gold); border: none; color: var(--deep-navy); cursor: pointer; font-weight: 600; font-size: 0.8rem; text-transform: uppercase;">
                                         View
                                     </button>
@@ -1494,6 +1530,13 @@
             `;
 
             container.innerHTML = tableHTML;
+            
+            // Attach event listeners to view buttons
+            container.querySelectorAll('.view-consultation-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    viewConsultation(this.dataset.id);
+                });
+            });
         }
 
         function formatServiceType(type) {
@@ -1540,8 +1583,8 @@
             });
         }
 
-        // Consultation Form Submit
-        document.getElementById('consultationForm').addEventListener('submit', async (e) => {
+        // Consultation Form Submit Handler
+        async function handleConsultationSubmit(e) {
             e.preventDefault();
 
             // Double-check authentication
@@ -1610,12 +1653,12 @@
                 submitBtn.innerHTML = originalContent;
                 submitBtn.disabled = false;
             }
-        });
+        }
 
         // ==========================
-        // Profile Update
+        // Profile Update Handler
         // ==========================
-        document.getElementById('profileForm').addEventListener('submit', async (e) => {
+        async function handleProfileSubmit(e) {
             e.preventDefault();
 
             const token = localStorage.getItem('token');
@@ -1672,10 +1715,10 @@
                 saveBtn.innerHTML = originalContent;
                 saveBtn.disabled = false;
             }
-        });
+        }
 
         // ==========================
-        // Logout - FIXED
+        // Logout
         // ==========================
         function logout() {
             if (confirm('Are you sure you want to logout?')) {

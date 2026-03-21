@@ -26,16 +26,16 @@ async function runMigrations() {
     console.error('Migration error:', err.message);
   }
 }
-
 // ==========================
-// Security Middleware with Relaxed CSP
+// Security Middleware with Updated CSP
 // ==========================
 app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", "'unsafe-inline'", "blob:"],
+        scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "blob:", "https://fonts.googleapis.com"],
+        scriptSrcAttr: ["'unsafe-inline'"], // ADD THIS - allows inline event handlers
         styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
         fontSrc: ["'self'", "https://fonts.gstatic.com"],
         imgSrc: ["'self'", "data:", "blob:"],
@@ -44,7 +44,6 @@ app.use(
     },
   })
 );
-
 // Restrict CORS (for production)
 app.use(cors({
   origin: 'https://megastrike-hydro.onrender.com',
