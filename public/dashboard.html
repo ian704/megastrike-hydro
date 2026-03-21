@@ -1386,53 +1386,52 @@
         // Consultation Functions
         // ==========================
         function scrollToConsultation() {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                alert('Please sign in to submit a consultation request');
-                window.location.href = 'login.html';
-                return;
+    const token = localStorage.getItem('token');
+    if (!token) {
+        alert('Please sign in to submit a consultation request');
+        window.location.href = 'login.html';
+        return;
+    }
+    
+    const section = document.getElementById('consultationSection');
+    const formContainer = document.getElementById('consultationFormContainer');
+    
+    if (section) {
+        // Scroll to section
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        
+        // Show form after scroll
+        setTimeout(() => {
+            if (formContainer && formContainer.classList.contains('hidden')) {
+                formContainer.classList.remove('hidden');
+                document.getElementById('consultLocation')?.focus();
             }
-            
-            const section = document.getElementById('consultationSection');
-            if (section) {
-                // Account for fixed navbar height (80px)
-                const navbarHeight = 80;
-                const sectionPosition = section.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
-                
-                window.scrollTo({
-                    top: sectionPosition,
-                    behavior: 'smooth'
-                });
-                
-                // Open the form after scrolling
-                setTimeout(() => {
-                    const formContainer = document.getElementById('consultationFormContainer');
-                    if (formContainer && formContainer.classList.contains('hidden')) {
-                        toggleConsultationForm();
-                    }
-                }, 500);
-            }
-        }
+        }, 500);
+    }
+}
 
-        function toggleConsultationForm() {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                alert('Please sign in to submit a consultation request');
-                window.location.href = 'login.html';
-                return;
-            }
+function toggleConsultationForm() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        alert('Please sign in to submit a consultation request');
+        window.location.href = 'login.html';
+        return;
+    }
 
-            const formContainer = document.getElementById('consultationFormContainer');
-            if (!formContainer) {
-                console.error('Consultation form container not found');
-                return;
-            }
-            
-            formContainer.classList.toggle('hidden');
-            
-            if (!formContainer.classList.contains('hidden')) {
-                const locationInput = document.getElementById('consultLocation');
-                if (locationInput) locationInput.focus();
+    const formContainer = document.getElementById('consultationFormContainer');
+    if (!formContainer) {
+        console.error('Form container not found');
+        return;
+    }
+    
+    // Toggle hidden class
+    if (formContainer.classList.contains('hidden')) {
+        formContainer.classList.remove('hidden');
+        document.getElementById('consultLocation')?.focus();
+    } else {
+        formContainer.classList.add('hidden');
+
+
             }
         }
 
@@ -1679,11 +1678,11 @@
         // Logout
         // ==========================
         function logout() {
-            if (confirm('Are you sure you want to logout?')) {
-                localStorage.removeItem('token');
-                localStorage.removeItem('user');
-                sessionStorage.clear();
-                window.location.replace('index.html');
+    if (confirm('Are you sure you want to logout?')) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        sessionStorage.clear();
+        window.location.href = 'login.html';
             }
         }
     </script>
