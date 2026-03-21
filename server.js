@@ -13,7 +13,7 @@ const path = require('path');
 const app = express();
 
 // ==========================
-// DATABASE MIGRATIONS (Auto-fix missing columns) - ADDED THIS
+// DATABASE MIGRATIONS (Auto-fix missing columns)
 // ==========================
 async function runMigrations() {
   try {
@@ -45,10 +45,10 @@ app.use(
   })
 );
 
-// Restrict CORS ( for production)
+// Restrict CORS (for production)
 app.use(cors({
-  origin: 'https://megastrike-hydro.onrender.com', //  live frontend URL
-  credentials: true // allow cookies/auth headers
+  origin: 'https://megastrike-hydro.onrender.com',
+  credentials: true
 }));
 
 app.use(express.json());
@@ -203,11 +203,35 @@ app.get('/api/auth/me', authenticateToken, async (req, res) => {
   }
 });
 
-// PROFILE PICTURE UPLOAD (if you have multer configured)
+// UPDATE PROFILE
+app.put('/api/auth/profile', authenticateToken, async (req, res) => {
+  try {
+    const { firstName, lastName, phone } = req.body;
+    const userId = req.user.userId;
+
+    const { rows } = await pool.query(
+      `UPDATE users 
+       SET first_name = $1, last_name = $2, phone = $3 
+       WHERE id = $4 
+       RETURNING id, first_name, last_name, email, phone, role`,
+      [firstName, lastName, phone, userId]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ success: false, error: 'User not found' });
+    }
+
+    res.json({ success: true, user: rows[0] });
+
+  } catch (error) {
+    console.error('Profile update error:', error);
+    res.status(500).json({ success: false, error: 'Server error' });
+  }
+});
+
+// PROFILE PICTURE UPLOAD
 app.post('/api/auth/profile-picture', authenticateToken, async (req, res) => {
   try {
-    // Note: You'll need to configure multer for file uploads
-    // This is a placeholder - implement based on your file storage solution
     const { profilePictureUrl } = req.body;
     
     const { rows } = await pool.query(
@@ -308,7 +332,6 @@ app.get('/api/consultations/:id', authenticateToken, async (req, res) => {
 // ==========================
 app.get('/api/user/dashboard', authenticateToken, async (req, res) => {
   try {
-    // Get consultations by user_id only (more secure)
     const { rows } = await pool.query(
       `SELECT * FROM consultations 
        WHERE user_id = $1 
@@ -338,7 +361,6 @@ app.get('/api/health', (req, res) => {
 // ==========================
 // STATIC FILES
 // ==========================
-
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Serve index.html for the root
@@ -354,11 +376,10 @@ app.use((req, res) => {
 });
 
 // ==========================
-// START SERVER (MODIFIED - runs migrations first)
+// START SERVER
 // ==========================
 const PORT = process.env.PORT || 3000;
 
-// Run migrations, then start server - CHANGED THIS
 runMigrations().then(() => {
   app.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`);
