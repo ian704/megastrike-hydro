@@ -12,10 +12,8 @@ const path = require('path');
 
 const app = express();
 
-const pool = require('./db');
-
 // ==========================
-// DATABASE MIGRATIONS (Auto-fix missing columns)
+// DATABASE MIGRATIONS (Auto-fix missing columns) - ADDED THIS
 // ==========================
 async function runMigrations() {
   try {
@@ -181,7 +179,6 @@ app.post('/api/auth/login', async (req, res) => {
 });
 
 // GET CURRENT USER
-
 app.get('/api/auth/me', authenticateToken, async (req, res) => {
   try {
     if (!req.user || !req.user.userId) {
@@ -357,11 +354,11 @@ app.use((req, res) => {
 });
 
 // ==========================
-// START SERVER (after migrations)
+// START SERVER (MODIFIED - runs migrations first)
 // ==========================
 const PORT = process.env.PORT || 3000;
 
-// Run migrations, then start server
+// Run migrations, then start server - CHANGED THIS
 runMigrations().then(() => {
   app.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`);
