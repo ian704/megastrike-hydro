@@ -3,734 +3,849 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | Megastrike Hydro Drilling Solutions</title>
+    <title>Admin Panel | Megastrike Hydro Drilling Solutions</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --deep-navy: #0a1628;
-            --navy: #0d1b2a;
-            --ocean-blue: #1b263b;
-            --azure: #415a77;
-            --gold: #e9c46a;
-            --orange: #f4a261;
+            --deep-ocean: #0a1628;
+            --ocean-blue: #0d3b66;
+            --azure: #1e6091;
+            --aqua: #4ecdc4;
+            --cyan: #45b7d1;
+            --foam: #f0f9ff;
             --white: #ffffff;
-            --text-light: #e0e1dd;
-            --text-muted: #778da9;
             --success: #10b981;
-            --error: #ef4444;
             --warning: #f59e0b;
+            --error: #ef4444;
+            --purple: #8b5cf6;
+            --sidebar-width: 280px;
+            --header-height: 80px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--deep-navy);
+            background: var(--foam);
             min-height: 100vh;
-            color: var(--text-light);
+            color: var(--deep-ocean);
         }
 
-        /* NAVIGATION */
-        .navbar {
+        /* Layout */
+        .admin-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: linear-gradient(180deg, var(--deep-ocean) 0%, var(--ocean-blue) 100%);
+            color: white;
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
+            height: 100vh;
+            overflow-y: auto;
             z-index: 1000;
-            background: var(--navy);
-            padding: 0.5rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid rgba(233, 196, 106, 0.1);
-            height: 80px;
-        }
-        
-        .nav-brand {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-        }
-
-        .nav-logo-img {
-            height: 110px;
-            width: auto;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
             transition: transform 0.3s ease;
         }
 
-        .nav-brand:hover .nav-logo-img {
-            transform: scale(1.05);
+        .sidebar-header {
+            padding: 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
 
-        .nav-user {
+        .sidebar-logo {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--aqua) 0%, var(--cyan) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 15px rgba(78, 205, 196, 0.3);
+        }
+
+        .sidebar-brand h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            line-height: 1.2;
+        }
+
+        .sidebar-brand span {
+            font-size: 0.7rem;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-section {
+            padding: 1.5rem 0;
+        }
+
+        .nav-section-title {
+            padding: 0 1.5rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            opacity: 0.6;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin: 0.25rem 0;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            cursor: pointer;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: rgba(255,255,255,0.05);
+            color: white;
+            border-left-color: var(--aqua);
+        }
+
+        .nav-link.active {
+            background: rgba(78, 205, 196, 0.1);
+        }
+
+        .nav-icon {
+            font-size: 1.25rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        .nav-badge {
+            margin-left: auto;
+            background: var(--error);
+            color: white;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .sidebar-footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .admin-avatar {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--aqua) 0%, var(--cyan) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .admin-info h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .admin-info p {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            height: var(--header-height);
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .header-left {
             display: flex;
             align-items: center;
             gap: 1.5rem;
         }
 
-        .user-info {
-            text-align: right;
-        }
-
-        .user-name {
-            font-weight: 600;
-            color: white;
-            font-size: 0.95rem;
-        }
-
-        .user-role {
-            font-size: 0.8rem;
-            color: var(--gold);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .logout-btn {
-            padding: 10px 24px;
-            background: transparent;
-            color: var(--error);
-            border: 2px solid var(--error);
-            border-radius: 0;
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
             cursor: pointer;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 0.8rem;
+            color: var(--ocean-blue);
+        }
+
+        .search-bar {
+            position: relative;
+        }
+
+        .search-bar input {
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 30px;
+            width: 300px;
+            font-family: inherit;
             transition: all 0.3s ease;
         }
 
-        .logout-btn:hover {
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--aqua);
+            width: 350px;
+        }
+
+        .search-bar::before {
+            content: '🔍';
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.5;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .header-btn {
+            position: relative;
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .header-btn:hover {
+            background: var(--foam);
+        }
+
+        .notification-dot {
+            position: absolute;
+            top: 0.25rem;
+            right: 0.25rem;
+            width: 8px;
+            height: 8px;
             background: var(--error);
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(239, 68, 68, 0.3);
+            border-radius: 50%;
+            border: 2px solid white;
         }
 
-        .main-content {
-            margin-top: 80px;
-            padding: 2rem 5%;
-            max-width: 1400px;
-            margin-left: auto;
-            margin-right: auto;
+        /* Content Area */
+        .content {
+            padding: 2rem;
+            max-width: 1600px;
+            margin: 0 auto;
         }
 
-        /* WELCOME SECTION */
-        .welcome-section {
-            background: linear-gradient(135deg, rgba(27, 38, 59, 0.9) 0%, rgba(13, 27, 42, 0.9) 100%);
-            color: white;
-            padding: 3rem;
+        .page-header {
             margin-bottom: 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(233, 196, 106, 0.1);
         }
 
-        .welcome-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--gold), var(--orange), var(--gold));
-            background-size: 200% 100%;
-            animation: shimmer 3s linear infinite;
-        }
-
-        @keyframes shimmer {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-
-        .welcome-text {
-            position: relative;
-            z-index: 1;
-        }
-
-        .welcome-text h2 {
+        .page-title h2 {
             font-family: 'Playfair Display', serif;
-            font-size: 2.2rem;
+            font-size: 2rem;
+            color: var(--deep-ocean);
             margin-bottom: 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
         }
 
-        .welcome-text h2 span {
-            color: var(--gold);
+        .page-title p {
+            color: #64748b;
         }
 
-        .welcome-text p {
-            opacity: 0.8;
-            font-size: 1.1rem;
-            color: var(--text-muted);
-        }
-
-        .quick-actions {
+        .page-actions {
             display: flex;
             gap: 1rem;
-            position: relative;
-            z-index: 1;
         }
-
         .btn {
-            padding: 14px 28px;
-            text-decoration: none;
-            font-weight: 700;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
             transition: all 0.3s ease;
+            border: none;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            border: 2px solid;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
+            gap: 0.5rem;
+            text-decoration: none;
         }
 
         .btn-primary {
-            background: var(--gold);
-            color: var(--deep-navy);
-            border-color: var(--gold);
+            background: linear-gradient(135deg, var(--ocean-blue) 0%, var(--azure) 100%);
+            color: white;
         }
 
         .btn-primary:hover {
-            background: transparent;
-            color: var(--gold);
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(233, 196, 106, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(13, 59, 102, 0.3);
         }
 
         .btn-secondary {
-            background: transparent;
-            color: white;
-            border-color: rgba(255,255,255,0.3);
+            background: white;
+            color: var(--ocean-blue);
+            border: 2px solid #e2e8f0;
         }
 
         .btn-secondary:hover {
-            background: rgba(255,255,255,0.1);
-            border-color: var(--gold);
-            color: var(--gold);
+            border-color: var(--aqua);
+            color: var(--aqua);
         }
-
-        /* STATS GRID */
-        .dashboard-grid {
+        
+        /* Stats Grid */
+        .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
         }
 
         .stat-card {
-            background: var(--navy);
-            padding: 2rem;
-            border: 1px solid rgba(233, 196, 106, 0.1);
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 2px solid #f1f5f9;
             transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: var(--gold);
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
         }
 
         .stat-card:hover {
             transform: translateY(-5px);
-            border-color: rgba(233, 196, 106, 0.3);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-        }
-
-        .stat-card:hover::before {
-            transform: scaleX(1);
+            border-color: var(--aqua);
+            box-shadow: 0 20px 40px rgba(78, 205, 196, 0.15);
         }
 
         .stat-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .stat-title {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            align-items: flex-start;
+            margin-bottom: 1rem;
         }
 
         .stat-icon {
             width: 50px;
             height: 50px;
-            background: rgba(233, 196, 106, 0.1);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
-            border: 1px solid rgba(233, 196, 106, 0.2);
         }
 
+        .stat-icon.blue { background: rgba(30, 96, 145, 0.1); color: var(--azure); }
+        .stat-icon.green { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+        .stat-icon.orange { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
+        .stat-icon.purple { background: rgba(139, 92, 246, 0.1); color: var(--purple); }
+
+        .stat-trend {
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 0.25rem 0.5rem;
+            border-radius: 20px;
+        }
+
+        .trend-up { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+        .trend-down { background: rgba(239, 68, 68, 0.1); color: var(--error); }
+
         .stat-value {
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 700;
-            color: white;
-            margin-bottom: 0.5rem;
+            color: var(--deep-ocean);
+            margin-bottom: 0.25rem;
             font-family: 'Playfair Display', serif;
         }
 
         .stat-label {
-            color: var(--text-muted);
+            color: #64748b;
             font-size: 0.9rem;
         }
 
-        /* CONSULTATION SECTION */
-        .consultation-section {
-            background: var(--navy);
-            padding: 2.5rem;
-            border: 1px solid rgba(233, 196, 106, 0.1);
-            margin-bottom: 3rem;
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
         }
 
-        .section-header {
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 2px solid #f1f5f9;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #f1f5f9;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--deep-ocean);
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        /* Charts */
+        .chart-container {
+            height: 300px;
+            position: relative;
+        }
+
+        .chart-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            padding: 0 1rem;
             gap: 1rem;
         }
 
-        .section-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.6rem;
-            color: white;
-            text-transform: uppercase;
-            letter-spacing: 3px;
+        .chart-bar {
+            flex: 1;
+            background: linear-gradient(to top, var(--aqua), var(--cyan));
+            border-radius: 8px 8px 0 0;
             position: relative;
-            padding-bottom: 15px;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 60px;
-            height: 3px;
-            background: var(--gold);
-        }
-
-        .new-consultation-btn {
-            padding: 12px 24px;
-            background: var(--gold);
-            color: var(--deep-navy);
-            border: 2px solid var(--gold);
-            font-weight: 700;
-            cursor: pointer;
             transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            cursor: pointer;
+        }
+
+        .chart-bar:hover {
+            opacity: 0.8;
+            transform: scaleY(1.05);
+        }
+
+        .chart-bar-label {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
             font-size: 0.8rem;
+            color: #64748b;
+            white-space: nowrap;
         }
 
-        .new-consultation-btn:hover {
-            background: transparent;
-            color: var(--gold);
-            transform: translateY(-2px);
+        /* Recent Activity */
+        .activity-list {
+            list-style: none;
         }
 
-        .consultation-form {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .form-group {
+        .activity-item {
             display: flex;
-            flex-direction: column;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .activity-icon.new { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+        .activity-icon.pending { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
+        .activity-icon.completed { background: rgba(30, 96, 145, 0.1); color: var(--azure); }
+
+        .activity-content h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .activity-content p {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 0.25rem;
+        }
+
+        .activity-time {
+            font-size: 0.75rem;
+            color: #94a3b8;
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th {
+            text-align: left;
+            padding: 1rem;
+            font-weight: 600;
+            color: #64748b;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #f1f5f9;
+            background: #f8fafc;
+        }
+
+        .data-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.95rem;
+        }
+
+        .data-table tr:hover td {
+            background: #f8fafc;
+        }
+
+        .user-cell {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--aqua) 0%, var(--cyan) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .user-info h4 {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .user-info p {
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-pending { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
+        .status-completed { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+        .status-in-progress { background: rgba(30, 96, 145, 0.1); color: var(--azure); }
+        .status-cancelled { background: rgba(239, 68, 68, 0.1); color: var(--error); }
+
+        .action-btns {
+            display: flex;
             gap: 0.5rem;
         }
 
-        .form-group.full-width {
-            grid-column: 1 / -1;
+        .action-btn {
+            padding: 0.5rem;
+            border: none;
+            background: none;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .action-btn:hover {
+            background: var(--foam);
+        }
+
+        .action-btn.edit { color: var(--azure); }
+        .action-btn.delete { color: var(--error); }
+        .action-btn.view { color: var(--success); }
+
+        /* Tab Navigation */
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #f1f5f9;
+        }
+
+        .tab {
+            padding: 0.75rem 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: #64748b;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            color: var(--ocean-blue);
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--aqua);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 22, 40, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.9);
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--deep-ocean);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #64748b;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: var(--foam);
+            color: var(--error);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
         }
 
         .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
             font-weight: 600;
-            color: var(--gold);
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            color: var(--deep-ocean);
         }
 
         .form-group input,
         .form-group select,
         .form-group textarea {
-            padding: 14px 18px;
-            border: 1px solid rgba(233, 196, 106, 0.2);
-            border-radius: 0;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
             font-family: inherit;
-            font-size: 1rem;
             transition: all 0.3s ease;
-            background: rgba(10, 22, 40, 0.5);
-            color: white;
         }
 
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
             outline: none;
-            border-color: var(--gold);
-            box-shadow: 0 0 0 3px rgba(233, 196, 106, 0.1);
+            border-color: var(--aqua);
         }
 
-        .form-group textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
-
-        .submit-consultation-btn {
-            padding: 16px 32px;
-            background: var(--gold);
-            color: var(--deep-navy);
-            border: 2px solid var(--gold);
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 0.85rem;
-        }
-
-        .submit-consultation-btn:hover {
-            background: transparent;
-            color: var(--gold);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(233, 196, 106, 0.2);
-        }
-
-        .submit-consultation-btn:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* Consultation List */
-        .consultation-list {
-            margin-top: 2rem;
-        }
-
-        .consultation-list h4 {
-            color: white;
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .consultation-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: var(--ocean-blue);
-            overflow: hidden;
-        }
-
-        .consultation-table th,
-        .consultation-table td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid rgba(233, 196, 106, 0.1);
-        }
-
-        .consultation-table th {
-            background: rgba(233, 196, 106, 0.1);
-            font-weight: 600;
-            color: var(--gold);
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .consultation-table tr:hover {
-            background: rgba(233, 196, 106, 0.05);
-        }
-
-        .status-badge {
-            padding: 6px 12px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border: 1px solid;
-        }
-
-        .status-pending {
-            background: rgba(245, 158, 11, 0.1);
-            color: var(--warning);
-            border-color: var(--warning);
-        }
-
-        .status-completed {
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--success);
-            border-color: var(--success);
-        }
-
-        .status-in-progress {
-            background: rgba(59, 130, 246, 0.1);
-            color: #60a5fa;
-            border-color: #60a5fa;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 3rem;
-            color: var(--text-muted);
-            background: var(--ocean-blue);
-            border: 1px dashed rgba(233, 196, 106, 0.2);
-        }
-
-        .empty-state-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            opacity: 0.5;
-        }
-
-        /* PROFILE SECTION */
-        .profile-section {
-            background: var(--navy);
-            padding: 2.5rem;
-            border: 1px solid rgba(233, 196, 106, 0.1);
-        }
-
-        .profile-header {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-            padding-bottom: 2rem;
-            border-bottom: 1px solid rgba(233, 196, 106, 0.1);
-        }
-
-        .profile-avatar-container {
-            position: relative;
-            width: 100px;
-            height: 100px;
-        }
-
-        .profile-avatar {
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(135deg, var(--gold) 0%, var(--orange) 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            color: var(--deep-navy);
-            font-weight: 700;
-            box-shadow: 0 10px 30px rgba(233, 196, 106, 0.3);
-            overflow: hidden;
-            position: relative;
-        }
-
-        .profile-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .profile-avatar-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.6);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            cursor: pointer;
-        }
-
-        .profile-avatar-container:hover .profile-avatar-overlay {
-            opacity: 1;
-        }
-
-        .profile-avatar-overlay span {
-            color: white;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            text-align: center;
-        }
-
-        .profile-info h3 {
-            font-size: 1.5rem;
-            color: white;
-            margin-bottom: 0.25rem;
-            font-family: 'Playfair Display', serif;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .profile-info p {
-            color: var(--text-muted);
-        }
-
-        .section-tag {
-            display: inline-block;
-            padding: 8px 20px;
-            background: rgba(233, 196, 106, 0.1);
-            color: var(--gold);
-            font-weight: 600;
-            font-size: 0.85rem;
-            margin-bottom: 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            border: 1px solid rgba(233, 196, 106, 0.2);
-        }
-
-        .profile-form {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
-        }
-
-        .save-btn {
-            padding: 16px 32px;
-            background: var(--gold);
-            color: var(--deep-navy);
-            border: 2px solid var(--gold);
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            justify-self: start;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 0.85rem;
-        }
-
-        .save-btn:hover {
-            background: transparent;
-            color: var(--gold);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(233, 196, 106, 0.2);
-        }
-
-        .save-btn:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* Profile Picture Upload */
-        .profile-picture-upload {
-            margin-top: 1.5rem;
+        .modal-footer {
             padding: 1.5rem;
-            background: rgba(10, 22, 40, 0.5);
-            border: 1px dashed rgba(233, 196, 106, 0.3);
+            border-top: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
         }
 
-        .profile-picture-upload h4 {
-            color: var(--gold);
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 1rem;
+        /* Section Visibility */
+        .section {
+            display: none;
         }
 
-        .file-input-wrapper {
-            position: relative;
-            overflow: hidden;
-            display: inline-block;
-        }
-
-        .file-input-wrapper input[type=file] {
-            position: absolute;
-            left: -9999px;
-        }
-
-        .file-input-label {
-            padding: 12px 24px;
-            background: transparent;
-            color: var(--gold);
-            border: 2px solid var(--gold);
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 0.8rem;
-            transition: all 0.3s ease;
-        }
-
-        .file-input-label:hover {
-            background: var(--gold);
-            color: var(--deep-navy);
-        }
-
-        .file-name {
-            margin-left: 1rem;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        .upload-preview {
-            margin-top: 1rem;
-            max-width: 200px;
-            border: 2px solid rgba(233, 196, 106, 0.2);
-        }
-
-        .upload-preview img {
-            width: 100%;
-            height: auto;
+        .section.active {
             display: block;
+            animation: fadeIn 0.4s ease;
         }
 
-        /* Loading & Alerts */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .search-bar input {
+                width: 200px;
+            }
+            
+            .search-bar input:focus {
+                width: 250px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                padding: 0 1rem;
+            }
+            
+            .content {
+                padding: 1rem;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+        }
+
+        /* Loading State */
         .loading {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            font-size: 1.2rem;
-            color: var(--gold);
-            flex-direction: column;
-            gap: 1rem;
-            background: var(--deep-navy);
+            height: 200px;
         }
 
         .spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid rgba(233, 196, 106, 0.1);
-            border-top-color: var(--gold);
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--foam);
+            border-top-color: var(--aqua);
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -739,995 +854,1088 @@
             to { transform: rotate(360deg); }
         }
 
-        .hidden {
-            display: none !important;
-        }
-
-        .alert {
-            padding: 14px 20px;
-            margin-bottom: 1.5rem;
-            display: none;
-            align-items: center;
-            gap: 10px;
-            animation: slideDown 0.4s ease;
-            border-left: 3px solid;
-        }
-
-        .alert.show {
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 100px;
+            right: 2rem;
+            z-index: 3000;
             display: flex;
-        }
-
-        .alert.success {
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--success);
-            border-left-color: var(--success);
-        }
-
-        .alert.error {
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--error);
-            border-left-color: var(--error);
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Auth Required Message */
-        .auth-required {
-            text-align: center;
-            padding: 4rem 2rem;
-            background: var(--navy);
-            border: 1px solid rgba(233, 196, 106, 0.2);
-            margin: 2rem 0;
-        }
-
-        .auth-required h3 {
-            color: var(--gold);
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .auth-required p {
-            color: var(--text-muted);
-            margin-bottom: 1.5rem;
-        }
-
-        .auth-required .btn {
-            margin: 0 0.5rem;
-        }
-
-        /* Footer */
-        .footer-logo-img {
-            height: 70px;
-            width: auto;
-            opacity: 0.9;
-        }
-
-        .footer {
-            background: var(--deep-navy);
-            border-top: 1px solid rgba(233, 196, 106, 0.1);
-            color: white;
-            padding: 40px 5%;
-            margin-top: 3rem;
-        }
-
-        .footer-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
+            flex-direction: column;
             gap: 1rem;
         }
 
-        .footer-brand {
+        .toast {
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 1rem;
+            min-width: 300px;
+            animation: slideIn 0.3s ease;
+            border-left: 4px solid;
         }
 
-        .footer-brand h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.3rem;
-            color: var(--gold);
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
-        .footer-links {
-            display: flex;
-            gap: 2rem;
+        .toast.success { border-left-color: var(--success); }
+        .toast.error { border-left-color: var(--error); }
+        .toast.warning { border-left-color: var(--warning); }
+
+        .toast-icon {
+            font-size: 1.5rem;
         }
 
-        .footer-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            transition: color 0.3s ease;
+        .toast.success .toast-icon { color: var(--success); }
+        .toast.error .toast-icon { color: var(--error); }
+        .toast.warning .toast-icon { color: var(--warning); }
+
+        .toast-content h4 {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .toast-content p {
             font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            color: #64748b;
         }
 
-        .footer-links a:hover {
-            color: var(--gold);
+        /* Analytics Cards */
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
         }
 
-        .footer-copyright {
-            color: var(--text-muted);
-            font-size: 0.85rem;
+        .progress-ring {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto;
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .welcome-section {
-                flex-direction: column;
-                text-align: center;
-                gap: 1.5rem;
-                padding: 2rem;
-            }
+        .progress-ring-circle {
+            transition: stroke-dashoffset 0.5s ease;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
 
-            .welcome-text h2 {
-                font-size: 1.5rem;
-            }
+        .metric-card {
+            text-align: center;
+            padding: 2rem;
+        }
 
-            .profile-form,
-            .consultation-form {
-                grid-template-columns: 1fr;
-            }
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--ocean-blue);
+            margin: 1rem 0;
+        }
 
-            .quick-actions {
-                flex-direction: column;
-                width: 100%;
-            }
+        .metric-label {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
 
-            .btn {
-                width: 100%;
-                justify-content: center;
-            }
+        /* Filter Bar */
+        .filter-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
 
-            .nav-user {
-                gap: 0.75rem;
-            }
+        .filter-input {
+            padding: 0.5rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-family: inherit;
+        }
 
-            .user-info {
-                display: none;
-            }
+        .filter-input:focus {
+            outline: none;
+            border-color: var(--aqua);
+        }
 
-            .section-header {
-                flex-direction: column;
-                text-align: center;
-            }
+        /* Access Denied Message */
+        .access-denied {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 2rem;
+        }
 
-            .section-title::after {
-                left: 50%;
-                transform: translateX(-50%);
-            }
+        .access-denied h1 {
+            font-size: 4rem;
+            color: var(--error);
+            margin-bottom: 1rem;
+        }
 
-            .consultation-table {
-                font-size: 0.85rem;
-            }
-
-            .consultation-table th,
-            .consultation-table td {
-                padding: 0.75rem 0.5rem;
-            }
-
-            .footer-content {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .footer-links {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .nav-logo-img {
-                height: 85px;
-            }
-
-            .profile-header {
-                flex-direction: column;
-                text-align: center;
-            }
+        .access-denied p {
+            font-size: 1.2rem;
+            color: #64748b;
+            margin-bottom: 2rem;
         }
     </style>
 </head>
 <body>
 
-    <nav class="navbar">
-        <a href="/" class="nav-brand">
-            <img src="images/logo.png" alt="Megastrike Hydro Drilling Solutions" class="nav-logo-img">
-        </a>
-        <div class="nav-user">
-            <div class="user-info" id="userInfo">
-                <div class="user-name" id="userName">Loading...</div>
-                <div class="user-role" id="userRole">client</div>
-            </div>
-            <button class="logout-btn" id="logoutBtn">Logout</button>
-        </div>
-    </nav>
-
-    <div id="loadingState" class="loading">
-        <div class="spinner"></div>
-        <div>Loading your dashboard...</div>
-    </div>
-
-    <div id="authRequired" class="hidden" style="margin-top: 80px; padding: 2rem 5%;">
-        <div class="auth-required">
-            <h3>🔒 Authentication Required</h3>
-            <p>Please sign in or create an account to access the dashboard and submit consultation requests.</p>
-            <a href="login.html" class="btn btn-primary">Sign In</a>
-            <a href="signup.html" class="btn btn-secondary">Create Account</a>
-        </div>
-    </div>
-
-    <main id="mainContent" class="main-content hidden">
-
-        <section class="welcome-section">
-            <div class="welcome-text">
-                <h2>Welcome back, <span id="welcomeName">Client</span>!</h2>
-                <p>Manage your borehole consultation requests and account settings</p>
-            </div>
-            <div class="quick-actions">
-                <button class="btn btn-primary" id="newConsultationBtn">New Consultation →</button>
-                <a href="index.html#services" class="btn btn-secondary">Our Services</a>
-            </div>
-        </section>
-
-        <div class="dashboard-grid">
-            <div class="stat-card">
-                <div class="stat-header">
-                    <span class="stat-title">Total Requests</span>
-                    <div class="stat-icon">📋</div>
+    <div class="admin-layout" id="adminLayout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">💧</div>
+                <div class="sidebar-brand">
+                    <h1>Megastrike</h1>
+                    <span>Admin Panel</span>
                 </div>
-                <div class="stat-value" id="totalRequests">0</div>
-                <div class="stat-label">Consultation requests submitted</div>
             </div>
 
-            <div class="stat-card">
-                <div class="stat-header">
-                    <span class="stat-title">Pending</span>
-                    <div class="stat-icon">⏳</div>
-                </div>
-                <div class="stat-value" id="pendingRequests">0</div>
-                <div class="stat-label">Awaiting response</div>
-            </div>
+            <nav class="nav-section">
+                <div class="nav-section-title">Main</div>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a class="nav-link active" onclick="showSection('dashboard')">
+                            <span class="nav-icon">📊</span>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="showSection('consultations')">
+                            <span class="nav-icon">📋</span>
+                            <span>Consultations</span>
+                            <span class="nav-badge" id="pendingBadge">3</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="showSection('users')">
+                            <span class="nav-icon">👥</span>
+                            <span>Users</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="showSection('analytics')">
+                            <span class="nav-icon">📈</span>
+                            <span>Analytics</span>
+                        </a>
+                    </li>
+                </ul>
 
-            <div class="stat-card">
-                <div class="stat-header">
-                    <span class="stat-title">Completed</span>
-                    <div class="stat-icon">✅</div>
-                </div>
-                <div class="stat-value" id="completedRequests">0</div>
-                <div class="stat-label">Projects completed</div>
-            </div>
-        </div>
+                <div class="nav-section-title">Management</div>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="showSection('services')">
+                            <span class="nav-icon">🔧</span>
+                            <span>Services</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="showSection('settings')">
+                            <span class="nav-icon">⚙️</span>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="logout()">
+                            <span class="nav-icon">🚪</span>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
 
-        <!-- CONSULTATION SECTION -->
-        <section class="consultation-section" id="consultationSection">
-            <div class="section-header">
-                <h3 class="section-title">Borehole Consultations</h3>
-                <button class="new-consultation-btn" id="toggleFormBtn">
-                    <span>+</span>
-                    <span>New Request</span>
-                </button>
-            </div>
-
-            <div id="consultationFormContainer" class="hidden">
-                <div class="alert success" id="consultationSuccessAlert">
-                    <span>✓</span>
-                    <span>Consultation request submitted successfully!</span>
-                </div>
-
-                <div class="alert error" id="consultationErrorAlert">
-                    <span>⚠️</span>
-                    <span>Failed to submit consultation request</span>
-                </div>
-
-                <form id="consultationForm" class="consultation-form">
-                    <div class="form-group">
-                        <label for="consultLocation">Project Location *</label>
-                        <input type="text" id="consultLocation" required placeholder="e.g., Kitale, Trans Nzoia County">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="consultLandSize">Land Size (Acres)</label>
-                        <input type="number" id="consultLandSize" step="0.1" placeholder="e.g., 2.5">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="consultServiceType">Service Type *</label>
-                        <select id="consultServiceType" required>
-                            <option value="">Select a service...</option>
-                            <option value="hydrogeological">Hydrogeological Survey</option>
-                            <option value="geological">Geological Survey</option>
-                            <option value="hydrological">Hydrological Survey</option>
-                            <option value="drilling">Borehole Drilling & Casing</option>
-                            <option value="yield">Yield Testing</option>
-                            <option value="pump">Pump Installation</option>
-                            <option value="tower">Water Tower Construction</option>
-                            <option value="inspection">Borehole Inspection</option>
-                            <option value="full">Full Package (Survey + Drilling + Installation)</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="consultBudget">Estimated Budget (KES)</label>
-                        <input type="number" id="consultBudget" placeholder="e.g., 500000">
-                    </div>
-
-                    <div class="form-group full-width">
-                        <label for="consultDescription">Project Description *</label>
-                        <textarea id="consultDescription" required placeholder="Describe your project requirements, timeline, and any specific needs..."></textarea>
-                    </div>
-
-                    <div class="form-group full-width">
-                        <button type="submit" class="submit-consultation-btn" id="submitConsultationBtn">
-                            <span>Submit Request</span>
-                            <span>→</span>
-                        </button>
-                        <button type="button" class="btn btn-secondary" id="cancelFormBtn" style="margin-left: 1rem;">
-                            Cancel
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-            <div class="consultation-list">
-                <h4>Your Consultation History</h4>
-                <div id="consultationListContainer">
-                    <div class="empty-state">
-                        <div class="empty-state-icon">📋</div>
-                        <p>No consultation requests yet. Click "New Request" to get started!</p>
+            <div class="sidebar-footer">
+                <div class="admin-profile">
+                    <div class="admin-avatar" id="adminAvatar">A</div>
+                    <div class="admin-info">
+                        <h4 id="adminName">Admin User</h4>
+                        <p>Super Administrator</p>
                     </div>
                 </div>
             </div>
-        </section>
+        </aside>
 
-        <!-- PROFILE SECTION -->
-        <section class="profile-section" id="profileSection">
-            <div class="alert success" id="successAlert">
-                <span>✓</span>
-                <span>Profile updated successfully!</span>
-            </div>
-
-            <div class="alert error" id="errorAlert">
-                <span>⚠️</span>
-                <span>Failed to update profile</span>
-            </div>
-
-            <div class="profile-header">
-                <div class="profile-avatar-container" id="avatarContainer">
-                    <div class="profile-avatar" id="userAvatar">
-                        <span id="avatarInitials">M</span>
-                        <img id="avatarImage" src="" alt="" style="display: none;">
-                    </div>
-                    <div class="profile-avatar-overlay" id="avatarOverlay">
-                        <span>Change<br>Photo</span>
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+                    <div class="search-bar">
+                        <input type="text" placeholder="Search..." id="globalSearch">
                     </div>
                 </div>
-                <div class="profile-info">
-                    <h3 id="profileName">Megastrike Client</h3>
-                    <p id="profileEmail">client@example.com</p>
-                </div>
-            </div>
-
-            <span class="section-tag">Edit Profile</span>
-
-            <form id="profileForm" class="profile-form">
-                <div class="form-group">
-                    <label>First Name</label>
-                    <input type="text" id="editFirstName" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Last Name</label>
-                    <input type="text" id="editLastName" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Email Address</label>
-                    <input type="email" id="editEmail" disabled title="Email cannot be changed">
-                </div>
-
-                <div class="form-group">
-                    <label>Phone Number</label>
-                    <input type="tel" id="editPhone" placeholder="+254 7XX XXX XXX">
-                </div>
-
-                <div class="form-group full-width">
-                    <button type="submit" class="save-btn" id="saveBtn">
-                        <span>Save Changes</span>
-                        <span>→</span>
+                <div class="header-right">
+                    <button class="header-btn" onclick="showNotifications()">
+                        🔔
+                        <span class="notification-dot"></span>
                     </button>
+                    <button class="header-btn" onclick="toggleTheme()">🌙</button>
                 </div>
-            </form>
+            </header>
 
-            <!-- Profile Picture Upload Section -->
-            <div class="profile-picture-upload">
-                <h4>Update Profile Picture</h4>
-                <div class="file-input-wrapper">
-                    <input type="file" id="profilePictureInput" accept="image/*">
-                    <label for="profilePictureInput" class="file-input-label">
-                        <span>📷</span>
-                        <span>Choose Photo</span>
-                    </label>
-                    <span class="file-name" id="fileName">No file selected</span>
-                </div>
-                <div class="upload-preview hidden" id="uploadPreview">
-                    <img id="previewImage" src="" alt="Preview">
-                </div>
-                <button type="button" class="btn btn-primary" id="uploadPicBtn" style="margin-top: 1rem;" disabled>
-                    Upload Photo
-                </button>
-            </div>
-        </section>
+            <!-- Content -->
+            <div class="content">
+                <!-- Dashboard Section -->
+                <section id="dashboard" class="section active">
+                    <div class="page-header">
+                        <div class="page-title">
+                            <h2>Dashboard Overview</h2>
+                            <p>Welcome back! Here's what's happening with your business.</p>
+                        </div>
+                        <div class="page-actions">
+                            <button class="btn btn-secondary" onclick="refreshData()">🔄 Refresh</button>
+                            <button class="btn btn-primary" onclick="exportReport()">📥 Export Report</button>
+                        </div>
+                    </div>
 
-    </main>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div class="stat-icon blue">📋</div>
+                                <span class="stat-trend trend-up">↑ 12%</span>
+                            </div>
+                            <div class="stat-value" id="totalConsultations">24</div>
+                            <div class="stat-label">Total Consultations</div>
+                        </div>
 
-    <!-- FOOTER -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-brand">
-                <img src="images/logo.png" alt="Megastrike" class="footer-logo-img">
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div class="stat-icon orange">⏳</div>
+                                <span class="stat-trend trend-up">↑ 5%</span>
+                            </div>
+                            <div class="stat-value" id="pendingConsultations">8</div>
+                            <div class="stat-label">Pending Requests</div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div class="stat-icon green">✅</div>
+                                <span class="stat-trend trend-up">↑ 18%</span>
+                            </div>
+                            <div class="stat-value" id="completedProjects">16</div>
+                            <div class="stat-label">Completed Projects</div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <div class="stat-icon purple">👥</div>
+                                <span class="stat-trend trend-down">↓ 2%</span>
+                            </div>
+                            <div class="stat-value" id="totalUsers">45</div>
+                            <div class="stat-label">Registered Users</div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Consultation Trends</h3>
+                                <select class="filter-input" id="chartPeriod" onchange="updateChart()">
+                                    <option value="7">Last 7 Days</option>
+                                    <option value="30">Last 30 Days</option>
+                                    <option value="90">Last 3 Months</option>
+                                </select>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-container">
+                                    <div class="chart-placeholder" id="consultationChart">
+                                        <!-- Chart bars generated by JS -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Recent Activity</h3>
+                                <button class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem;">View All</button>
+                            </div>
+                            <div class="card-body">
+                                <ul class="activity-list" id="activityList">
+                                    <!-- Activity items generated by JS -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Recent Consultations</h3>
+                            <button class="btn btn-primary" onclick="openModal('newConsultation')">+ New Consultation</button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-container">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Client</th>
+                                            <th>Service</th>
+                                            <th>Date</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="recentConsultationsTable">
+                                        <!-- Table rows generated by JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Consultations Section -->
+                <section id="consultations" class="section">
+                    <div class="page-header">
+                        <div class="page-title">
+                            <h2>Consultation Requests</h2>
+                            <p>Manage and track all client consultation requests.</p>
+                        </div>
+                        <div class="page-actions">
+                            <button class="btn btn-primary" onclick="openModal('newConsultation')">+ Add Consultation</button>
+                        </div>
+                    </div>
+
+                    <div class="tabs">
+                        <button class="tab active" onclick="filterConsultations('all')">All</button>
+                        <button class="tab" onclick="filterConsultations('pending')">Pending</button>
+                        <button class="tab" onclick="filterConsultations('in-progress')">In Progress</button>
+                        <button class="tab" onclick="filterConsultations('completed')">Completed</button>
+                    </div>
+
+                    <div class="filter-bar">
+                        <input type="text" class="filter-input" placeholder="Search clients..." id="consultationSearch">
+                        <select class="filter-input" id="serviceFilter">
+                            <option value="">All Services</option>
+                            <option value="survey">Hydrogeological Survey</option>
+                            <option value="drilling">Borehole Drilling</option>
+                            <option value="pump">Pump Installation</option>
+                            <option value="tower">Water Tower</option>
+                        </select>
+                        <input type="date" class="filter-input" id="dateFilter">
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-container">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Client Information</th>
+                                            <th>Service Required</th>
+                                            <th>Location</th>
+                                            <th>Submitted</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="allConsultationsTable">
+                                        <!-- Full consultation list -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Users Section -->
+                <section id="users" class="section">
+                    <div class="page-header">
+                        <div class="page-title">
+                            <h2>User Management</h2>
+                            <p>Manage registered users and their permissions.</p>
+                        </div>
+                        <div class="page-actions">
+                            <button class="btn btn-primary" onclick="openModal('newUser')">+ Add User</button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">All Users</h3>
+                            <input type="text" class="filter-input" placeholder="Search users..." id="userSearch">
+                        </div>
+                        <div class="card-body">
+                            <div class="table-container">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>User</th>
+                                            <th>Email</th>
+                                            <th>Phone</th>
+                                            <th>Role</th>
+                                            <th>Joined</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="usersTable">
+                                        <!-- User rows generated by JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Analytics Section -->
+                <section id="analytics" class="section">
+                    <div class="page-header">
+                        <div class="page-title">
+                            <h2>Analytics & Reports</h2>
+                            <p>Detailed insights into your business performance.</p>
+                        </div>
+                        <div class="page-actions">
+                            <button class="btn btn-secondary">📅 This Month</button>
+                            <button class="btn btn-primary">📥 Download Report</button>
+                        </div>
+                    </div>
+
+                    <div class="analytics-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Service Distribution</h3>
+                            </div>
+                            <div class="card-body metric-card">
+                                <div class="metric-value">42%</div>
+                                <div class="metric-label">Borehole Drilling</div>
+                                <p style="color: #64748b; font-size: 0.9rem; margin-top: 0.5rem;">Most requested service</p>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Conversion Rate</h3>
+                            </div>
+                            <div class="card-body metric-card">
+                                <div class="metric-value">78%</div>
+                                <div class="metric-label">Consultation to Project</div>
+                                <p style="color: #64748b; font-size: 0.9rem; margin-top: 0.5rem;">+5% from last month</p>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Avg. Response Time</h3>
+                            </div>
+                            <div class="card-body metric-card">
+                                <div class="metric-value">4.2h</div>
+                                <div class="metric-label">First Response</div>
+                                <p style="color: #64748b; font-size: 0.9rem; margin-top: 0.5rem;">Industry avg: 8h</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Monthly Performance</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container" style="height: 400px;">
+                                <div class="chart-placeholder" id="performanceChart">
+                                    <!-- Performance chart -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Services Section -->
+                <section id="services" class="section">
+                    <div class="page-header">
+                        <div class="page-title">
+                            <h2>Service Management</h2>
+                            <p>Manage your service offerings and pricing.</p>
+                        </div>
+                        <div class="page-actions">
+                            <button class="btn btn-primary" onclick="openModal('newService')">+ Add Service</button>
+                        </div>
+                    </div>
+
+                    <div class="stats-grid" id="servicesGrid">
+                        <!-- Service cards generated by JS -->
+                    </div>
+                </section>
+
+                <!-- Settings Section -->
+                <section id="settings" class="section">
+                    <div class="page-header">
+                        <div class="page-title">
+                            <h2>System Settings</h2>
+                            <p>Configure your admin panel preferences.</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">General Settings</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="settingsForm">
+                                <div class="form-group">
+                                    <label>Company Name</label>
+                                    <input type="text" value="Megastrike Hydro Drilling Solutions">
+                                </div>
+                                <div class="form-group">
+                                    <label>Contact Email</label>
+                                    <input type="email" value="admin@megastrike.co.ke">
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone Number</label>
+                                    <input type="tel" value="+254 729 317 914">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                            </form>
+                        </div>
+                    </div>
+                </section>
             </div>
-            <div class="footer-links">
-                <a href="index.html">Home</a>
-                <a href="index.html#services">Services</a>
-                <a href="index.html#about">About</a>
-                <a href="index.html#contacts">Contact</a>
-                <a href="dashboard.html">Dashboard</a>
+        </main>
+    </div>
+
+    <!-- Access Denied View -->
+    <div class="access-denied" id="accessDenied" style="display: none;">
+        <h1>🚫</h1>
+        <h2>Access Denied</h2>
+        <p>You do not have permission to access the admin panel. Please contact an administrator if you believe this is an error.</p>
+        <a href="/" class="btn btn-primary">Return to Homepage</a>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">New Entry</h3>
+                <button class="modal-close" onclick="closeModal()">×</button>
             </div>
-            <p class="footer-copyright">&copy; 2024 Megastrike. All rights reserved.</p>
+            <div class="modal-body" id="modalBody">
+                <!-- Dynamic content -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveModal()">Save</button>
+            </div>
         </div>
-    </footer>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
 
     <script>
-        // ==========================
-        // CONFIG - Backend URL
-        // ==========================
-        const BACKEND_URL = 'https://megastrike-hydro.onrender.com';
+        // State Management
         let currentUser = null;
-        let selectedProfilePicture = null;
+        let consultations = [];
+        let users = [];
+        let services = [];
 
-        // ==========================
-        // Auth & Initial Load
-        // ==========================
+        // Initialize
         document.addEventListener('DOMContentLoaded', async () => {
-            // Attach all event listeners
-            attachEventListeners();
-            
-            const token = localStorage.getItem('token');
-
-            if (!token) {
-                showAuthRequired();
-                return;
-            }
-
-            try {
-                const user = await fetchUser(token);
-                currentUser = user;
-                displayUserData(user);
-                await loadDashboardData(token);
-                await loadConsultations(token);
-            } catch (err) {
-                console.error('Auth error:', err);
-                localStorage.removeItem('token');
-                showAuthRequired();
-            }
+            await checkAuth();
         });
 
-        function attachEventListeners() {
-            // Logout button
-            document.getElementById('logoutBtn')?.addEventListener('click', logout);
-            
-            // New consultation button (welcome section)
-            document.getElementById('newConsultationBtn')?.addEventListener('click', scrollToConsultation);
-            
-            // Toggle form button
-            document.getElementById('toggleFormBtn')?.addEventListener('click', toggleConsultationForm);
-            
-            // Cancel form button
-            document.getElementById('cancelFormBtn')?.addEventListener('click', toggleConsultationForm);
-            
-            // Avatar overlay click
-            document.getElementById('avatarOverlay')?.addEventListener('click', () => {
-                document.getElementById('profilePictureInput')?.click();
-            });
-            
-            // File input change
-            document.getElementById('profilePictureInput')?.addEventListener('change', function() {
-                handleProfilePictureSelect(this);
-            });
-            
-            // Upload picture button
-            document.getElementById('uploadPicBtn')?.addEventListener('click', uploadProfilePicture);
-            
-            // Profile form submit
-            document.getElementById('profileForm')?.addEventListener('submit', handleProfileSubmit);
-            
-            // Consultation form submit
-            document.getElementById('consultationForm')?.addEventListener('submit', handleConsultationSubmit);
-        }
-
-        function showAuthRequired() {
-            document.getElementById('loadingState').classList.add('hidden');
-            document.getElementById('authRequired').classList.remove('hidden');
-            document.getElementById('mainContent').classList.add('hidden');
-        }
-
-        // ==========================
-        // Fetch user from server
-        // ==========================
-        async function fetchUser(token) {
-            const res = await fetch(`${BACKEND_URL}/api/auth/me`, {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-
-            const data = await res.json();
-
-            if (!data.success) throw new Error('Failed to load user');
-            return data.user;
-        }
-
-        // ==========================
-        // Display user data
-        // ==========================
-        function displayUserData(user) {
-            const fullName = `${user.first_name} ${user.last_name}`;
-            document.getElementById('userName').textContent = fullName;
-            document.getElementById('welcomeName').textContent = user.first_name;
-            document.getElementById('profileName').textContent = fullName;
-            document.getElementById('profileEmail').textContent = user.email;
-            document.getElementById('userRole').textContent = user.role === 'admin' ? 'Administrator' : 'Client';
-
-            const initials = `${user.first_name[0]}${user.last_name[0]}`.toUpperCase();
-            document.getElementById('avatarInitials').textContent = initials;
-
-            // Load profile picture if exists
-            if (user.profile_picture) {
-                document.getElementById('avatarImage').src = user.profile_picture;
-                document.getElementById('avatarImage').style.display = 'block';
-                document.getElementById('avatarInitials').style.display = 'none';
-            }
-
-            document.getElementById('editFirstName').value = user.first_name;
-            document.getElementById('editLastName').value = user.last_name;
-            document.getElementById('editEmail').value = user.email;
-            document.getElementById('editPhone').value = user.phone || '';
-
-            document.getElementById('loadingState').classList.add('hidden');
-            document.getElementById('mainContent').classList.remove('hidden');
-        }
-
-        // ==========================
-        // Profile Picture Upload
-        // ==========================
-        function handleProfilePictureSelect(input) {
-            const file = input.files[0];
-            if (!file) return;
-
-            // Validate file type
-            if (!file.type.startsWith('image/')) {
-                alert('Please select an image file');
-                return;
-            }
-
-            // Validate file size (max 5MB)
-            if (file.size > 5 * 1024 * 1024) {
-                alert('File size must be less than 5MB');
-                return;
-            }
-
-            selectedProfilePicture = file;
-            document.getElementById('fileName').textContent = file.name;
-
-            // Show preview
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('previewImage').src = e.target.result;
-                document.getElementById('uploadPreview').classList.remove('hidden');
-                document.getElementById('uploadPicBtn').disabled = false;
-            };
-            reader.readAsDataURL(file);
-        }
-
-        async function uploadProfilePicture() {
-            if (!selectedProfilePicture) return;
-
+        // Authentication Check - FIXED: Proper role checking
+        async function checkAuth() {
             const token = localStorage.getItem('token');
-            const btn = document.getElementById('uploadPicBtn');
-            const originalText = btn.innerHTML;
-
-            btn.disabled = true;
-            btn.innerHTML = '<span>Uploading...</span>';
-
-            const formData = new FormData();
-            formData.append('profilePicture', selectedProfilePicture);
-
-            try {
-                const res = await fetch(`${BACKEND_URL}/api/auth/profile-picture`, {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${token}` },
-                    body: formData
-                });
-
-                const data = await res.json();
-
-                if (data.success) {
-                    // Update avatar display
-                    document.getElementById('avatarImage').src = data.profilePictureUrl;
-                    document.getElementById('avatarImage').style.display = 'block';
-                    document.getElementById('avatarInitials').style.display = 'none';
-                    
-                    // Reset form
-                    document.getElementById('profilePictureInput').value = '';
-                    document.getElementById('fileName').textContent = 'No file selected';
-                    document.getElementById('uploadPreview').classList.add('hidden');
-                    selectedProfilePicture = null;
-                    btn.disabled = true;
-
-                    btn.innerHTML = '<span>Uploaded!</span>';
-                    setTimeout(() => {
-                        btn.innerHTML = originalText;
-                    }, 2000);
-                } else {
-                    throw new Error(data.error || 'Upload failed');
-                }
-            } catch (err) {
-                console.error('Upload error:', err);
-                alert('Failed to upload profile picture: ' + err.message);
-                btn.disabled = false;
-                btn.innerHTML = originalText;
+            const userStr = localStorage.getItem('user');
+            
+            if (!token) {
+                window.location.href = '/login.html';
+                return;
             }
-        }
 
-        // ==========================
-        // Dashboard Stats Loader
-        // ==========================
-        async function loadDashboardData(token) {
             try {
-                const res = await fetch(`${BACKEND_URL}/api/user/dashboard`, {
+                // Parse user data from localStorage
+                if (userStr) {
+                    currentUser = JSON.parse(userStr);
+                }
+
+                // Verify with server
+                const response = await fetch('/api/auth/me', {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
-                const data = await res.json();
-                if (data.success) {
-                    const consultations = data.consultations || [];
-                    document.getElementById('totalRequests').textContent = consultations.length;
-
-                    const pending = consultations.filter(c => c.status === 'pending').length;
-                    const completed = consultations.filter(c => c.status === 'completed').length;
-
-                    document.getElementById('pendingRequests').textContent = pending;
-                    document.getElementById('completedRequests').textContent = completed;
-                }
-            } catch (err) {
-                console.error('Dashboard load error:', err);
-            }
-        }
-
-        // ==========================
-        // Consultation Functions
-        // ==========================
-        function scrollToConsultation() {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                alert('Please sign in to submit a consultation request');
-                window.location.href = 'login.html';
-                return;
-            }
-            
-            const section = document.getElementById('consultationSection');
-            const formContainer = document.getElementById('consultationFormContainer');
-            
-            if (section) {
-                // Scroll to section
-                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 
-                // Show form after scroll
-                setTimeout(() => {
-                    if (formContainer && formContainer.classList.contains('hidden')) {
-                        formContainer.classList.remove('hidden');
-                        const locationInput = document.getElementById('consultLocation');
-                        if (locationInput) locationInput.focus();
-                    }
-                }, 500);
-            }
-        }
-
-        function toggleConsultationForm() {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                alert('Please sign in to submit a consultation request');
-                window.location.href = 'login.html';
-                return;
-            }
-
-            const formContainer = document.getElementById('consultationFormContainer');
-            if (!formContainer) {
-                console.error('Form container not found');
-                return;
-            }
-            
-            // Toggle hidden class
-            if (formContainer.classList.contains('hidden')) {
-                formContainer.classList.remove('hidden');
-                const locationInput = document.getElementById('consultLocation');
-                if (locationInput) locationInput.focus();
-            } else {
-                formContainer.classList.add('hidden');
-            }
-        }
-
-        async function loadConsultations(token) {
-            try {
-                const res = await fetch(`${BACKEND_URL}/api/consultations`, {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                const data = await res.json();
-
-                if (data.success && data.consultations && data.consultations.length > 0) {
-                    renderConsultationList(data.consultations);
-                }
-            } catch (err) {
-                console.error('Load consultations error:', err);
-            }
-        }
-
-        function renderConsultationList(consultations) {
-            const container = document.getElementById('consultationListContainer');
-            
-            if (!consultations || consultations.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">📋</div>
-                        <p>No consultation requests yet. Click "New Request" to get started!</p>
-                    </div>
-                `;
-                return;
-            }
-
-            const tableHTML = `
-                <table class="consultation-table">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Location</th>
-                            <th>Service</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${consultations.map(c => `
-                            <tr>
-                                <td>${new Date(c.created_at).toLocaleDateString()}</td>
-                                <td>${c.location}</td>
-                                <td>${formatServiceType(c.service_type)}</td>
-                                <td><span class="status-badge status-${c.status}">${c.status}</span></td>
-                                <td>
-                                    <button class="view-consultation-btn" data-id="${c.id}" 
-                                        style="padding: 6px 12px; background: var(--gold); border: none; color: var(--deep-navy); cursor: pointer; font-weight: 600; font-size: 0.8rem; text-transform: uppercase;">
-                                        View
-                                    </button>
-                                </td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            `;
-
-            container.innerHTML = tableHTML;
-            
-            // Attach event listeners to view buttons
-            container.querySelectorAll('.view-consultation-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    viewConsultation(this.dataset.id);
-                });
-            });
-        }
-
-        function formatServiceType(type) {
-            const types = {
-                'hydrogeological': 'Hydrogeological Survey',
-                'geological': 'Geological Survey',
-                'hydrological': 'Hydrological Survey',
-                'drilling': 'Borehole Drilling',
-                'yield': 'Yield Testing',
-                'pump': 'Pump Installation',
-                'tower': 'Water Tower',
-                'inspection': 'Inspection',
-                'full': 'Full Package'
-            };
-            return types[type] || type;
-        }
-
-        function viewConsultation(id) {
-            const token = localStorage.getItem('token');
-            
-            fetch(`${BACKEND_URL}/api/consultations/${id}`, {
-                headers: { 'Authorization': `Bearer ${token}` }
-            })
-            .then(res => res.json())
-            .then(data => {
+                if (!response.ok) throw new Error('Auth failed');
+                
+                const data = await response.json();
                 if (data.success) {
-                    const c = data.consultation;
-                    alert(`
-📋 CONSULTATION DETAILS
-
-📍 Location: ${c.location}
-📏 Land Size: ${c.land_size ? c.land_size + ' acres' : 'N/A'}
-🔧 Service: ${formatServiceType(c.service_type)}
-💰 Budget: ${c.budget ? 'KES ' + parseInt(c.budget).toLocaleString() : 'Not specified'}
-📝 Description: ${c.description}
-📊 Status: ${c.status.toUpperCase()}
-📅 Submitted: ${new Date(c.created_at).toLocaleString()}
-                    `);
+                    currentUser = data.user;
+                    // Update localStorage with fresh data
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    
+                    // Check if user is admin
+                    if (data.user.role !== 'admin') {
+                        showAccessDenied();
+                        return;
+                    }
+                    
+                    updateAdminProfile();
+                    initializeData();
+                    renderDashboard();
+                    setupEventListeners();
+                } else {
+                    throw new Error('Not authorized');
                 }
-            })
-            .catch(err => {
-                console.error('Error fetching consultation:', err);
-                alert('Error loading consultation details');
+            } catch (error) {
+                console.error('Auth error:', error);
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                window.location.href = '/login.html';
+            }
+        }
+
+        function showAccessDenied() {
+            document.getElementById('adminLayout').style.display = 'none';
+            document.getElementById('accessDenied').style.display = 'flex';
+        }
+
+        function updateAdminProfile() {
+            if (currentUser) {
+                document.getElementById('adminName').textContent = `${currentUser.first_name} ${currentUser.last_name}`;
+                document.getElementById('adminAvatar').textContent = 
+                    `${currentUser.first_name[0]}${currentUser.last_name[0]}`.toUpperCase();
+            }
+        }
+
+        // Data Initialization
+        function initializeData() {
+            // Mock data - replace with API calls
+            consultations = [
+                { id: 1, name: 'John Kamau', email: 'john@example.com', phone: '+254712345678', service: 'Borehole Drilling', location: 'Kitale', status: 'pending', date: '2024-03-19', details: 'Need borehole for domestic use' },
+                { id: 2, name: 'Sarah Wanjiku', email: 'sarah@example.com', phone: '+254723456789', service: 'Hydrogeological Survey', location: 'Eldoret', status: 'in-progress', date: '2024-03-18', details: 'Commercial property survey' },
+                { id: 3, name: 'Peter Ochieng', email: 'peter@example.com', phone: '+254734567890', service: 'Pump Installation', location: 'Bungoma', status: 'completed', date: '2024-03-15', details: 'Solar pump installation' },
+                { id: 4, name: 'Mary Njeri', email: 'mary@example.com', phone: '+254745678901', service: 'Water Tower', location: 'Kakamega', status: 'pending', date: '2024-03-19', details: '50,000 liter tank' },
+                { id: 5, name: 'James Mwangi', email: 'james@example.com', phone: '+254756789012', service: 'Borehole Drilling', location: 'Kitale', status: 'completed', date: '2024-03-10', details: 'Agricultural use' }
+            ];
+
+            users = [
+                { id: 1, first_name: 'John', last_name: 'Kamau', email: 'john@example.com', phone: '+254712345678', role: 'client', status: 'active', created_at: '2024-03-01' },
+                { id: 2, first_name: 'Sarah', last_name: 'Wanjiku', email: 'sarah@example.com', phone: '+254723456789', role: 'client', status: 'active', created_at: '2024-03-05' },
+                { id: 3, first_name: 'Admin', last_name: 'User', email: 'admin@megastrike.co.ke', phone: '+254729317914', role: 'admin', status: 'active', created_at: '2024-01-01' }
+            ];
+
+            services = [
+                { id: 1, name: 'Hydrogeological Survey', icon: '🔍', count: 12, price: 'KES 15,000' },
+                { id: 2, name: 'Borehole Drilling', icon: '🚧', count: 24, price: 'KES 8,500/m' },
+                { id: 3, name: 'Pump Installation', icon: '⚙️', count: 8, price: 'From KES 45,000' },
+                { id: 4, name: 'Water Tower', icon: '🏗️', count: 5, price: 'Custom Quote' }
+            ];
+        }
+
+        // Navigation
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
             });
-        }
-
-        // Consultation Form Submit Handler
-        async function handleConsultationSubmit(e) {
-            e.preventDefault();
-
-            // Double-check authentication
-            const token = localStorage.getItem('token');
-            if (!token) {
-                alert('Please sign in to submit a consultation request');
-                window.location.href = 'login.html';
-                return;
-            }
-
-            const submitBtn = document.getElementById('submitConsultationBtn');
-            const originalContent = submitBtn.innerHTML;
-
-            document.getElementById('consultationSuccessAlert').classList.remove('show');
-            document.getElementById('consultationErrorAlert').classList.remove('show');
-
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<span>Submitting...</span> <span>⏳</span>';
-
-            const consultationData = {
-                location: document.getElementById('consultLocation').value,
-                land_size: document.getElementById('consultLandSize').value,
-                service_type: document.getElementById('consultServiceType').value,
-                budget: document.getElementById('consultBudget').value,
-                description: document.getElementById('consultDescription').value
-            };
-
-            try {
-                const res = await fetch(`${BACKEND_URL}/api/consultations`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify(consultationData)
-                });
-
-                const data = await res.json();
-
-                if (!data.success) throw new Error(data.error || 'Submission failed');
-
-                submitBtn.innerHTML = '<span>Submitted!</span> <span>✓</span>';
-                submitBtn.style.background = 'var(--success)';
-                submitBtn.style.borderColor = 'var(--success)';
-                submitBtn.style.color = 'white';
-                document.getElementById('consultationSuccessAlert').classList.add('show');
-
-                document.getElementById('consultationForm').reset();
-
-                setTimeout(() => {
-                    toggleConsultationForm();
-                    submitBtn.innerHTML = originalContent;
-                    submitBtn.style.background = '';
-                    submitBtn.style.borderColor = '';
-                    submitBtn.style.color = '';
-                    submitBtn.disabled = false;
-                    document.getElementById('consultationSuccessAlert').classList.remove('show');
-                    loadDashboardData(token);
-                    loadConsultations(token);
-                }, 2000);
-
-            } catch (err) {
-                console.error('Consultation submit error:', err);
-                document.getElementById('consultationErrorAlert').querySelector('span:last-child').textContent = err.message;
-                document.getElementById('consultationErrorAlert').classList.add('show');
-                submitBtn.innerHTML = originalContent;
-                submitBtn.disabled = false;
+            
+            // Show target section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Update nav active state
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            event.target.closest('.nav-link').classList.add('active');
+            
+            // Load section data
+            if (sectionId === 'consultations') renderConsultations();
+            if (sectionId === 'users') renderUsers();
+            if (sectionId === 'services') renderServices();
+            if (sectionId === 'analytics') renderAnalytics();
+            
+            // Close sidebar on mobile
+            if (window.innerWidth <= 1024) {
+                document.getElementById('sidebar').classList.remove('active');
             }
         }
 
-        // ==========================
-        // Profile Update Handler
-        // ==========================
-        async function handleProfileSubmit(e) {
-            e.preventDefault();
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
 
-            const token = localStorage.getItem('token');
-            const saveBtn = document.getElementById('saveBtn');
-            const originalContent = saveBtn.innerHTML;
+        // Dashboard Rendering
+        function renderDashboard() {
+            updateStats();
+            renderChart();
+            renderActivity();
+            renderRecentConsultations();
+        }
 
-            document.getElementById('successAlert').classList.remove('show');
-            document.getElementById('errorAlert').classList.remove('show');
+        function updateStats() {
+            document.getElementById('totalConsultations').textContent = consultations.length;
+            document.getElementById('pendingConsultations').textContent = 
+                consultations.filter(c => c.status === 'pending').length;
+            document.getElementById('completedProjects').textContent = 
+                consultations.filter(c => c.status === 'completed').length;
+            document.getElementById('totalUsers').textContent = users.length;
+        }
 
-            saveBtn.disabled = true;
-            saveBtn.innerHTML = '<span>Saving...</span> <span>⏳</span>';
+        function renderChart() {
+            const chartContainer = document.getElementById('consultationChart');
+            const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+            const data = [3, 5, 2, 8, 4, 6, 7];
+            
+            chartContainer.innerHTML = days.map((day, index) => `
+                <div class="chart-bar" style="height: ${data[index] * 10}%" title="${data[index]} consultations">
+                    <span class="chart-bar-label">${day}</span>
+                </div>
+            `).join('');
+        }
 
-            try {
-                const res = await fetch(`${BACKEND_URL}/api/auth/profile`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({
-                        firstName: document.getElementById('editFirstName').value,
-                        lastName: document.getElementById('editLastName').value,
-                        phone: document.getElementById('editPhone').value
-                    })
-                });
+        function renderActivity() {
+            const activities = [
+                { type: 'new', text: 'New consultation request from John Kamau', time: '5 minutes ago' },
+                { type: 'completed', text: 'Project completed for Peter Ochieng', time: '2 hours ago' },
+                { type: 'pending', text: 'Survey scheduled for Sarah Wanjiku', time: '4 hours ago' },
+                { type: 'new', text: 'New user registration: Mary Njeri', time: '1 day ago' }
+            ];
 
-                const data = await res.json();
+            document.getElementById('activityList').innerHTML = activities.map(activity => `
+                <li class="activity-item">
+                    <div class="activity-icon ${activity.type}">
+                        ${activity.type === 'new' ? '✨' : activity.type === 'completed' ? '✓' : '⏳'}
+                    </div>
+                    <div class="activity-content">
+                        <h4>${activity.text}</h4>
+                        <span class="activity-time">${activity.time}</span>
+                    </div>
+                </li>
+            `).join('');
+        }
 
-                if (!data.success) throw new Error(data.error || 'Update failed');
+        function renderRecentConsultations() {
+            const tbody = document.getElementById('recentConsultationsTable');
+            const recent = consultations.slice(0, 5);
+            
+            tbody.innerHTML = recent.map(c => `
+                <tr>
+                    <td>
+                        <div class="user-cell">
+                            <div class="user-avatar">${c.name.split(' ').map(n => n[0]).join('')}</div>
+                            <div class="user-info">
+                                <h4>${c.name}</h4>
+                                <p>${c.email}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${c.service}</td>
+                    <td>${new Date(c.date).toLocaleDateString()}</td>
+                    <td><span class="status-badge status-${c.status}">${c.status}</span></td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="action-btn view" onclick="viewConsultation(${c.id})">👁</button>
+                            <button class="action-btn edit" onclick="editConsultation(${c.id})">✎</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
 
-                const updatedUser = await fetchUser(token);
-                displayUserData(updatedUser);
-                await loadDashboardData(token);
+        // Consultations Management
+        function renderConsultations() {
+            const tbody = document.getElementById('allConsultationsTable');
+            tbody.innerHTML = consultations.map(c => `
+                <tr>
+                    <td>#${c.id.toString().padStart(3, '0')}</td>
+                    <td>
+                        <div class="user-cell">
+                            <div class="user-avatar">${c.name.split(' ').map(n => n[0]).join('')}</div>
+                            <div class="user-info">
+                                <h4>${c.name}</h4>
+                                <p>${c.phone}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${c.service}</td>
+                    <td>${c.location}</td>
+                    <td>${new Date(c.date).toLocaleDateString()}</td>
+                    <td><span class="status-badge status-${c.status}">${c.status}</span></td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="action-btn view" onclick="viewConsultation(${c.id})">👁</button>
+                            <button class="action-btn edit" onclick="editConsultation(${c.id})">✎</button>
+                            <button class="action-btn delete" onclick="deleteConsultation(${c.id})">🗑</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
 
-                saveBtn.innerHTML = '<span>Saved!</span> <span>✓</span>';
-                saveBtn.style.background = 'var(--success)';
-                saveBtn.style.borderColor = 'var(--success)';
-                saveBtn.style.color = 'white';
-                document.getElementById('successAlert').classList.add('show');
+        function filterConsultations(status) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const filtered = status === 'all' ? consultations : consultations.filter(c => c.status === status);
+            const tbody = document.getElementById('allConsultationsTable');
+            tbody.innerHTML = filtered.map(c => `
+                <tr>
+                    <td>#${c.id.toString().padStart(3, '0')}</td>
+                    <td>
+                        <div class="user-cell">
+                            <div class="user-avatar">${c.name.split(' ').map(n => n[0]).join('')}</div>
+                            <div class="user-info">
+                                <h4>${c.name}</h4>
+                                <p>${c.phone}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${c.service}</td>
+                    <td>${c.location}</td>
+                    <td>${new Date(c.date).toLocaleDateString()}</td>
+                    <td><span class="status-badge status-${c.status}">${c.status}</span></td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="action-btn view" onclick="viewConsultation(${c.id})">👁</button>
+                            <button class="action-btn edit" onclick="editConsultation(${c.id})">✎</button>
+                            <button class="action-btn delete" onclick="deleteConsultation(${c.id})">🗑</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
 
-                setTimeout(() => {
-                    saveBtn.innerHTML = originalContent;
-                    saveBtn.style.background = '';
-                    saveBtn.style.borderColor = '';
-                    saveBtn.style.color = '';
-                    saveBtn.disabled = false;
-                    document.getElementById('successAlert').classList.remove('show');
-                }, 3000);
+        // Users Management
+        function renderUsers() {
+            const tbody = document.getElementById('usersTable');
+            tbody.innerHTML = users.map(u => `
+                <tr>
+                    <td>
+                        <div class="user-cell">
+                            <div class="user-avatar">${u.first_name[0]}${u.last_name[0]}</div>
+                            <div class="user-info">
+                                <h4>${u.first_name} ${u.last_name}</h4>
+                                <p>${u.role}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${u.email}</td>
+                    <td>${u.phone}</td>
+                    <td><span class="status-badge status-${u.role}">${u.role}</span></td>
+                    <td>${new Date(u.created_at).toLocaleDateString()}</td>
+                    <td><span class="status-badge status-completed">${u.status}</span></td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="action-btn edit" onclick="editUser(${u.id})">✎</button>
+                            <button class="action-btn delete" onclick="deleteUser(${u.id})">🗑</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
 
-            } catch (err) {
-                console.error('Profile update error:', err);
-                document.getElementById('errorAlert').querySelector('span:last-child').textContent = err.message;
-                document.getElementById('errorAlert').classList.add('show');
-                saveBtn.innerHTML = originalContent;
-                saveBtn.disabled = false;
+        // Services Management
+        function renderServices() {
+            const grid = document.getElementById('servicesGrid');
+            grid.innerHTML = services.map(s => `
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon blue">${s.icon}</div>
+                        <button class="action-btn edit" onclick="editService(${s.id})">✎</button>
+                    </div>
+                    <div class="stat-value">${s.count}</div>
+                    <div class="stat-label">${s.name}</div>
+                    <p style="margin-top: 0.5rem; color: var(--aqua); font-weight: 600;">${s.price}</p>
+                </div>
+            `).join('');
+        }
+
+        // Analytics
+        function renderAnalytics() {
+            const chartContainer = document.getElementById('performanceChart');
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+            const data = [12, 19, 15, 25, 22, 30];
+            
+            chartContainer.innerHTML = months.map((month, index) => `
+                <div class="chart-bar" style="height: ${data[index] * 3}px; background: linear-gradient(to top, var(--ocean-blue), var(--azure));" title="${data[index]} projects">
+                    <span class="chart-bar-label">${month}</span>
+                </div>
+            `).join('');
+        }
+
+        // Modal Management
+        function openModal(type) {
+            const modal = document.getElementById('modal');
+            const title = document.getElementById('modalTitle');
+            const body = document.getElementById('modalBody');
+            
+            modal.classList.add('active');
+            
+            switch(type) {
+                case 'newConsultation':
+                    title.textContent = 'New Consultation';
+                    body.innerHTML = `
+                        <div class="form-group">
+                            <label>Client Name</label>
+                            <input type="text" id="clientName" placeholder="Full name">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="clientEmail" placeholder="email@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Phone</label>
+                            <input type="tel" id="clientPhone" placeholder="+254...">
+                        </div>
+                        <div class="form-group">
+                            <label>Service</label>
+                            <select id="serviceType">
+                                <option value="Borehole Drilling">Borehole Drilling</option>
+                                <option value="Hydrogeological Survey">Hydrogeological Survey</option>
+                                <option value="Pump Installation">Pump Installation</option>
+                                <option value="Water Tower">Water Tower</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Location</label>
+                            <input type="text" id="location" placeholder="Town/Area">
+                        </div>
+                    `;
+                    break;
+                case 'newUser':
+                    title.textContent = 'Add New User';
+                    body.innerHTML = `
+                        <div class="form-group">
+                            <label>First Name</label>
+                            <input type="text" id="firstName">
+                        </div>
+                        <div class="form-group">
+                            <label>Last Name</label>
+                            <input type="text" id="lastName">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="userEmail">
+                        </div>
+                        <div class="form-group">
+                            <label>Role</label>
+                            <select id="userRole">
+                                <option value="client">Client</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                    `;
+                    break;
             }
         }
 
-        // ==========================
-        // Logout
-        // ==========================
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        function saveModal() {
+            showToast('success', 'Success', 'Data saved successfully!');
+            closeModal();
+        }
+
+        // Toast Notifications
+        function showToast(type, title, message) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <span class="toast-icon">${type === 'success' ? '✓' : type === 'error' ? '✕' : '⚠'}</span>
+                <div class="toast-content">
+                    <h4>${title}</h4>
+                    <p>${message}</p>
+                </div>
+            `;
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 5000);
+        }
+
+        // Actions
+        function viewConsultation(id) {
+            const c = consultations.find(x => x.id === id);
+            showToast('info', 'Consultation Details', `${c.name} - ${c.service}`);
+        }
+
+        function editConsultation(id) {
+            openModal('newConsultation');
+        }
+
+        function deleteConsultation(id) {
+            if (confirm('Are you sure you want to delete this consultation?')) {
+                consultations = consultations.filter(c => c.id !== id);
+                renderConsultations();
+                showToast('success', 'Deleted', 'Consultation removed successfully');
+            }
+        }
+
+        function editUser(id) {
+            openModal('newUser');
+        }
+
+        function deleteUser(id) {
+            if (confirm('Are you sure you want to delete this user?')) {
+                users = users.filter(u => u.id !== id);
+                renderUsers();
+                showToast('success', 'Deleted', 'User removed successfully');
+            }
+        }
+
+        function editService(id) {
+            showToast('info', 'Edit Service', 'Service editing coming soon');
+        }
+
+        function refreshData() {
+            showToast('success', 'Refreshed', 'Dashboard data updated');
+            renderDashboard();
+        }
+
+        function exportReport() {
+            showToast('success', 'Export Started', 'Report will be downloaded shortly');
+        }
+
         function logout() {
             if (confirm('Are you sure you want to logout?')) {
                 localStorage.removeItem('token');
                 localStorage.removeItem('user');
-                sessionStorage.clear();
-                window.location.href = 'login.html';
+                window.location.href = '/login.html';
             }
         }
+
+        function showNotifications() {
+            showToast('info', 'Notifications', 'You have 3 new notifications');
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+            showToast('success', 'Theme Changed', 'Theme toggled successfully');
+        }
+
+        function setupEventListeners() {
+            // Global search
+            document.getElementById('globalSearch').addEventListener('input', (e) => {
+                const term = e.target.value.toLowerCase();
+                // Implement search logic
+            });
+
+            // Settings form
+            document.getElementById('settingsForm')?.addEventListener('submit', (e) => {
+                e.preventDefault();
+                showToast('success', 'Settings Saved', 'Your preferences have been updated');
+            });
+        }
+
+        // Close modal on outside click
+        document.getElementById('modal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('modal')) {
+                closeModal();
+            }
+        });
     </script>
 
 </body>

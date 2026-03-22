@@ -72,12 +72,13 @@ async function runMigrations() {
     `);
     console.log('✅ Users table ready');
 
-    // Create consultations table if not exists
+    // Create consultations table if not exists - WITH name column
     await client.query(`
       CREATE TABLE IF NOT EXISTS consultations (
         id SERIAL PRIMARY KEY,
         user_id INTEGER NOT NULL,
         email VARCHAR(255),
+        name VARCHAR(200) NOT NULL DEFAULT '',
         location VARCHAR(500) NOT NULL,
         land_size DECIMAL(10,2),
         service_type VARCHAR(100) NOT NULL,
@@ -120,6 +121,7 @@ async function runMigrations() {
     const requiredCols = [
       { name: 'user_id', type: 'INTEGER NOT NULL DEFAULT 0' },
       { name: 'email', type: 'VARCHAR(255)' },
+      { name: 'name', type: 'VARCHAR(200) NOT NULL DEFAULT \'\'' },
       { name: 'location', type: 'VARCHAR(500) NOT NULL DEFAULT \'\'' },
       { name: 'land_size', type: 'DECIMAL(10,2)' },
       { name: 'service_type', type: 'VARCHAR(100) NOT NULL DEFAULT \'\'' },
@@ -142,6 +144,7 @@ async function runMigrations() {
       await client.query(`ALTER TABLE consultations ALTER COLUMN user_id DROP DEFAULT`);
       await client.query(`ALTER TABLE consultations ALTER COLUMN service_type DROP DEFAULT`);
       await client.query(`ALTER TABLE consultations ALTER COLUMN description DROP DEFAULT`);
+      await client.query(`ALTER TABLE consultations ALTER COLUMN name DROP DEFAULT`);
     } catch (e) {
       // Defaults might already be removed
     }
@@ -227,14 +230,15 @@ app.post('/api/auth/signup', async (req, res) => {
     const { rows } = await pool.query(
       `INSERT INTO users (first_name, last_name, email, phone, password_hash)
        VALUES ($1, $2, $3, $4, $5)
-       RETURNING id`,
+       RETURNING id, first_name, last_name, email, phone, role`,
       [firstName, lastName, email.toLowerCase().trim(), phone || null, passwordHash]
     );
 
     const userId = rows[0].id;
+    const user = rows[0];
 
     const token = jwt.sign(
-      { userId, email, role: 'user', firstName, lastName },
+      { userId, email, role: user.role, firstName: user.first_name, lastName: user.last_name },
       config.jwtSecret,
       { expiresIn: '24h' }
     );
@@ -243,7 +247,14 @@ app.post('/api/auth/signup', async (req, res) => {
       success: true,
       message: 'Account created',
       token,
-      user: { id: userId, firstName, lastName, email, phone, role: 'user' }
+      user: { 
+        id: userId, 
+        firstName: user.first_name, 
+        lastName: user.last_name, 
+        email: user.email, 
+        phone: user.phone, 
+        role: user.role 
+      }
     });
 
   } catch (error) {
@@ -556,7 +567,7 @@ app.post('/api/auth/reset-password', async (req, res) => {
 // CONSULTATIONS
 // ==========================
 
-// Create consultation
+// Create consultation - FIXED: Added name column
 app.post('/api/consultations', authenticateToken, async (req, res) => {
   console.log('Consultation create - User:', req.user.userId);
   
@@ -565,6 +576,9 @@ app.post('/api/consultations', authenticateToken, async (req, res) => {
     const { location, land_size, service_type, budget, description } = req.body;
     const userId = req.user?.userId;
     const userEmail = req.user?.email;
+    const firstName = req.user?.firstName || '';
+    const lastName = req.user?.lastName || '';
+    const fullName = `${firstName} ${lastName}`.trim() || 'Unknown';
 
     if (!userId) {
       return res.status(401).json({ success: false, error: 'Authentication required' });
@@ -579,14 +593,16 @@ app.post('/api/consultations', authenticateToken, async (req, res) => {
 
     client = await pool.connect();
 
+    // FIXED: Added name column to INSERT
     const { rows } = await client.query(
       `INSERT INTO consultations 
-       (user_id, email, location, land_size, service_type, budget, description, status, created_at)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, 'pending', NOW())
+       (user_id, email, name, location, land_size, service_type, budget, description, status, created_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 'pending', NOW())
        RETURNING *`,
       [
         userId, 
         userEmail || null, 
+        fullName,  // Added name from JWT token
         location.trim(), 
         land_size ? parseFloat(land_size) : null, 
         service_type, 
@@ -649,6 +665,88 @@ app.get('/api/consultations/:id', authenticateToken, async (req, res) => {
 
   } catch (error) {
     console.error('Get consultation error:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// ==========================
+// ADMIN ROUTES
+// ==========================
+
+// Get all consultations (admin only)
+app.get('/api/admin/consultations', authenticateToken, async (req, res) => {
+  try {
+    // Check if user is admin
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ success: false, error: 'Admin access required' });
+    }
+
+    const { rows } = await pool.query(
+      `SELECT c.*, u.first_name, u.last_name, u.phone as user_phone
+       FROM consultations c
+       LEFT JOIN users u ON c.user_id = u.id
+       ORDER BY c.created_at DESC`
+    );
+
+    res.json({ success: true, consultations: rows });
+
+  } catch (error) {
+    console.error('Get all consultations error:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Get all users (admin only)
+app.get('/api/admin/users', authenticateToken, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ success: false, error: 'Admin access required' });
+    }
+
+    const { rows } = await pool.query(
+      `SELECT id, first_name, last_name, email, phone, role, is_active, created_at, last_login 
+       FROM users 
+       ORDER BY created_at DESC`
+    );
+
+    res.json({ success: true, users: rows });
+
+  } catch (error) {
+    console.error('Get all users error:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// Update consultation status (admin only)
+app.put('/api/admin/consultations/:id/status', authenticateToken, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ success: false, error: 'Admin access required' });
+    }
+
+    const { status } = req.body;
+    const { id } = req.params;
+
+    if (!['pending', 'in-progress', 'completed', 'cancelled'].includes(status)) {
+      return res.status(400).json({ success: false, error: 'Invalid status' });
+    }
+
+    const { rows } = await pool.query(
+      `UPDATE consultations 
+       SET status = $1, updated_at = NOW() 
+       WHERE id = $2 
+       RETURNING *`,
+      [status, id]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ success: false, error: 'Consultation not found' });
+    }
+
+    res.json({ success: true, consultation: rows[0] });
+
+  } catch (error) {
+    console.error('Update status error:', error);
     res.status(500).json({ error: 'Server error' });
   }
 });
