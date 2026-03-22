@@ -40,7 +40,7 @@ nav {
     z-index: 1000;
     padding: 0.5rem 5%;
     border-bottom: 1px solid rgba(233, 196, 106, 0.15);
-    height: 90px; /* Fixed height */
+    height: 90px;
     display: flex;
     align-items: center;
 }
@@ -58,11 +58,11 @@ nav {
     display: flex;
     align-items: center;
     text-decoration: none;
-    flex-shrink: 0; /* Prevent logo from shrinking */
+    flex-shrink: 0;
 }
 
 .logo-img {
-    height: 130px; /* Kept as requested */
+    height: 130px;
     width: auto;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
     transition: transform 0.3s ease;
@@ -72,10 +72,9 @@ nav {
     transform: scale(1.05);
 }
 
-/* Navigation Links - Better Spacing */
 .nav-links {
     display: flex;
-    gap: 3rem; /* Increased from 2.5rem */
+    gap: 3rem;
     list-style: none;
     align-items: center;
 }
@@ -84,9 +83,9 @@ nav {
     text-decoration: none;
     color: rgba(255,255,255,0.85);
     font-weight: 600;
-    font-size: 0.85rem; /* Slightly larger */
+    font-size: 0.85rem;
     text-transform: uppercase;
-    letter-spacing: 2px; /* Increased spacing */
+    letter-spacing: 2px;
     transition: all 0.3s ease;
     position: relative;
     padding: 0.5rem 0;
@@ -111,7 +110,7 @@ nav {
     width: 100%;
 }
 
-/* Navigation Buttons - Standout Style */
+/* Navigation Buttons */
 .nav-buttons {
     display: flex;
     gap: 1rem;
@@ -119,7 +118,7 @@ nav {
 }
 
 .nav-btn {
-    padding: 12px 28px; /* Slightly larger */
+    padding: 12px 28px;
     border-radius: 0;
     font-weight: 700;
     font-size: 0.8rem;
@@ -135,7 +134,6 @@ nav {
     overflow: hidden;
 }
 
-/* Primary Button - Gold with glow effect */
 .nav-btn-primary {
     background: var(--gold);
     color: var(--deep-navy);
@@ -150,7 +148,6 @@ nav {
     transform: translateY(-2px);
 }
 
-/* Secondary Button - Outline with hover fill */
 .nav-btn-secondary {
     background: transparent;
     color: white;
@@ -179,7 +176,7 @@ nav {
     left: 0;
 }
 
-/* Admin Button - Red styling */
+/* Admin Button - Only visible to admins */
 .nav-btn-admin {
     background: var(--admin-red);
     color: white;
@@ -245,14 +242,14 @@ nav {
     font-weight: 700;
 }
 
-/* HERO SECTION - Adjusted for taller nav */
+/* HERO SECTION */
 .hero {
     min-height: 100vh;
     display: flex;
     align-items: center;
     position: relative;
     overflow: hidden;
-    padding-top: 90px; /* Match nav height */
+    padding-top: 90px;
 }
 
 .slideshow-container {
@@ -432,7 +429,6 @@ nav {
     color: var(--gold);
 }
 
-/* Feature Labels */
 .hero-features {
     display: flex;
     justify-content: space-between;
@@ -465,38 +461,36 @@ nav {
     z-index: 1;
 }
 
-/* REVEAL */
 .reveal { opacity: 0; transform: translateY(25px); transition: all 0.7s ease; }
 .reveal.active { opacity:1; transform: translateY(0); }
 
 /* Media queries */
 @media (max-width:768px){
     .nav-links{display:none;}
-    .nav-buttons{display:none;}
     .mobile-menu-btn{display:block;}
     .hero-content h1{font-size:2.5rem; letter-spacing: 4px;}
     .hero-tagline{font-size:1.2rem;}
     .hero-buttons{flex-direction:column;width:100%; align-items: center;}
     .hero-btn{width:100%; max-width: 280px;}
     .hero-features{display: none;}
-    .logo-img {
-        height: 100px;
+    .logo-img {height: 100px;}
+    nav {height: 80px;}
+    .hero {padding-top: 80px;}
+    .mobile-menu {top: 80px;}
+    
+    /* Stack buttons vertically on mobile */
+    .nav-buttons {
+        flex-direction: column;
+        gap: 0.5rem;
     }
-    nav {
-        height: 80px;
-    }
-    .hero {
-        padding-top: 80px;
-    }
-    .mobile-menu {
-        top: 80px;
+    
+    .nav-btn {
+        padding: 8px 16px;
+        font-size: 0.7rem;
     }
 }
 
-
-/* ===============================
-   SECTIONS GENERAL
-================================ */
+/* SECTIONS GENERAL */
 .section {
     padding: 100px 5%;
     position: relative;
@@ -527,9 +521,7 @@ nav {
     margin: 20px auto 0;
 }
 
-/* ===============================
-   ABOUT SECTION
-================================ */
+/* ABOUT SECTION */
 .about-section {
     background: var(--navy);
 }
@@ -600,9 +592,7 @@ nav {
     font-size: 0.95rem;
 }
 
-/* ===============================
-   SERVICES (CARDS)
-================================ */
+/* SERVICES */
 .services-section {
     background: var(--deep-navy);
 }
@@ -663,9 +653,7 @@ nav {
     color: var(--gold);
 }
 
-/* ===============================
-   GALLERY
-================================ */
+/* GALLERY */
 .gallery-section {
     background: var(--navy);
 }
@@ -693,9 +681,7 @@ nav {
     box-shadow: 0 15px 35px rgba(0,0,0,0.4);
 }
 
-/* ===============================
-   CONTACT
-================================ */
+/* CONTACT */
 .contact-section {
     background: var(--deep-navy);
     text-align: center;
@@ -765,9 +751,7 @@ nav {
     color: var(--gold);
 }
 
-/* ===============================
-   EXTRA ANIMATION
-================================ */
+/* EXTRA ANIMATION */
 .service-card,
 .about-card,
 .gallery-grid img {
@@ -783,7 +767,6 @@ nav {
     }
 }
 
-/* Staggered animation delays */
 .about-card:nth-child(1) { animation-delay: 0.1s; }
 .about-card:nth-child(2) { animation-delay: 0.2s; }
 .about-card:nth-child(3) { animation-delay: 0.3s; }
@@ -817,9 +800,11 @@ nav {
         </ul>
 
         <div class="nav-buttons" id="navButtons">
-            <a href="/signup.html" class="nav-btn nav-btn-primary">Sign Up</a>
-            <a href="/dashboard.html" class="nav-btn nav-btn-secondary">Dashboard</a>
-            <!-- Admin button will be inserted here by JavaScript -->
+            <!-- Dashboard button - visible to all logged in users -->
+            <a href="/dashboard.html" class="nav-btn nav-btn-secondary" id="dashboardBtn">Dashboard</a>
+            <!-- Sign Up button - visible when not logged in -->
+            <a href="/signup.html" class="nav-btn nav-btn-primary" id="signupBtn">Sign Up</a>
+            <!-- Admin button - ONLY visible to admins (injected by JS) -->
         </div>
 
         <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
@@ -834,9 +819,11 @@ nav {
         <li><a href="#about" onclick="toggleMobileMenu()">About</a></li>
         <li><a href="#gallery" onclick="toggleMobileMenu()">Gallery</a></li>
         <li><a href="#contacts" onclick="toggleMobileMenu()">Contact</a></li>
-        <li><a href="/dashboard.html" onclick="toggleMobileMenu()">Dashboard</a></li>
-        <li><a href="/signup.html" onclick="toggleMobileMenu()">Sign Up</a></li>
-        <!-- Admin link will be inserted here by JavaScript -->
+        <!-- Dashboard link for all users -->
+        <li><a href="/dashboard.html" onclick="toggleMobileMenu()" id="mobileDashboardLink">Dashboard</a></li>
+        <!-- Sign Up link -->
+        <li><a href="/signup.html" onclick="toggleMobileMenu()" id="mobileSignupLink">Sign Up</a></li>
+        <!-- Admin link - ONLY visible to admins (injected by JS) -->
     </ul>
 </div>
 
@@ -974,8 +961,8 @@ nav {
         <div class="gallery-grid">
             <img src="images/one.jpg">
             <img src="images/two.jpg">
-            <img src="images/water1.jpg">
-            <img src="images/team.jpg">
+            <img src="images/three.jpg">
+            <img src="images/solar.jpg">
             <img src="images/tower.jpg">
             <img src="images/site.jpg">
         </div>
@@ -1035,44 +1022,67 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',
 // ============================================
 // ADMIN BUTTON LOGIC - Only show for admin users
 // ============================================
-function checkAndShowAdminButton() {
+function updateNavigationButtons() {
     const token = localStorage.getItem('token');
     const userStr = localStorage.getItem('user');
     
-    if (!token || !userStr) return;
+    const signupBtn = document.getElementById('signupBtn');
+    const dashboardBtn = document.getElementById('dashboardBtn');
+    const mobileSignupLink = document.getElementById('mobileSignupLink');
+    const mobileDashboardLink = document.getElementById('mobileDashboardLink');
     
-    try {
-        const user = JSON.parse(userStr);
-        
-        // Check if user is admin
-        if (user.role === 'admin') {
-            // Add admin button to desktop navigation
-            const navButtons = document.getElementById('navButtons');
-            if (navButtons && !document.getElementById('adminBtn')) {
-                const adminBtn = document.createElement('a');
-                adminBtn.href = '/dashboard.html';
-                adminBtn.id = 'adminBtn';
-                adminBtn.className = 'nav-btn nav-btn-admin';
-                adminBtn.innerHTML = '⚙️ Admin';
-                navButtons.insertBefore(adminBtn, navButtons.firstChild);
+    // If user is logged in
+    if (token && userStr) {
+        try {
+            const user = JSON.parse(userStr);
+            
+            // Hide signup button, show dashboard button
+            if (signupBtn) signupBtn.style.display = 'none';
+            if (dashboardBtn) dashboardBtn.style.display = 'inline-flex';
+            if (mobileSignupLink) mobileSignupLink.style.display = 'none';
+            if (mobileDashboardLink) mobileDashboardLink.style.display = 'block';
+            
+            // Check if user is admin - add admin button ONLY for admins
+            if (user.role === 'admin') {
+                // Add admin button to desktop nav (before dashboard button)
+                const navButtons = document.getElementById('navButtons');
+                if (navButtons && !document.getElementById('adminBtn')) {
+                    const adminBtn = document.createElement('a');
+                    adminBtn.href = '/admin.html'; // Separate admin page
+                    adminBtn.id = 'adminBtn';
+                    adminBtn.className = 'nav-btn nav-btn-admin';
+                    adminBtn.innerHTML = '⚙️ Admin';
+                    
+                    // Insert before dashboard button
+                    navButtons.insertBefore(adminBtn, dashboardBtn);
+                }
+                
+                // Add admin link to mobile menu
+                const mobileMenuList = document.getElementById('mobileMenuList');
+                if (mobileMenuList && !document.getElementById('adminMobileLink')) {
+                    const adminMobileLi = document.createElement('li');
+                    adminMobileLi.id = 'adminMobileLink';
+                    adminMobileLi.innerHTML = '<a href="/admin.html" class="admin-link" onclick="toggleMobileMenu()">⚙️ Admin Panel</a>';
+                    
+                    // Insert at the end of menu
+                    mobileMenuList.appendChild(adminMobileLi);
+                }
             }
             
-            // Add admin link to mobile menu
-            const mobileMenuList = document.getElementById('mobileMenuList');
-            if (mobileMenuList && !document.getElementById('adminMobileLink')) {
-                const adminMobileLi = document.createElement('li');
-                adminMobileLi.id = 'adminMobileLink';
-                adminMobileLi.innerHTML = '<a href="/dashboard.html" class="admin-link" onclick="toggleMobileMenu()">⚙️ Admin Panel</a>';
-                mobileMenuList.insertBefore(adminMobileLi, mobileMenuList.firstChild);
-            }
+        } catch (e) {
+            console.error('Error parsing user data:', e);
         }
-    } catch (e) {
-        console.error('Error checking admin status:', e);
+    } else {
+        // User not logged in - show signup, hide dashboard
+        if (signupBtn) signupBtn.style.display = 'inline-flex';
+        if (dashboardBtn) dashboardBtn.style.display = 'none';
+        if (mobileSignupLink) mobileSignupLink.style.display = 'block';
+        if (mobileDashboardLink) mobileDashboardLink.style.display = 'none';
     }
 }
 
 // Run on page load
-document.addEventListener('DOMContentLoaded', checkAndShowAdminButton);
+document.addEventListener('DOMContentLoaded', updateNavigationButtons);
 </script>
 
 </body>
