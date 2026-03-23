@@ -1494,9 +1494,9 @@
         }
 
         function showAccessDenied() {
-            document.getElementById('adminLayout').style.display = 'none';
-            document.getElementById('accessDenied').style.display = 'flex';
-        }
+    // Redirect non-admins to user dashboard instead of showing error
+    window.location.href = '/dashboard.html';
+}
 
         function updateAdminProfile() {
             if (currentUser) {

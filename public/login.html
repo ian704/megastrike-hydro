@@ -29,7 +29,7 @@
 
 body {
     font-family: 'Inter', sans-serif;
-    background: linear-gradient(135deg, var(--deep-navy) 0%, var(--navy) 50%, var(--ocean-blue) 100%);
+    background: #f5f7fa; /* LIGHT background */
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -37,10 +37,10 @@ body {
     padding: 20px;
     position: relative;
     overflow-x: hidden;
-    color: var(--text-light);
+    color: var(--deep-navy); /* Dark text for light bg */
 }
 
-/* Animated Background */
+/* Subtle pattern on light bg */
 .bg-pattern {
     position: fixed;
     top: 0;
@@ -48,9 +48,8 @@ body {
     width: 100%;
     height: 100%;
     background-image: 
-        radial-gradient(circle at 20% 50%, rgba(233, 196, 106, 0.03) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(244, 162, 97, 0.03) 0%, transparent 50%),
-        radial-gradient(circle at 40% 20%, rgba(233, 196, 106, 0.02) 0%, transparent 50%);
+        radial-gradient(circle at 20% 50%, rgba(30, 96, 145, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(233, 196, 106, 0.05) 0%, transparent 50%);
     z-index: 0;
     pointer-events: none;
 }
@@ -73,19 +72,20 @@ body {
     100% { background-position: -200% 0; }
 }
 
-/* Main Container */
+/* Main Container - LIGHT theme */
 .container {
-    background: rgba(27, 38, 59, 0.95);
+    background: white; /* White card */
     backdrop-filter: blur(20px);
     padding: 50px 40px;
     width: 100%;
     max-width: 440px;
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), 
-                0 0 0 1px rgba(233, 196, 106, 0.1) inset;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1), 
+                0 0 0 1px rgba(0, 0, 0, 0.05) inset;
     position: relative;
     z-index: 10;
     animation: slideUp 0.6s ease-out;
-    border: 1px solid rgba(233, 196, 106, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
 }
 
 @keyframes slideUp {
@@ -99,16 +99,20 @@ body {
     }
 }
 
-/* Logo Section */
+/* Logo Section - Dark background for logo contrast */
 .logo {
     text-align: center;
     margin-bottom: 30px;
+    background: var(--deep-navy); /* Dark bg behind logo */
+    padding: 20px;
+    border-radius: 8px;
+    margin: -50px -40px 30px -40px; /* Extend to container edges */
 }
 
 .logo-img {
-    height: 200px;
+    height: 120px;
     width: auto;
-    filter: drop-shadow(0 4px 15px rgba(233, 196, 106, 0.3));
+    filter: drop-shadow(0 4px 15px rgba(0,0,0,0.3));
     animation: pulse 2s ease-in-out infinite;
 }
 
@@ -117,14 +121,14 @@ body {
     50% { transform: scale(1.02); filter: drop-shadow(0 6px 25px rgba(233, 196, 106, 0.4)); }
 }
 
-/* Welcome Text */
+/* Welcome Text - Dark for light bg */
 .welcome-text {
     text-align: center;
     margin-bottom: 30px;
 }
 
 .welcome-text h2 {
-    color: white;
+    color: var(--deep-navy); /* Dark text */
     font-size: 1.2rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -142,7 +146,7 @@ body {
 }
 
 .welcome-text p {
-    color: var(--text-muted);
+    color: #64748b; /* Gray text */
     font-size: 0.95rem;
 }
 
@@ -156,6 +160,7 @@ body {
     gap: 10px;
     animation: slideDown 0.3s ease;
     border-left: 3px solid;
+    border-radius: 4px;
 }
 
 .alert.show {
@@ -185,7 +190,7 @@ body {
     }
 }
 
-/* Form Styling */
+/* Form Styling - Light theme */
 .form-group {
     position: relative;
     margin-bottom: 20px;
@@ -196,7 +201,7 @@ body {
     left: 16px;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--text-muted);
+    color: #64748b;
     font-size: 1.1rem;
     transition: color 0.3s ease;
     pointer-events: none;
@@ -205,27 +210,27 @@ body {
 input {
     width: 100%;
     padding: 14px 16px 14px 48px;
-    border: 1px solid rgba(233, 196, 106, 0.2);
-    border-radius: 0;
+    border: 1px solid #e2e8f0; /* Light border */
+    border-radius: 6px;
     font-family: 'Inter', sans-serif;
     font-size: 1rem;
     transition: all 0.3s ease;
-    background: rgba(10, 22, 40, 0.5);
-    color: white;
+    background: #f8fafc; /* Light input bg */
+    color: var(--deep-navy); /* Dark text */
 }
 
 input:focus {
     outline: none;
-    border-color: var(--gold);
-    box-shadow: 0 0 0 3px rgba(233, 196, 106, 0.1);
+    border-color: var(--azure);
+    box-shadow: 0 0 0 3px rgba(30, 96, 145, 0.1);
 }
 
 input:focus + .input-icon {
-    color: var(--gold);
+    color: var(--azure);
 }
 
 input::placeholder {
-    color: var(--text-muted);
+    color: #94a3b8;
 }
 
 .password-toggle {
@@ -234,14 +239,14 @@ input::placeholder {
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
-    color: var(--text-muted);
+    color: #64748b;
     font-size: 1.1rem;
     transition: color 0.3s ease;
     user-select: none;
 }
 
 .password-toggle:hover {
-    color: var(--gold);
+    color: var(--azure);
 }
 
 /* Options Row */
@@ -257,24 +262,24 @@ input::placeholder {
     display: flex;
     align-items: center;
     gap: 8px;
-    color: var(--text-muted);
+    color: #64748b;
     cursor: pointer;
     transition: color 0.3s ease;
 }
 
 .remember-me:hover {
-    color: var(--text-light);
+    color: var(--deep-navy);
 }
 
 .remember-me input[type="checkbox"] {
     width: 18px;
     height: 18px;
-    accent-color: var(--gold);
+    accent-color: var(--azure);
     cursor: pointer;
 }
 
 .forgot-password {
-    color: var(--gold);
+    color: var(--azure);
     text-decoration: none;
     font-weight: 600;
     font-size: 0.85rem;
@@ -282,7 +287,7 @@ input::placeholder {
 }
 
 .forgot-password:hover {
-    color: var(--orange);
+    color: var(--ocean-blue);
     text-decoration: underline;
 }
 
@@ -290,10 +295,10 @@ input::placeholder {
 .submit-btn {
     width: 100%;
     padding: 16px;
-    background: var(--gold);
-    color: var(--deep-navy);
-    border: 2px solid var(--gold);
-    border-radius: 0;
+    background: var(--azure);
+    color: white;
+    border: 2px solid var(--azure);
+    border-radius: 6px;
     cursor: pointer;
     font-size: 0.9rem;
     font-weight: 700;
@@ -310,10 +315,10 @@ input::placeholder {
 }
 
 .submit-btn:hover {
-    background: transparent;
-    color: var(--gold);
+    background: var(--ocean-blue);
+    border-color: var(--ocean-blue);
     transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(233, 196, 106, 0.2);
+    box-shadow: 0 10px 30px rgba(13, 59, 102, 0.2);
 }
 
 .submit-btn:disabled {
@@ -331,8 +336,8 @@ input::placeholder {
     position: absolute;
     width: 24px;
     height: 24px;
-    border: 3px solid rgba(233, 196, 106, 0.3);
-    border-top-color: var(--gold);
+    border: 3px solid rgba(255,255,255, 0.3);
+    border-top-color: white;
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
 }
@@ -352,7 +357,7 @@ input::placeholder {
     display: flex;
     align-items: center;
     margin: 25px 0;
-    color: var(--text-muted);
+    color: #94a3b8;
     font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 2px;
@@ -363,7 +368,7 @@ input::placeholder {
     content: '';
     flex: 1;
     height: 1px;
-    background: rgba(233, 196, 106, 0.2);
+    background: #e2e8f0;
 }
 
 .divider span {
@@ -380,9 +385,9 @@ input::placeholder {
 
 .social-btn {
     padding: 12px;
-    border: 1px solid rgba(233, 196, 106, 0.2);
-    background: rgba(10, 22, 40, 0.5);
-    border-radius: 0;
+    border: 1px solid #e2e8f0;
+    background: white;
+    border-radius: 6px;
     cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
@@ -391,15 +396,15 @@ input::placeholder {
     gap: 8px;
     font-size: 0.9rem;
     font-weight: 600;
-    color: white;
+    color: var(--deep-navy);
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 
 .social-btn:hover {
-    border-color: var(--gold);
-    background: rgba(233, 196, 106, 0.1);
-    color: var(--gold);
+    border-color: var(--azure);
+    background: #f8fafc;
+    color: var(--azure);
     transform: translateY(-2px);
 }
 
@@ -411,20 +416,20 @@ input::placeholder {
 /* Footer */
 .footer-text {
     text-align: center;
-    color: var(--text-muted);
+    color: #64748b;
     font-size: 0.95rem;
     margin-top: 10px;
 }
 
 .footer-text a {
-    color: var(--gold);
+    color: var(--azure);
     text-decoration: none;
     font-weight: 600;
     transition: color 0.3s ease;
 }
 
 .footer-text a:hover {
-    color: var(--orange);
+    color: var(--ocean-blue);
     text-decoration: underline;
 }
 
@@ -436,8 +441,8 @@ input::placeholder {
     gap: 8px;
     margin-top: 25px;
     padding-top: 25px;
-    border-top: 1px solid rgba(233, 196, 106, 0.1);
-    color: var(--text-muted);
+    border-top: 1px solid #e2e8f0;
+    color: #64748b;
     font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -454,7 +459,11 @@ input::placeholder {
     }
 
     .logo-img {
-        height: 150px;
+        height: 100px;
+    }
+    
+    .logo {
+        margin: -40px -25px 30px -25px;
     }
     
     .social-login {
@@ -494,8 +503,8 @@ input::placeholder {
 <div class="container">
 
     <div class="logo">
-    <img src="images/logo.png" alt="Megastrike Hydro Drilling Solutions" class="logo-img">
-</div>
+        <img src="images/logo.png" alt="Megastrike Hydro Drilling Solutions" class="logo-img">
+    </div>
 
     <div class="welcome-text">
         <h2>Welcome Back</h2>
@@ -530,11 +539,8 @@ input::placeholder {
                 <span>Remember me</span>
             </label>
             
-<div style="text-align: center; margin-top: 15px;">
-    <a href="forgot-password.html" style="color: var(--gold); text-decoration: none; font-size: 0.9rem;">
-        Forgot Password?
-    </a>
-</div>
+            <a href="forgot-password.html" class="forgot-password">Forgot Password?</a>
+        </div>
 
         <button type="submit" class="submit-btn" id="submitBtn">
             <span>Sign In</span>
@@ -624,8 +630,9 @@ form.addEventListener('submit', async function(e) {
         const data = await response.json();
         
         if (data.success) {
+            // FIX 1: Save user data (not remove it!)
             localStorage.setItem('token', data.token);
-localStorage.setItem('user', JSON.stringify(data.user));  
+            localStorage.setItem('user', JSON.stringify(data.user));
             
             if (remember) {
                 localStorage.setItem('rememberEmail', email);
@@ -639,13 +646,13 @@ localStorage.setItem('user', JSON.stringify(data.user));
             successAlert.classList.add('show');
             
             setTimeout(() => {
-    // Route based on user role
-    if (data.user && data.user.role === 'admin') {
-        window.location.href = '/admin.html';
-    } else {
-        window.location.href = '/dashboard.html';
-    }
-}, 1000);
+                // FIX 2: Route based on role - admins to admin, users to dashboard
+                if (data.user && data.user.role === 'admin') {
+                    window.location.href = '/admin.html';
+                } else {
+                    window.location.href = '/dashboard.html';
+                }
+            }, 1000);
         } else {
             throw new Error(data.error || 'Login failed');
         }
