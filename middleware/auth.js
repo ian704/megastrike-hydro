@@ -17,21 +17,21 @@ function authenticateToken(req, res, next) {
 
     const decoded = jwt.verify(token, config.jwtSecret);
 
-    // 🔥 FIX: Normalize the user object to have consistent property names
+    // 🔥 CRITICAL FIX: Match exactly what frontend expects
     req.user = {
       userId: decoded.userId,
-      id: decoded.userId, // Add both for compatibility
+      id: decoded.userId,
       email: decoded.email,
-      role: decoded.role,
+      role: decoded.role || 'user', // Default fallback
       firstName: decoded.firstName,
       lastName: decoded.lastName
     };
 
-    console.log('Auth middleware - user:', req.user); // Debug log
+    console.log('✅ Auth middleware - user:', req.user);
 
     next();
   } catch (err) {
-    console.error('JWT ERROR:', err.message);
+    console.error('❌ JWT ERROR:', err.message);
     return res.status(403).json({ success: false, error: 'Invalid or expired token' });
   }
 }
