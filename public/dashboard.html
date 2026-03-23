@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel | Megastrike Hydro Drilling Solutions</title>
+    <title>My Dashboard | Megastrike Hydro Drilling Solutions</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -17,9 +17,7 @@
             --success: #10b981;
             --warning: #f59e0b;
             --error: #ef4444;
-            --purple: #8b5cf6;
-            --sidebar-width: 280px;
-            --header-height: 80px;
+            --gold: #e9c46a;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -31,166 +29,10 @@
             color: var(--deep-ocean);
         }
 
-        /* Layout */
-        .admin-layout {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            width: var(--sidebar-width);
-            background: linear-gradient(180deg, var(--deep-ocean) 0%, var(--ocean-blue) 100%);
-            color: white;
-            position: fixed;
-            height: 100vh;
-            overflow-y: auto;
-            z-index: 1000;
-            transition: transform 0.3s ease;
-        }
-
-        .sidebar-header {
-            padding: 2rem;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .sidebar-logo {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, var(--aqua) 0%, var(--cyan) 100%);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            box-shadow: 0 4px 15px rgba(78, 205, 196, 0.3);
-        }
-
-        .sidebar-brand h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.3rem;
-            line-height: 1.2;
-        }
-
-        .sidebar-brand span {
-            font-size: 0.7rem;
-            opacity: 0.8;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .nav-section {
-            padding: 1.5rem 0;
-        }
-
-        .nav-section-title {
-            padding: 0 1.5rem;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            opacity: 0.6;
-            margin-bottom: 0.75rem;
-            font-weight: 600;
-        }
-
-        .nav-menu {
-            list-style: none;
-        }
-
-        .nav-item {
-            margin: 0.25rem 0;
-        }
-
-        .nav-link {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem 1.5rem;
-            color: rgba(255,255,255,0.8);
-            text-decoration: none;
-            transition: all 0.3s ease;
-            border-left: 3px solid transparent;
-            cursor: pointer;
-        }
-
-        .nav-link:hover, .nav-link.active {
-            background: rgba(255,255,255,0.05);
-            color: white;
-            border-left-color: var(--aqua);
-        }
-
-        .nav-link.active {
-            background: rgba(78, 205, 196, 0.1);
-        }
-
-        .nav-icon {
-            font-size: 1.25rem;
-            width: 24px;
-            text-align: center;
-        }
-
-        .nav-badge {
-            margin-left: auto;
-            background: var(--error);
-            color: white;
-            font-size: 0.75rem;
-            padding: 0.25rem 0.5rem;
-            border-radius: 20px;
-            font-weight: 600;
-        }
-
-        .sidebar-footer {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 1.5rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .admin-profile {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .admin-avatar {
-            width: 45px;
-            height: 45px;
-            background: linear-gradient(135deg, var(--aqua) 0%, var(--cyan) 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
-
-        .admin-info h4 {
-            font-size: 0.95rem;
-            font-weight: 600;
-        }
-
-        .admin-info p {
-            font-size: 0.8rem;
-            opacity: 0.7;
-        }
-
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            margin-left: var(--sidebar-width);
-            min-height: 100vh;
-        }
-
         /* Header */
         .header {
-            height: var(--header-height);
-            background: white;
-            border-bottom: 1px solid #e2e8f0;
+            height: 80px;
+            background: linear-gradient(135deg, var(--deep-ocean) 0%, var(--ocean-blue) 100%);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -198,147 +40,113 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
-        .header-left {
+        .logo {
             display: flex;
             align-items: center;
-            gap: 1.5rem;
-        }
-
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--ocean-blue);
-        }
-
-        .search-bar {
-            position: relative;
-        }
-
-        .search-bar input {
-            padding: 0.75rem 1rem 0.75rem 2.5rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 30px;
-            width: 300px;
-            font-family: inherit;
-            transition: all 0.3s ease;
-        }
-
-        .search-bar input:focus {
-            outline: none;
-            border-color: var(--aqua);
-            width: 350px;
-        }
-
-        .search-bar::before {
-            content: '🔍';
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            opacity: 0.5;
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-        }
-
-        .header-btn {
-            position: relative;
-            background: none;
-            border: none;
-            font-size: 1.25rem;
-            cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .header-btn:hover {
-            background: var(--foam);
-        }
-
-        .notification-dot {
-            position: absolute;
-            top: 0.25rem;
-            right: 0.25rem;
-            width: 8px;
-            height: 8px;
-            background: var(--error);
-            border-radius: 50%;
-            border: 2px solid white;
-        }
-
-        /* Content Area */
-        .content {
-            padding: 2rem;
-            max-width: 1600px;
-            margin: 0 auto;
-        }
-
-        .page-header {
-            margin-bottom: 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .page-title h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-            color: var(--deep-ocean);
-            margin-bottom: 0.5rem;
-        }
-
-        .page-title p {
-            color: #64748b;
-        }
-
-        .page-actions {
-            display: flex;
             gap: 1rem;
-        }
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
+            color: white;
             text-decoration: none;
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, var(--ocean-blue) 0%, var(--azure) 100%);
-            color: white;
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--aqua) 0%, var(--cyan) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
         }
 
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(13, 59, 102, 0.3);
+        .logo-text h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--gold);
         }
 
-        .btn-secondary {
-            background: white;
-            color: var(--ocean-blue);
-            border: 2px solid #e2e8f0;
+        .logo-text span {
+            font-size: 0.7rem;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .btn-secondary:hover {
-            border-color: var(--aqua);
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav a {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav a:hover {
             color: var(--aqua);
         }
-        
+
+        .logout-btn {
+            background: var(--aqua);
+            color: var(--deep-ocean);
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(78, 205, 196, 0.4);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Welcome Section */
+        .welcome-card {
+            background: linear-gradient(135deg, var(--ocean-blue) 0%, var(--azure) 100%);
+            color: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-card::before {
+            content: '💧';
+            position: absolute;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 8rem;
+            opacity: 0.1;
+        }
+
+        .welcome-card h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-card p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
         /* Stats Grid */
         .stats-grid {
             display: grid;
@@ -365,7 +173,7 @@
         .stat-header {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
             margin-bottom: 1rem;
         }
 
@@ -382,20 +190,9 @@
         .stat-icon.blue { background: rgba(30, 96, 145, 0.1); color: var(--azure); }
         .stat-icon.green { background: rgba(16, 185, 129, 0.1); color: var(--success); }
         .stat-icon.orange { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
-        .stat-icon.purple { background: rgba(139, 92, 246, 0.1); color: var(--purple); }
-
-        .stat-trend {
-            font-size: 0.85rem;
-            font-weight: 600;
-            padding: 0.25rem 0.5rem;
-            border-radius: 20px;
-        }
-
-        .trend-up { background: rgba(16, 185, 129, 0.1); color: var(--success); }
-        .trend-down { background: rgba(239, 68, 68, 0.1); color: var(--error); }
 
         .stat-value {
-            font-size: 2rem;
+            font-size: 2.5rem;
             font-weight: 700;
             color: var(--deep-ocean);
             margin-bottom: 0.25rem;
@@ -404,18 +201,79 @@
 
         .stat-label {
             color: #64748b;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
         }
 
-        /* Dashboard Grid */
-        .dashboard-grid {
+        /* Action Buttons */
+        .action-grid {
             display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
             margin-bottom: 2rem;
         }
 
-        .card {
+        .action-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 2px solid #f1f5f9;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--aqua);
+        }
+
+        .action-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--aqua) 0%, var(--cyan) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1rem;
+        }
+
+        .action-card h3 {
+            color: var(--deep-ocean);
+            margin-bottom: 0.5rem;
+        }
+
+        .action-card p {
+            color: #64748b;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--ocean-blue) 0%, var(--azure) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(13, 59, 102, 0.3);
+        }
+
+        /* Consultations Section */
+        .section-card {
             background: white;
             border-radius: 16px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.05);
@@ -423,7 +281,7 @@
             overflow: hidden;
         }
 
-        .card-header {
+        .section-header {
             padding: 1.5rem;
             border-bottom: 1px solid #f1f5f9;
             display: flex;
@@ -431,163 +289,41 @@
             align-items: center;
         }
 
-        .card-title {
-            font-size: 1.2rem;
+        .section-title {
+            font-size: 1.3rem;
             font-weight: 700;
             color: var(--deep-ocean);
         }
 
-        .card-body {
-            padding: 1.5rem;
-        }
-
-        /* Charts */
-        .chart-container {
-            height: 300px;
-            position: relative;
-        }
-
-        .chart-placeholder {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-            padding: 0 1rem;
-            gap: 1rem;
-        }
-
-        .chart-bar {
-            flex: 1;
-            background: linear-gradient(to top, var(--aqua), var(--cyan));
-            border-radius: 8px 8px 0 0;
-            position: relative;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .chart-bar:hover {
-            opacity: 0.8;
-            transform: scaleY(1.05);
-        }
-
-        .chart-bar-label {
-            position: absolute;
-            bottom: -25px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 0.8rem;
-            color: #64748b;
-            white-space: nowrap;
-        }
-
-        /* Recent Activity */
-        .activity-list {
+        .consultation-list {
             list-style: none;
         }
 
-        .activity-item {
-            display: flex;
-            gap: 1rem;
-            padding: 1rem 0;
+        .consultation-item {
+            padding: 1.5rem;
             border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s;
         }
 
-        .activity-item:last-child {
+        .consultation-item:hover {
+            background: #f8fafc;
+        }
+
+        .consultation-item:last-child {
             border-bottom: none;
         }
 
-        .activity-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-            flex-shrink: 0;
-        }
-
-        .activity-icon.new { background: rgba(16, 185, 129, 0.1); color: var(--success); }
-        .activity-icon.pending { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
-        .activity-icon.completed { background: rgba(30, 96, 145, 0.1); color: var(--azure); }
-
-        .activity-content h4 {
-            font-size: 0.95rem;
-            font-weight: 600;
+        .consultation-info h4 {
+            color: var(--deep-ocean);
             margin-bottom: 0.25rem;
         }
 
-        .activity-content p {
-            font-size: 0.85rem;
+        .consultation-info p {
             color: #64748b;
-            margin-bottom: 0.25rem;
-        }
-
-        .activity-time {
-            font-size: 0.75rem;
-            color: #94a3b8;
-        }
-
-        /* Tables */
-        .table-container {
-            overflow-x: auto;
-        }
-
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .data-table th {
-            text-align: left;
-            padding: 1rem;
-            font-weight: 600;
-            color: #64748b;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border-bottom: 2px solid #f1f5f9;
-            background: #f8fafc;
-        }
-
-        .data-table td {
-            padding: 1rem;
-            border-bottom: 1px solid #f1f5f9;
-            font-size: 0.95rem;
-        }
-
-        .data-table tr:hover td {
-            background: #f8fafc;
-        }
-
-        .user-cell {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--aqua) 0%, var(--cyan) 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
             font-size: 0.9rem;
-        }
-
-        .user-info h4 {
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-
-        .user-info p {
-            font-size: 0.85rem;
-            color: #64748b;
         }
 
         .status-badge {
@@ -595,1347 +331,254 @@
             border-radius: 20px;
             font-size: 0.85rem;
             font-weight: 600;
-            display: inline-block;
         }
 
         .status-pending { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
         .status-completed { background: rgba(16, 185, 129, 0.1); color: var(--success); }
         .status-in-progress { background: rgba(30, 96, 145, 0.1); color: var(--azure); }
-        .status-cancelled { background: rgba(239, 68, 68, 0.1); color: var(--error); }
 
-        .action-btns {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .action-btn {
-            padding: 0.5rem;
-            border: none;
-            background: none;
-            cursor: pointer;
-            border-radius: 6px;
-            transition: all 0.3s ease;
-            font-size: 1rem;
-        }
-
-        .action-btn:hover {
-            background: var(--foam);
-        }
-
-        .action-btn.edit { color: var(--azure); }
-        .action-btn.delete { color: var(--error); }
-        .action-btn.view { color: var(--success); }
-
-        /* Tab Navigation */
-        .tabs {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-            border-bottom: 2px solid #f1f5f9;
-        }
-
-        .tab {
-            padding: 0.75rem 1.5rem;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            color: #64748b;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .tab.active {
-            color: var(--ocean-blue);
-        }
-
-        .tab.active::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: var(--aqua);
-        }
-
-        /* Modal */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(10, 22, 40, 0.8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .modal {
-            background: white;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 600px;
-            max-height: 90vh;
-            overflow-y: auto;
-            transform: scale(0.9);
-            transition: all 0.3s ease;
-        }
-
-        .modal-overlay.active .modal {
-            transform: scale(1);
-        }
-
-        .modal-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid #f1f5f9;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .modal-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--deep-ocean);
-        }
-
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #64748b;
-            padding: 0.5rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .modal-close:hover {
-            background: var(--foam);
-            color: var(--error);
-        }
-
-        .modal-body {
-            padding: 1.5rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--deep-ocean);
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-family: inherit;
-            transition: all 0.3s ease;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--aqua);
-        }
-
-        .modal-footer {
-            padding: 1.5rem;
-            border-top: 1px solid #f1f5f9;
-            display: flex;
-            justify-content: flex-end;
-            gap: 1rem;
-        }
-
-        /* Section Visibility */
-        .section {
-            display: none;
-        }
-
-        .section.active {
-            display: block;
-            animation: fadeIn 0.4s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-            
-            .sidebar.active {
-                transform: translateX(0);
-            }
-            
-            .main-content {
-                margin-left: 0;
-            }
-            
-            .menu-toggle {
-                display: block;
-            }
-            
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .search-bar input {
-                width: 200px;
-            }
-            
-            .search-bar input:focus {
-                width: 250px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .header {
-                padding: 0 1rem;
-            }
-            
-            .content {
-                padding: 1rem;
-            }
-            
-            .page-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 1rem;
-            }
-        }
-
-        /* Loading State */
-        .loading {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 200px;
-        }
-
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid var(--foam);
-            border-top-color: var(--aqua);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Toast Notifications */
-        .toast-container {
-            position: fixed;
-            top: 100px;
-            right: 2rem;
-            z-index: 3000;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .toast {
-            background: white;
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            min-width: 300px;
-            animation: slideIn 0.3s ease;
-            border-left: 4px solid;
-        }
-
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        .toast.success { border-left-color: var(--success); }
-        .toast.error { border-left-color: var(--error); }
-        .toast.warning { border-left-color: var(--warning); }
-
-        .toast-icon {
-            font-size: 1.5rem;
-        }
-
-        .toast.success .toast-icon { color: var(--success); }
-        .toast.error .toast-icon { color: var(--error); }
-        .toast.warning .toast-icon { color: var(--warning); }
-
-        .toast-content h4 {
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-
-        .toast-content p {
-            font-size: 0.9rem;
-            color: #64748b;
-        }
-
-        /* Analytics Cards */
-        .analytics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .progress-ring {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto;
-        }
-
-        .progress-ring-circle {
-            transition: stroke-dashoffset 0.5s ease;
-            transform: rotate(-90deg);
-            transform-origin: 50% 50%;
-        }
-
-        .metric-card {
+        .empty-state {
             text-align: center;
-            padding: 2rem;
-        }
-
-        .metric-value {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--ocean-blue);
-            margin: 1rem 0;
-        }
-
-        .metric-label {
+            padding: 3rem;
             color: #64748b;
-            font-size: 0.95rem;
         }
 
-        /* Filter Bar */
-        .filter-bar {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
         }
 
-        .filter-input {
-            padding: 0.5rem 1rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-family: inherit;
-        }
-
-        .filter-input:focus {
-            outline: none;
-            border-color: var(--aqua);
-        }
-
-        /* Access Denied Message */
+        /* Access Denied */
         .access-denied {
-            display: flex;
+            display: none;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
             text-align: center;
             padding: 2rem;
+            background: var(--foam);
         }
 
         .access-denied h1 {
             font-size: 4rem;
-            color: var(--error);
+            margin-bottom: 1rem;
+        }
+
+        .access-denied h2 {
+            color: var(--deep-ocean);
             margin-bottom: 1rem;
         }
 
         .access-denied p {
-            font-size: 1.2rem;
             color: #64748b;
             margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 0 1rem;
+            }
+            
+            .nav {
+                gap: 1rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            .welcome-card h1 {
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="admin-layout" id="adminLayout">
-        <!-- Sidebar -->
-        <aside class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <div class="sidebar-logo">💧</div>
-                <div class="sidebar-brand">
-                    <h1>Megastrike</h1>
-                    <span>Admin Panel</span>
-                </div>
-            </div>
-
-            <nav class="nav-section">
-                <div class="nav-section-title">Main</div>
-                <ul class="nav-menu">
-                    <li class="nav-item">
-                        <a class="nav-link active" onclick="showSection('dashboard')">
-                            <span class="nav-icon">📊</span>
-                            <span>Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" onclick="showSection('consultations')">
-                            <span class="nav-icon">📋</span>
-                            <span>Consultations</span>
-                            <span class="nav-badge" id="pendingBadge">3</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" onclick="showSection('users')">
-                            <span class="nav-icon">👥</span>
-                            <span>Users</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" onclick="showSection('analytics')">
-                            <span class="nav-icon">📈</span>
-                            <span>Analytics</span>
-                        </a>
-                    </li>
-                </ul>
-
-                <div class="nav-section-title">Management</div>
-                <ul class="nav-menu">
-                    <li class="nav-item">
-                        <a class="nav-link" onclick="showSection('services')">
-                            <span class="nav-icon">🔧</span>
-                            <span>Services</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" onclick="showSection('settings')">
-                            <span class="nav-icon">⚙️</span>
-                            <span>Settings</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" onclick="logout()">
-                            <span class="nav-icon">🚪</span>
-                            <span>Logout</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-
-            <div class="sidebar-footer">
-                <div class="admin-profile">
-                    <div class="admin-avatar" id="adminAvatar">A</div>
-                    <div class="admin-info">
-                        <h4 id="adminName">Admin User</h4>
-                        <p>Super Administrator</p>
-                    </div>
-                </div>
-            </div>
-        </aside>
-
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Header -->
-            <header class="header">
-                <div class="header-left">
-                    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
-                    <div class="search-bar">
-                        <input type="text" placeholder="Search..." id="globalSearch">
-                    </div>
-                </div>
-                <div class="header-right">
-                    <button class="header-btn" onclick="showNotifications()">
-                        🔔
-                        <span class="notification-dot"></span>
-                    </button>
-                    <button class="header-btn" onclick="toggleTheme()">🌙</button>
-                </div>
-            </header>
-
-            <!-- Content -->
-            <div class="content">
-                <!-- Dashboard Section -->
-                <section id="dashboard" class="section active">
-                    <div class="page-header">
-                        <div class="page-title">
-                            <h2>Dashboard Overview</h2>
-                            <p>Welcome back! Here's what's happening with your business.</p>
-                        </div>
-                        <div class="page-actions">
-                            <button class="btn btn-secondary" onclick="refreshData()">🔄 Refresh</button>
-                            <button class="btn btn-primary" onclick="exportReport()">📥 Export Report</button>
-                        </div>
-                    </div>
-
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-header">
-                                <div class="stat-icon blue">📋</div>
-                                <span class="stat-trend trend-up">↑ 12%</span>
-                            </div>
-                            <div class="stat-value" id="totalConsultations">24</div>
-                            <div class="stat-label">Total Consultations</div>
-                        </div>
-
-                        <div class="stat-card">
-                            <div class="stat-header">
-                                <div class="stat-icon orange">⏳</div>
-                                <span class="stat-trend trend-up">↑ 5%</span>
-                            </div>
-                            <div class="stat-value" id="pendingConsultations">8</div>
-                            <div class="stat-label">Pending Requests</div>
-                        </div>
-
-                        <div class="stat-card">
-                            <div class="stat-header">
-                                <div class="stat-icon green">✅</div>
-                                <span class="stat-trend trend-up">↑ 18%</span>
-                            </div>
-                            <div class="stat-value" id="completedProjects">16</div>
-                            <div class="stat-label">Completed Projects</div>
-                        </div>
-
-                        <div class="stat-card">
-                            <div class="stat-header">
-                                <div class="stat-icon purple">👥</div>
-                                <span class="stat-trend trend-down">↓ 2%</span>
-                            </div>
-                            <div class="stat-value" id="totalUsers">45</div>
-                            <div class="stat-label">Registered Users</div>
-                        </div>
-                    </div>
-
-                    <div class="dashboard-grid">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Consultation Trends</h3>
-                                <select class="filter-input" id="chartPeriod" onchange="updateChart()">
-                                    <option value="7">Last 7 Days</option>
-                                    <option value="30">Last 30 Days</option>
-                                    <option value="90">Last 3 Months</option>
-                                </select>
-                            </div>
-                            <div class="card-body">
-                                <div class="chart-container">
-                                    <div class="chart-placeholder" id="consultationChart">
-                                        <!-- Chart bars generated by JS -->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Recent Activity</h3>
-                                <button class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem;">View All</button>
-                            </div>
-                            <div class="card-body">
-                                <ul class="activity-list" id="activityList">
-                                    <!-- Activity items generated by JS -->
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Recent Consultations</h3>
-                            <button class="btn btn-primary" onclick="openModal('newConsultation')">+ New Consultation</button>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-container">
-                                <table class="data-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Client</th>
-                                            <th>Service</th>
-                                            <th>Date</th>
-                                            <th>Status</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="recentConsultationsTable">
-                                        <!-- Table rows generated by JS -->
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Consultations Section -->
-                <section id="consultations" class="section">
-                    <div class="page-header">
-                        <div class="page-title">
-                            <h2>Consultation Requests</h2>
-                            <p>Manage and track all client consultation requests.</p>
-                        </div>
-                        <div class="page-actions">
-                            <button class="btn btn-primary" onclick="openModal('newConsultation')">+ Add Consultation</button>
-                        </div>
-                    </div>
-
-                    <div class="tabs">
-                        <button class="tab active" onclick="filterConsultations('all')">All</button>
-                        <button class="tab" onclick="filterConsultations('pending')">Pending</button>
-                        <button class="tab" onclick="filterConsultations('in-progress')">In Progress</button>
-                        <button class="tab" onclick="filterConsultations('completed')">Completed</button>
-                    </div>
-
-                    <div class="filter-bar">
-                        <input type="text" class="filter-input" placeholder="Search clients..." id="consultationSearch">
-                        <select class="filter-input" id="serviceFilter">
-                            <option value="">All Services</option>
-                            <option value="survey">Hydrogeological Survey</option>
-                            <option value="drilling">Borehole Drilling</option>
-                            <option value="pump">Pump Installation</option>
-                            <option value="tower">Water Tower</option>
-                        </select>
-                        <input type="date" class="filter-input" id="dateFilter">
-                    </div>
-
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="table-container">
-                                <table class="data-table">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Client Information</th>
-                                            <th>Service Required</th>
-                                            <th>Location</th>
-                                            <th>Submitted</th>
-                                            <th>Status</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="allConsultationsTable">
-                                        <!-- Full consultation list -->
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Users Section -->
-                <section id="users" class="section">
-                    <div class="page-header">
-                        <div class="page-title">
-                            <h2>User Management</h2>
-                            <p>Manage registered users and their permissions.</p>
-                        </div>
-                        <div class="page-actions">
-                            <button class="btn btn-primary" onclick="openModal('newUser')">+ Add User</button>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">All Users</h3>
-                            <input type="text" class="filter-input" placeholder="Search users..." id="userSearch">
-                        </div>
-                        <div class="card-body">
-                            <div class="table-container">
-                                <table class="data-table">
-                                    <thead>
-                                        <tr>
-                                            <th>User</th>
-                                            <th>Email</th>
-                                            <th>Phone</th>
-                                            <th>Role</th>
-                                            <th>Joined</th>
-                                            <th>Status</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="usersTable">
-                                        <!-- User rows generated by JS -->
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Analytics Section -->
-                <section id="analytics" class="section">
-                    <div class="page-header">
-                        <div class="page-title">
-                            <h2>Analytics & Reports</h2>
-                            <p>Detailed insights into your business performance.</p>
-                        </div>
-                        <div class="page-actions">
-                            <button class="btn btn-secondary">📅 This Month</button>
-                            <button class="btn btn-primary">📥 Download Report</button>
-                        </div>
-                    </div>
-
-                    <div class="analytics-grid">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Service Distribution</h3>
-                            </div>
-                            <div class="card-body metric-card">
-                                <div class="metric-value">42%</div>
-                                <div class="metric-label">Borehole Drilling</div>
-                                <p style="color: #64748b; font-size: 0.9rem; margin-top: 0.5rem;">Most requested service</p>
-                            </div>
-                        </div>
-
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Conversion Rate</h3>
-                            </div>
-                            <div class="card-body metric-card">
-                                <div class="metric-value">78%</div>
-                                <div class="metric-label">Consultation to Project</div>
-                                <p style="color: #64748b; font-size: 0.9rem; margin-top: 0.5rem;">+5% from last month</p>
-                            </div>
-                        </div>
-
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Avg. Response Time</h3>
-                            </div>
-                            <div class="card-body metric-card">
-                                <div class="metric-value">4.2h</div>
-                                <div class="metric-label">First Response</div>
-                                <p style="color: #64748b; font-size: 0.9rem; margin-top: 0.5rem;">Industry avg: 8h</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Monthly Performance</h3>
-                        </div>
-                        <div class="card-body">
-                            <div class="chart-container" style="height: 400px;">
-                                <div class="chart-placeholder" id="performanceChart">
-                                    <!-- Performance chart -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Services Section -->
-                <section id="services" class="section">
-                    <div class="page-header">
-                        <div class="page-title">
-                            <h2>Service Management</h2>
-                            <p>Manage your service offerings and pricing.</p>
-                        </div>
-                        <div class="page-actions">
-                            <button class="btn btn-primary" onclick="openModal('newService')">+ Add Service</button>
-                        </div>
-                    </div>
-
-                    <div class="stats-grid" id="servicesGrid">
-                        <!-- Service cards generated by JS -->
-                    </div>
-                </section>
-
-                <!-- Settings Section -->
-                <section id="settings" class="section">
-                    <div class="page-header">
-                        <div class="page-title">
-                            <h2>System Settings</h2>
-                            <p>Configure your admin panel preferences.</p>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">General Settings</h3>
-                        </div>
-                        <div class="card-body">
-                            <form id="settingsForm">
-                                <div class="form-group">
-                                    <label>Company Name</label>
-                                    <input type="text" value="Megastrike Hydro Drilling Solutions">
-                                </div>
-                                <div class="form-group">
-                                    <label>Contact Email</label>
-                                    <input type="email" value="admin@megastrike.co.ke">
-                                </div>
-                                <div class="form-group">
-                                    <label>Phone Number</label>
-                                    <input type="tel" value="+254 729 317 914">
-                                </div>
-                                <button type="submit" class="btn btn-primary">Save Changes</button>
-                            </form>
-                        </div>
-                    </div>
-                </section>
-            </div>
-        </main>
-    </div>
-
     <!-- Access Denied View -->
-    <div class="access-denied" id="accessDenied" style="display: none;">
-        <h1>🚫</h1>
-        <h2>Access Denied</h2>
-        <p>You do not have permission to access the admin panel. Please contact an administrator if you believe this is an error.</p>
-        <a href="/" class="btn btn-primary">Return to Homepage</a>
+    <div class="access-denied" id="accessDenied">
+        <h1>🔒</h1>
+        <h2>Please Log In</h2>
+        <p>You need to be logged in to view your dashboard.</p>
+        <a href="/login.html" class="btn btn-primary">Go to Login</a>
     </div>
 
-    <!-- Modal -->
-    <div class="modal-overlay" id="modal">
-        <div class="modal">
-            <div class="modal-header">
-                <h3 class="modal-title" id="modalTitle">New Entry</h3>
-                <button class="modal-close" onclick="closeModal()">×</button>
+    <!-- Main Dashboard -->
+    <div id="dashboardContent">
+        <header class="header">
+            <a href="/" class="logo">
+                <div class="logo-icon">💧</div>
+                <div class="logo-text">
+                    <h1>Megastrike</h1>
+                    <span>My Dashboard</span>
+                </div>
+            </a>
+            
+            <nav class="nav">
+                <a href="/">Home</a>
+                <a href="/#services">Services</a>
+                <a href="/#contacts">Contact</a>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </nav>
+        </header>
+
+        <div class="container">
+            <!-- Welcome -->
+            <div class="welcome-card">
+                <h1>Welcome back, <span id="userName">User</span>! 👋</h1>
+                <p>Manage your water drilling projects and consultations all in one place.</p>
             </div>
-            <div class="modal-body" id="modalBody">
-                <!-- Dynamic content -->
+
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon blue">📋</div>
+                    </div>
+                    <div class="stat-value" id="totalRequests">0</div>
+                    <div class="stat-label">Total Requests</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon orange">⏳</div>
+                    </div>
+                    <div class="stat-value" id="pendingRequests">0</div>
+                    <div class="stat-label">Pending</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon green">✅</div>
+                    </div>
+                    <div class="stat-value" id="completedRequests">0</div>
+                    <div class="stat-label">Completed</div>
+                </div>
             </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-                <button class="btn btn-primary" onclick="saveModal()">Save</button>
+
+            <!-- Quick Actions -->
+            <div class="action-grid">
+                <div class="action-card">
+                    <div class="action-icon">📋</div>
+                    <h3>New Consultation</h3>
+                    <p>Request a new borehole drilling or water survey service</p>
+                    <a href="/#contacts" class="btn btn-primary">Get Started →</a>
+                </div>
+
+                <div class="action-card">
+                    <div class="action-icon">📞</div>
+                    <h3>Contact Support</h3>
+                    <p>Have questions? Our team is here to help you</p>
+                    <a href="tel:+254729317914" class="btn btn-primary">Call Now →</a>
+                </div>
+            </div>
+
+            <!-- My Consultations -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h2 class="section-title">My Consultations</h2>
+                    <a href="/#contacts" class="btn btn-primary">+ New Request</a>
+                </div>
+                <ul class="consultation-list" id="consultationsList">
+                    <!-- Populated by JavaScript -->
+                </ul>
             </div>
         </div>
     </div>
 
-    <!-- Toast Container -->
-    <div class="toast-container" id="toastContainer"></div>
-
     <script>
-        // State Management
-        let currentUser = null;
-        let consultations = [];
-        let users = [];
-        let services = [];
+        const BACKEND_URL = 'https://megastrike-hydro.onrender.com';
 
-        // Initialize
+        // Check auth on load
         document.addEventListener('DOMContentLoaded', async () => {
-            await checkAuth();
-        });
-
-        // Authentication Check - FIXED: Proper role checking
-        async function checkAuth() {
             const token = localStorage.getItem('token');
             const userStr = localStorage.getItem('user');
             
-            if (!token) {
-                window.location.href = '/login.html';
+            if (!token || !userStr) {
+                showAccessDenied();
                 return;
             }
-
+            
             try {
-                // Parse user data from localStorage
-                if (userStr) {
-                    currentUser = JSON.parse(userStr);
-                }
+                const user = JSON.parse(userStr);
+                
+                // Update welcome message
+                document.getElementById('userName').textContent = `${user.firstName} ${user.lastName}`;
+                
+                // Load consultations
+                await loadConsultations(token);
+                
+            } catch (error) {
+                console.error('Error:', error);
+                showAccessDenied();
+            }
+        });
 
-                // Verify with server
-                const response = await fetch('/api/auth/me', {
+        function showAccessDenied() {
+            document.getElementById('dashboardContent').style.display = 'none';
+            document.getElementById('accessDenied').style.display = 'flex';
+        }
+
+        async function loadConsultations(token) {
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/consultations`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 
-                if (!response.ok) throw new Error('Auth failed');
-                
                 const data = await response.json();
+                
                 if (data.success) {
-                    currentUser = data.user;
-                    // Update localStorage with fresh data
-                    localStorage.setItem('user', JSON.stringify(data.user));
-                    
-                    // Check if user is admin
-                    if (data.user.role !== 'admin') {
-                        showAccessDenied();
-                        return;
-                    }
-                    
-                    updateAdminProfile();
-                    initializeData();
-                    renderDashboard();
-                    setupEventListeners();
-                } else {
-                    throw new Error('Not authorized');
+                    displayConsultations(data.consultations);
                 }
             } catch (error) {
-                console.error('Auth error:', error);
-                localStorage.removeItem('token');
-                localStorage.removeItem('user');
-                window.location.href = '/login.html';
+                console.error('Failed to load consultations:', error);
+                // Show empty state
+                displayConsultations([]);
             }
         }
 
-        function showAccessDenied() {
-    // Redirect non-admins to user dashboard instead of showing error
-    window.location.href = '/dashboard.html';
-}
-
-        function updateAdminProfile() {
-            if (currentUser) {
-                document.getElementById('adminName').textContent = `${currentUser.first_name} ${currentUser.last_name}`;
-                document.getElementById('adminAvatar').textContent = 
-                    `${currentUser.first_name[0]}${currentUser.last_name[0]}`.toUpperCase();
-            }
-        }
-
-        // Data Initialization
-        function initializeData() {
-            // Mock data - replace with API calls
-            consultations = [
-                { id: 1, name: 'John Kamau', email: 'john@example.com', phone: '+254712345678', service: 'Borehole Drilling', location: 'Kitale', status: 'pending', date: '2024-03-19', details: 'Need borehole for domestic use' },
-                { id: 2, name: 'Sarah Wanjiku', email: 'sarah@example.com', phone: '+254723456789', service: 'Hydrogeological Survey', location: 'Eldoret', status: 'in-progress', date: '2024-03-18', details: 'Commercial property survey' },
-                { id: 3, name: 'Peter Ochieng', email: 'peter@example.com', phone: '+254734567890', service: 'Pump Installation', location: 'Bungoma', status: 'completed', date: '2024-03-15', details: 'Solar pump installation' },
-                { id: 4, name: 'Mary Njeri', email: 'mary@example.com', phone: '+254745678901', service: 'Water Tower', location: 'Kakamega', status: 'pending', date: '2024-03-19', details: '50,000 liter tank' },
-                { id: 5, name: 'James Mwangi', email: 'james@example.com', phone: '+254756789012', service: 'Borehole Drilling', location: 'Kitale', status: 'completed', date: '2024-03-10', details: 'Agricultural use' }
-            ];
-
-            users = [
-                { id: 1, first_name: 'John', last_name: 'Kamau', email: 'john@example.com', phone: '+254712345678', role: 'client', status: 'active', created_at: '2024-03-01' },
-                { id: 2, first_name: 'Sarah', last_name: 'Wanjiku', email: 'sarah@example.com', phone: '+254723456789', role: 'client', status: 'active', created_at: '2024-03-05' },
-                { id: 3, first_name: 'Admin', last_name: 'User', email: 'admin@megastrike.co.ke', phone: '+254729317914', role: 'admin', status: 'active', created_at: '2024-01-01' }
-            ];
-
-            services = [
-                { id: 1, name: 'Hydrogeological Survey', icon: '🔍', count: 12, price: 'KES 15,000' },
-                { id: 2, name: 'Borehole Drilling', icon: '🚧', count: 24, price: 'KES 8,500/m' },
-                { id: 3, name: 'Pump Installation', icon: '⚙️', count: 8, price: 'From KES 45,000' },
-                { id: 4, name: 'Water Tower', icon: '🏗️', count: 5, price: 'Custom Quote' }
-            ];
-        }
-
-        // Navigation
-        function showSection(sectionId) {
-            // Hide all sections
-            document.querySelectorAll('.section').forEach(section => {
-                section.classList.remove('active');
-            });
+        function displayConsultations(consultations) {
+            const container = document.getElementById('consultationsList');
             
-            // Show target section
-            document.getElementById(sectionId).classList.add('active');
-            
-            // Update nav active state
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.classList.remove('active');
-            });
-            event.target.closest('.nav-link').classList.add('active');
-            
-            // Load section data
-            if (sectionId === 'consultations') renderConsultations();
-            if (sectionId === 'users') renderUsers();
-            if (sectionId === 'services') renderServices();
-            if (sectionId === 'analytics') renderAnalytics();
-            
-            // Close sidebar on mobile
-            if (window.innerWidth <= 1024) {
-                document.getElementById('sidebar').classList.remove('active');
-            }
-        }
-
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('active');
-        }
-
-        // Dashboard Rendering
-        function renderDashboard() {
-            updateStats();
-            renderChart();
-            renderActivity();
-            renderRecentConsultations();
-        }
-
-        function updateStats() {
-            document.getElementById('totalConsultations').textContent = consultations.length;
-            document.getElementById('pendingConsultations').textContent = 
+            // Update stats
+            document.getElementById('totalRequests').textContent = consultations.length;
+            document.getElementById('pendingRequests').textContent = 
                 consultations.filter(c => c.status === 'pending').length;
-            document.getElementById('completedProjects').textContent = 
+            document.getElementById('completedRequests').textContent = 
                 consultations.filter(c => c.status === 'completed').length;
-            document.getElementById('totalUsers').textContent = users.length;
-        }
-
-        function renderChart() {
-            const chartContainer = document.getElementById('consultationChart');
-            const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-            const data = [3, 5, 2, 8, 4, 6, 7];
             
-            chartContainer.innerHTML = days.map((day, index) => `
-                <div class="chart-bar" style="height: ${data[index] * 10}%" title="${data[index]} consultations">
-                    <span class="chart-bar-label">${day}</span>
-                </div>
-            `).join('');
-        }
-
-        function renderActivity() {
-            const activities = [
-                { type: 'new', text: 'New consultation request from John Kamau', time: '5 minutes ago' },
-                { type: 'completed', text: 'Project completed for Peter Ochieng', time: '2 hours ago' },
-                { type: 'pending', text: 'Survey scheduled for Sarah Wanjiku', time: '4 hours ago' },
-                { type: 'new', text: 'New user registration: Mary Njeri', time: '1 day ago' }
-            ];
-
-            document.getElementById('activityList').innerHTML = activities.map(activity => `
-                <li class="activity-item">
-                    <div class="activity-icon ${activity.type}">
-                        ${activity.type === 'new' ? '✨' : activity.type === 'completed' ? '✓' : '⏳'}
+            if (consultations.length === 0) {
+                container.innerHTML = `
+                    <li class="empty-state">
+                        <div class="empty-state-icon">📋</div>
+                        <h3>No consultations yet</h3>
+                        <p>Submit your first consultation request to get started with your water project.</p>
+                        <a href="/#contacts" class="btn btn-primary" style="margin-top: 1rem;">Submit Request</a>
+                    </li>
+                `;
+                return;
+            }
+            
+            container.innerHTML = consultations.map(c => `
+                <li class="consultation-item">
+                    <div class="consultation-info">
+                        <h4>${c.service_type || c.service || 'General Inquiry'}</h4>
+                        <p>${c.location || 'Location not specified'} • ${new Date(c.created_at).toLocaleDateString()}</p>
                     </div>
-                    <div class="activity-content">
-                        <h4>${activity.text}</h4>
-                        <span class="activity-time">${activity.time}</span>
-                    </div>
+                    <span class="status-badge status-${c.status}">${c.status}</span>
                 </li>
             `).join('');
         }
 
-        function renderRecentConsultations() {
-            const tbody = document.getElementById('recentConsultationsTable');
-            const recent = consultations.slice(0, 5);
-            
-            tbody.innerHTML = recent.map(c => `
-                <tr>
-                    <td>
-                        <div class="user-cell">
-                            <div class="user-avatar">${c.name.split(' ').map(n => n[0]).join('')}</div>
-                            <div class="user-info">
-                                <h4>${c.name}</h4>
-                                <p>${c.email}</p>
-                            </div>
-                        </div>
-                    </td>
-                    <td>${c.service}</td>
-                    <td>${new Date(c.date).toLocaleDateString()}</td>
-                    <td><span class="status-badge status-${c.status}">${c.status}</span></td>
-                    <td>
-                        <div class="action-btns">
-                            <button class="action-btn view" onclick="viewConsultation(${c.id})">👁</button>
-                            <button class="action-btn edit" onclick="editConsultation(${c.id})">✎</button>
-                        </div>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        // Consultations Management
-        function renderConsultations() {
-            const tbody = document.getElementById('allConsultationsTable');
-            tbody.innerHTML = consultations.map(c => `
-                <tr>
-                    <td>#${c.id.toString().padStart(3, '0')}</td>
-                    <td>
-                        <div class="user-cell">
-                            <div class="user-avatar">${c.name.split(' ').map(n => n[0]).join('')}</div>
-                            <div class="user-info">
-                                <h4>${c.name}</h4>
-                                <p>${c.phone}</p>
-                            </div>
-                        </div>
-                    </td>
-                    <td>${c.service}</td>
-                    <td>${c.location}</td>
-                    <td>${new Date(c.date).toLocaleDateString()}</td>
-                    <td><span class="status-badge status-${c.status}">${c.status}</span></td>
-                    <td>
-                        <div class="action-btns">
-                            <button class="action-btn view" onclick="viewConsultation(${c.id})">👁</button>
-                            <button class="action-btn edit" onclick="editConsultation(${c.id})">✎</button>
-                            <button class="action-btn delete" onclick="deleteConsultation(${c.id})">🗑</button>
-                        </div>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        function filterConsultations(status) {
-            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            const filtered = status === 'all' ? consultations : consultations.filter(c => c.status === status);
-            const tbody = document.getElementById('allConsultationsTable');
-            tbody.innerHTML = filtered.map(c => `
-                <tr>
-                    <td>#${c.id.toString().padStart(3, '0')}</td>
-                    <td>
-                        <div class="user-cell">
-                            <div class="user-avatar">${c.name.split(' ').map(n => n[0]).join('')}</div>
-                            <div class="user-info">
-                                <h4>${c.name}</h4>
-                                <p>${c.phone}</p>
-                            </div>
-                        </div>
-                    </td>
-                    <td>${c.service}</td>
-                    <td>${c.location}</td>
-                    <td>${new Date(c.date).toLocaleDateString()}</td>
-                    <td><span class="status-badge status-${c.status}">${c.status}</span></td>
-                    <td>
-                        <div class="action-btns">
-                            <button class="action-btn view" onclick="viewConsultation(${c.id})">👁</button>
-                            <button class="action-btn edit" onclick="editConsultation(${c.id})">✎</button>
-                            <button class="action-btn delete" onclick="deleteConsultation(${c.id})">🗑</button>
-                        </div>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        // Users Management
-        function renderUsers() {
-            const tbody = document.getElementById('usersTable');
-            tbody.innerHTML = users.map(u => `
-                <tr>
-                    <td>
-                        <div class="user-cell">
-                            <div class="user-avatar">${u.first_name[0]}${u.last_name[0]}</div>
-                            <div class="user-info">
-                                <h4>${u.first_name} ${u.last_name}</h4>
-                                <p>${u.role}</p>
-                            </div>
-                        </div>
-                    </td>
-                    <td>${u.email}</td>
-                    <td>${u.phone}</td>
-                    <td><span class="status-badge status-${u.role}">${u.role}</span></td>
-                    <td>${new Date(u.created_at).toLocaleDateString()}</td>
-                    <td><span class="status-badge status-completed">${u.status}</span></td>
-                    <td>
-                        <div class="action-btns">
-                            <button class="action-btn edit" onclick="editUser(${u.id})">✎</button>
-                            <button class="action-btn delete" onclick="deleteUser(${u.id})">🗑</button>
-                        </div>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        // Services Management
-        function renderServices() {
-            const grid = document.getElementById('servicesGrid');
-            grid.innerHTML = services.map(s => `
-                <div class="stat-card">
-                    <div class="stat-header">
-                        <div class="stat-icon blue">${s.icon}</div>
-                        <button class="action-btn edit" onclick="editService(${s.id})">✎</button>
-                    </div>
-                    <div class="stat-value">${s.count}</div>
-                    <div class="stat-label">${s.name}</div>
-                    <p style="margin-top: 0.5rem; color: var(--aqua); font-weight: 600;">${s.price}</p>
-                </div>
-            `).join('');
-        }
-
-        // Analytics
-        function renderAnalytics() {
-            const chartContainer = document.getElementById('performanceChart');
-            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
-            const data = [12, 19, 15, 25, 22, 30];
-            
-            chartContainer.innerHTML = months.map((month, index) => `
-                <div class="chart-bar" style="height: ${data[index] * 3}px; background: linear-gradient(to top, var(--ocean-blue), var(--azure));" title="${data[index]} projects">
-                    <span class="chart-bar-label">${month}</span>
-                </div>
-            `).join('');
-        }
-
-        // Modal Management
-        function openModal(type) {
-            const modal = document.getElementById('modal');
-            const title = document.getElementById('modalTitle');
-            const body = document.getElementById('modalBody');
-            
-            modal.classList.add('active');
-            
-            switch(type) {
-                case 'newConsultation':
-                    title.textContent = 'New Consultation';
-                    body.innerHTML = `
-                        <div class="form-group">
-                            <label>Client Name</label>
-                            <input type="text" id="clientName" placeholder="Full name">
-                        </div>
-                        <div class="form-group">
-                            <label>Email</label>
-                            <input type="email" id="clientEmail" placeholder="email@example.com">
-                        </div>
-                        <div class="form-group">
-                            <label>Phone</label>
-                            <input type="tel" id="clientPhone" placeholder="+254...">
-                        </div>
-                        <div class="form-group">
-                            <label>Service</label>
-                            <select id="serviceType">
-                                <option value="Borehole Drilling">Borehole Drilling</option>
-                                <option value="Hydrogeological Survey">Hydrogeological Survey</option>
-                                <option value="Pump Installation">Pump Installation</option>
-                                <option value="Water Tower">Water Tower</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Location</label>
-                            <input type="text" id="location" placeholder="Town/Area">
-                        </div>
-                    `;
-                    break;
-                case 'newUser':
-                    title.textContent = 'Add New User';
-                    body.innerHTML = `
-                        <div class="form-group">
-                            <label>First Name</label>
-                            <input type="text" id="firstName">
-                        </div>
-                        <div class="form-group">
-                            <label>Last Name</label>
-                            <input type="text" id="lastName">
-                        </div>
-                        <div class="form-group">
-                            <label>Email</label>
-                            <input type="email" id="userEmail">
-                        </div>
-                        <div class="form-group">
-                            <label>Role</label>
-                            <select id="userRole">
-                                <option value="client">Client</option>
-                                <option value="admin">Admin</option>
-                            </select>
-                        </div>
-                    `;
-                    break;
-            }
-        }
-
-        function closeModal() {
-            document.getElementById('modal').classList.remove('active');
-        }
-
-        function saveModal() {
-            showToast('success', 'Success', 'Data saved successfully!');
-            closeModal();
-        }
-
-        // Toast Notifications
-        function showToast(type, title, message) {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            toast.innerHTML = `
-                <span class="toast-icon">${type === 'success' ? '✓' : type === 'error' ? '✕' : '⚠'}</span>
-                <div class="toast-content">
-                    <h4>${title}</h4>
-                    <p>${message}</p>
-                </div>
-            `;
-            container.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.remove();
-            }, 5000);
-        }
-
-        // Actions
-        function viewConsultation(id) {
-            const c = consultations.find(x => x.id === id);
-            showToast('info', 'Consultation Details', `${c.name} - ${c.service}`);
-        }
-
-        function editConsultation(id) {
-            openModal('newConsultation');
-        }
-
-        function deleteConsultation(id) {
-            if (confirm('Are you sure you want to delete this consultation?')) {
-                consultations = consultations.filter(c => c.id !== id);
-                renderConsultations();
-                showToast('success', 'Deleted', 'Consultation removed successfully');
-            }
-        }
-
-        function editUser(id) {
-            openModal('newUser');
-        }
-
-        function deleteUser(id) {
-            if (confirm('Are you sure you want to delete this user?')) {
-                users = users.filter(u => u.id !== id);
-                renderUsers();
-                showToast('success', 'Deleted', 'User removed successfully');
-            }
-        }
-
-        function editService(id) {
-            showToast('info', 'Edit Service', 'Service editing coming soon');
-        }
-
-        function refreshData() {
-            showToast('success', 'Refreshed', 'Dashboard data updated');
-            renderDashboard();
-        }
-
-        function exportReport() {
-            showToast('success', 'Export Started', 'Report will be downloaded shortly');
-        }
-
         function logout() {
-            if (confirm('Are you sure you want to logout?')) {
-                localStorage.removeItem('token');
-                localStorage.removeItem('user');
-                window.location.href = '/login.html';
-            }
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = '/login.html';
         }
-
-        function showNotifications() {
-            showToast('info', 'Notifications', 'You have 3 new notifications');
-        }
-
-        function toggleTheme() {
-            document.body.classList.toggle('dark-theme');
-            showToast('success', 'Theme Changed', 'Theme toggled successfully');
-        }
-
-        function setupEventListeners() {
-            // Global search
-            document.getElementById('globalSearch').addEventListener('input', (e) => {
-                const term = e.target.value.toLowerCase();
-                // Implement search logic
-            });
-
-            // Settings form
-            document.getElementById('settingsForm')?.addEventListener('submit', (e) => {
-                e.preventDefault();
-                showToast('success', 'Settings Saved', 'Your preferences have been updated');
-            });
-        }
-
-        // Close modal on outside click
-        document.getElementById('modal').addEventListener('click', (e) => {
-            if (e.target === document.getElementById('modal')) {
-                closeModal();
-            }
-        });
     </script>
 
 </body>
