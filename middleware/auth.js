@@ -17,8 +17,17 @@ function authenticateToken(req, res, next) {
 
     const decoded = jwt.verify(token, config.jwtSecret);
 
-    // 🔥 THIS IS CRITICAL
-    req.user = decoded;
+    // 🔥 FIX: Normalize the user object to have consistent property names
+    req.user = {
+      userId: decoded.userId,
+      id: decoded.userId, // Add both for compatibility
+      email: decoded.email,
+      role: decoded.role,
+      firstName: decoded.firstName,
+      lastName: decoded.lastName
+    };
+
+    console.log('Auth middleware - user:', req.user); // Debug log
 
     next();
   } catch (err) {
