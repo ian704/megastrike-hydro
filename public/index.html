@@ -54,22 +54,29 @@ nav {
     width: 100%;
 }
 
+/* LOGO WITH WHITE BACKGROUND - STANDOUT */
 .logo {
     display: flex;
     align-items: center;
     text-decoration: none;
     flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 8px 20px;
+    border-radius: 50px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3), 0 0 0 3px rgba(233, 196, 106, 0.3);
+    transition: all 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 30px rgba(0,0,0,0.4), 0 0 0 4px rgba(233, 196, 106, 0.5);
+    background: white;
 }
 
 .logo-img {
-    height: 130px;
+    height: 60px;
     width: auto;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-    transition: transform 0.3s ease;
-}
-
-.logo:hover .logo-img {
-    transform: scale(1.05);
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
 }
 
 .nav-links {
@@ -472,7 +479,8 @@ nav {
     .hero-buttons{flex-direction:column;width:100%; align-items: center;}
     .hero-btn{width:100%; max-width: 280px;}
     .hero-features{display: none;}
-    .logo-img {height: 100px;}
+    .logo-img {height: 50px;}
+    .logo {padding: 6px 15px;}
     nav {height: 80px;}
     .hero {padding-top: 80px;}
     .mobile-menu {top: 80px;}
@@ -652,32 +660,107 @@ nav {
     color: var(--gold);
 }
 
-/* GALLERY */
+/* GALLERY SLIDESHOW */
 .gallery-section {
     background: var(--navy);
+    padding: 80px 5%;
 }
 
-.gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
+.gallery-slideshow-container {
+    position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
+    overflow: hidden;
+    border: 3px solid rgba(233, 196, 106, 0.3);
 }
 
-.gallery-grid img {
+.gallery-slideshow {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    height: 500px;
+}
+
+.gallery-slide {
+    min-width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.gallery-slide img {
     width: 100%;
-    height: 280px;
+    height: 100%;
     object-fit: cover;
-    border-radius: 0;
-    transition: all 0.4s ease;
-    border: 2px solid transparent;
-    filter: grayscale(20%);
+    display: block;
 }
 
-.gallery-grid img:hover {
-    transform: scale(1.03);
+.gallery-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(10,22,40,0.9), transparent);
+    padding: 30px 20px 20px;
+    color: white;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 600;
+}
+
+.gallery-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(233, 196, 106, 0.9);
+    color: var(--deep-navy);
+    border: none;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.gallery-nav:hover {
+    background: var(--gold);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.gallery-prev { left: 20px; }
+.gallery-next { right: 20px; }
+
+.gallery-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.gallery-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.gallery-indicator.active {
+    background: var(--gold);
     border-color: var(--gold);
-    filter: grayscale(0%);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+    transform: scale(1.2);
+}
+
+@media (max-width: 768px) {
+    .gallery-slideshow { height: 300px; }
+    .gallery-nav { width: 40px; height: 40px; font-size: 1.2rem; }
+    .gallery-prev { left: 10px; }
+    .gallery-next { right: 10px; }
 }
 
 /* CONTACT */
@@ -750,10 +833,68 @@ nav {
     color: var(--gold);
 }
 
+/* FOOTER */
+.footer {
+    background: #050a12;
+    border-top: 3px solid var(--gold);
+    padding: 60px 5% 30px;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+}
+
+.footer-section h3 {
+    color: var(--gold);
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.footer-section p, .footer-section a {
+    color: var(--text-muted);
+    text-decoration: none;
+    line-height: 1.8;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+}
+
+.footer-section a:hover {
+    color: var(--gold);
+}
+
+.footer-section ul {
+    list-style: none;
+}
+
+.footer-section ul li {
+    margin-bottom: 10px;
+}
+
+.footer-bottom {
+    max-width: 1200px;
+    margin: 40px auto 0;
+    padding-top: 30px;
+    border-top: 1px solid rgba(233, 196, 106, 0.2);
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.footer-bottom a {
+    color: var(--gold);
+    text-decoration: none;
+}
+
 /* EXTRA ANIMATION */
 .service-card,
-.about-card,
-.gallery-grid img {
+.about-card {
     opacity: 0;
     transform: translateY(30px);
     animation: fadeUp 0.8s forwards;
@@ -956,17 +1097,50 @@ nav {
     </div>
 </section>
 
+<!-- GALLERY SLIDESHOW SECTION -->
 <section id="gallery" class="section gallery-section">
     <div class="container">
         <h2>Our Work</h2>
 
-        <div class="gallery-grid">
-            <img src="images/one.jpg">
-            <img src="images/two.jpg">
-            <img src="images/three.jpg">
-            <img src="images/solar.jpg">
-            <img src="images/tower.jpg">
-            <img src="images/site.jpg">
+        <div class="gallery-slideshow-container">
+            <div class="gallery-slideshow" id="gallerySlideshow">
+                <div class="gallery-slide">
+                    <img src="images/one.jpg" alt="Drilling Operation">
+                    <div class="gallery-caption">Professional Drilling Operations</div>
+                </div>
+                <div class="gallery-slide">
+                    <img src="images/two.jpg" alt="Equipment">
+                    <div class="gallery-caption">State-of-the-Art Equipment</div>
+                </div>
+                <div class="gallery-slide">
+                    <img src="images/three.jpg" alt="Site Work">
+                    <div class="gallery-caption">On-Site Project Execution</div>
+                </div>
+                <div class="gallery-slide">
+                    <img src="images/solar.jpg" alt="Solar Installation">
+                    <div class="gallery-caption">Solar Pump Solutions</div>
+                </div>
+                <div class="gallery-slide">
+                    <img src="images/tower.jpg" alt="Water Tower">
+                    <div class="gallery-caption">Water Tower Construction</div>
+                </div>
+                <div class="gallery-slide">
+                    <img src="images/site.jpg" alt="Project Site">
+                    <div class="gallery-caption">Completed Project Sites</div>
+                </div>
+            </div>
+            
+            <button class="gallery-nav gallery-prev" onclick="changeGallerySlide(-1)">❮</button>
+            <button class="gallery-nav gallery-next" onclick="changeGallerySlide(1)">❯</button>
+        </div>
+        
+        <div class="gallery-indicators" id="galleryIndicators">
+            <div class="gallery-indicator active" onclick="goToGallerySlide(0)"></div>
+            <div class="gallery-indicator" onclick="goToGallerySlide(1)"></div>
+            <div class="gallery-indicator" onclick="goToGallerySlide(2)"></div>
+            <div class="gallery-indicator" onclick="goToGallerySlide(3)"></div>
+            <div class="gallery-indicator" onclick="goToGallerySlide(4)"></div>
+            <div class="gallery-indicator" onclick="goToGallerySlide(5)"></div>
         </div>
     </div>
 </section>
@@ -989,6 +1163,52 @@ nav {
     </div>
 </section>
 
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-section">
+            <h3>About Megastrike</h3>
+            <p>Megastrike Hydro Drilling Solutions Ltd is a trusted water solutions company based in Kitale, Kenya. We specialize in delivering reliable, sustainable, and cost-effective groundwater development services.</p>
+        </div>
+        
+        <div class="footer-section">
+            <h3>Quick Links</h3>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#contacts">Contact</a></li>
+                <li><a href="/dashboard.html">Dashboard</a></li>
+            </ul>
+        </div>
+        
+        <div class="footer-section">
+            <h3>Our Services</h3>
+            <ul>
+                <li><a href="#services">Hydrogeological Survey</a></li>
+                <li><a href="#services">Borehole Drilling</a></li>
+                <li><a href="#services">Pump Installation</a></li>
+                <li><a href="#services">Water Towers</a></li>
+                <li><a href="#services">Borehole Inspection</a></li>
+            </ul>
+        </div>
+        
+        <div class="footer-section">
+            <h3>Contact Info</h3>
+            <p><strong>Location:</strong> Kitale, Kenya</p>
+            <p><strong>Email:</strong> megastrikehydrodrillingsolltd@gmail.com</p>
+            <p><strong>Phone:</strong> +254729317914</p>
+            <p><strong>Hours:</strong> Mon - Sat: 8:00 AM - 6:00 PM</p>
+        </div>
+    </div>
+    
+    <div class="footer-bottom">
+        <p>&copy; 2024 Megastrike Hydro Drilling Solutions Ltd. All Rights Reserved.</p>
+        <p>Designed with excellence for Kenya's water solutions</p>
+    </div>
+</footer>
+
 <script>
 // MOBILE MENU
 function toggleMobileMenu() {
@@ -996,7 +1216,7 @@ function toggleMobileMenu() {
     menu.classList.toggle('active');
 }
 
-// SLIDESHOW
+// HERO SLIDESHOW
 let currentSlide = 0;
 const slides = document.querySelectorAll('.slide');
 const indicators = document.querySelectorAll('.slide-indicator');
@@ -1007,6 +1227,34 @@ function showSlide(index){
 function nextSlide(){ currentSlide = (currentSlide+1)%slides.length; showSlide(currentSlide); }
 setInterval(nextSlide,5000);
 indicators.forEach((ind,i)=>ind.addEventListener('click',()=>{currentSlide=i; showSlide(i);}));
+
+// GALLERY SLIDESHOW
+let currentGallerySlide = 0;
+const gallerySlideshow = document.getElementById('gallerySlideshow');
+const galleryIndicators = document.querySelectorAll('.gallery-indicator');
+const totalGallerySlides = 6;
+
+function updateGallerySlide() {
+    gallerySlideshow.style.transform = `translateX(-${currentGallerySlide * 100}%)`;
+    galleryIndicators.forEach((ind, i) => {
+        ind.classList.toggle('active', i === currentGallerySlide);
+    });
+}
+
+function changeGallerySlide(direction) {
+    currentGallerySlide = (currentGallerySlide + direction + totalGallerySlides) % totalGallerySlides;
+    updateGallerySlide();
+}
+
+function goToGallerySlide(index) {
+    currentGallerySlide = index;
+    updateGallerySlide();
+}
+
+// Auto-advance gallery slideshow
+setInterval(() => {
+    changeGallerySlide(1);
+}, 6000);
 
 // SCROLL REVEAL
 const revealElements = document.querySelectorAll('.reveal');
@@ -1020,6 +1268,7 @@ window.addEventListener('scroll',()=>{ navbar.style.background=window.scrollY>50
 
 // SMOOTH SCROLL
 document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',function(e){ e.preventDefault(); const target=document.querySelector(this.getAttribute('href')); if(target) target.scrollIntoView({behavior:'smooth',block:'start'});}));
+
 // ============================================
 // NAVIGATION BUTTON LOGIC
 // ============================================
