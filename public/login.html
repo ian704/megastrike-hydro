@@ -86,6 +86,7 @@ body {
     z-index: 10;
     animation: slideUp 0.6s ease-out;
     border: 1px solid rgba(233, 196, 106, 0.1);
+    overflow: visible;
 }
 
 @keyframes slideUp {
@@ -99,27 +100,87 @@ body {
     }
 }
 
-/* Logo Section - Dark background for logo to stand out */
+/* Logo Section - Irregular Organic Background */
 .logo {
     text-align: center;
     margin-bottom: 30px;
-    background: var(--deep-navy);
-    padding: 25px;
-    border-radius: 12px;
-    border: 1px solid rgba(233, 196, 106, 0.2);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-wrapper {
+    position: relative;
+    display: inline-block;
+    padding: 10px 20px;
+}
+
+.logo-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 110%;
+    height: 130%;
+    background: radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.85) 25%, rgba(255, 255, 255, 0.6) 50%, rgba(255, 255, 255, 0.3) 70%, rgba(255, 255, 255, 0) 100%);
+    border-radius: 60% 40% 70% 30% / 40% 50% 60% 50%;
+    z-index: -1;
+    filter: blur(6px);
+    opacity: 0.9;
+    animation: organicMorph 8s ease-in-out infinite;
+}
+
+.logo-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 115%;
+    background: radial-gradient(ellipse at 70% 80%, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.5) 40%, rgba(255, 255, 255, 0.2) 70%, rgba(255, 255, 255, 0) 100%);
+    border-radius: 40% 60% 30% 70% / 60% 30% 70% 40%;
+    z-index: -2;
+    filter: blur(10px);
+    opacity: 0.7;
+    animation: organicMorph 10s ease-in-out infinite reverse;
+}
+
+.logo-wrapper:hover::before {
+    opacity: 1;
+    filter: blur(5px);
+}
+
+.logo-wrapper:hover::after {
+    opacity: 0.9;
+    filter: blur(8px);
+}
+
+@keyframes organicMorph {
+    0%, 100% {
+        border-radius: 60% 40% 70% 30% / 40% 50% 60% 50%;
+    }
+    25% {
+        border-radius: 40% 60% 50% 50% / 60% 40% 60% 40%;
+    }
+    50% {
+        border-radius: 50% 50% 40% 60% / 50% 60% 40% 60%;
+    }
+    75% {
+        border-radius: 70% 30% 60% 40% / 40% 60% 50% 50%;
+    }
 }
 
 .logo-img {
-    height: 150px;
+    height: 120px;
     width: auto;
-    filter: drop-shadow(0 4px 15px rgba(233, 196, 106, 0.3));
-    animation: pulse 2s ease-in-out infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { transform: scale(1); filter: drop-shadow(0 4px 15px rgba(233, 196, 106, 0.3)); }
-    50% { transform: scale(1.02); filter: drop-shadow(0 6px 25px rgba(233, 196, 106, 0.4)); }
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+    position: relative;
+    z-index: 1;
+    display: block;
 }
 
 /* Welcome Text */
@@ -459,11 +520,19 @@ input::placeholder {
     }
 
     .logo-img {
-        height: 120px;
+        height: 100px;
     }
     
-    .logo {
-        padding: 20px;
+    .logo-wrapper::before {
+        width: 115%;
+        height: 135%;
+        filter: blur(5px);
+    }
+    
+    .logo-wrapper::after {
+        width: 105%;
+        height: 120%;
+        filter: blur(8px);
     }
     
     .social-login {
@@ -503,7 +572,9 @@ input::placeholder {
 <div class="container">
 
     <div class="logo">
-        <img src="images/logo.png" alt="Megastrike Hydro Drilling Solutions" class="logo-img">
+        <div class="logo-wrapper">
+            <img src="images/logo.png" alt="Megastrike Hydro Drilling Solutions" class="logo-img">
+        </div>
     </div>
 
     <div class="welcome-text">

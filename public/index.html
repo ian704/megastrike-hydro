@@ -54,29 +54,85 @@ nav {
     width: 100%;
 }
 
-/* LOGO WITH WHITE BACKGROUND - STANDOUT */
+/* LOGO WITH IRREGULAR ORGANIC BACKGROUND */
 .logo {
     display: flex;
     align-items: center;
     text-decoration: none;
     flex-shrink: 0;
-    background: rgba(255, 255, 255, 0.95);
-    padding: 8px 20px;
-    border-radius: 50px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3), 0 0 0 3px rgba(233, 196, 106, 0.3);
-    transition: all 0.3s ease;
+    position: relative;
+    padding: 10px 25px;
+    transform: scale(1.15);
+    transition: all 0.4s ease;
+}
+
+.logo::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 140%;
+    height: 160%;
+    background: radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.85) 25%, rgba(255, 255, 255, 0.6) 50%, rgba(255, 255, 255, 0.3) 70%, rgba(255, 255, 255, 0) 100%);
+    border-radius: 60% 40% 70% 30% / 40% 50% 60% 50%;
+    z-index: -1;
+    filter: blur(8px);
+    opacity: 0.9;
+    animation: organicMorph 8s ease-in-out infinite;
+}
+
+.logo::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120%;
+    height: 140%;
+    background: radial-gradient(ellipse at 70% 80%, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.5) 40%, rgba(255, 255, 255, 0.2) 70%, rgba(255, 255, 255, 0) 100%);
+    border-radius: 40% 60% 30% 70% / 60% 30% 70% 40%;
+    z-index: -2;
+    filter: blur(15px);
+    opacity: 0.7;
+    animation: organicMorph 10s ease-in-out infinite reverse;
 }
 
 .logo:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 30px rgba(0,0,0,0.4), 0 0 0 4px rgba(233, 196, 106, 0.5);
-    background: white;
+    transform: scale(1.22);
+}
+
+.logo:hover::before {
+    opacity: 1;
+    filter: blur(6px);
+}
+
+.logo:hover::after {
+    opacity: 0.9;
+    filter: blur(12px);
+}
+
+@keyframes organicMorph {
+    0%, 100% {
+        border-radius: 60% 40% 70% 30% / 40% 50% 60% 50%;
+    }
+    25% {
+        border-radius: 40% 60% 50% 50% / 60% 40% 60% 40%;
+    }
+    50% {
+        border-radius: 50% 50% 40% 60% / 50% 60% 40% 60%;
+    }
+    75% {
+        border-radius: 70% 30% 60% 40% / 40% 60% 50% 50%;
+    }
 }
 
 .logo-img {
-    height: 60px;
+    height: 68px;
     width: auto;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+    position: relative;
+    z-index: 1;
 }
 
 .nav-links {
@@ -479,8 +535,21 @@ nav {
     .hero-buttons{flex-direction:column;width:100%; align-items: center;}
     .hero-btn{width:100%; max-width: 280px;}
     .hero-features{display: none;}
-    .logo-img {height: 50px;}
-    .logo {padding: 6px 15px;}
+    .logo-img {height: 52px;}
+    .logo {
+        padding: 8px 18px;
+        transform: scale(1.1);
+    }
+    .logo::before {
+        width: 150%;
+        height: 170%;
+        filter: blur(6px);
+    }
+    .logo::after {
+        width: 130%;
+        height: 150%;
+        filter: blur(12px);
+    }
     nav {height: 80px;}
     .hero {padding-top: 80px;}
     .mobile-menu {top: 80px;}
