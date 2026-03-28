@@ -359,6 +359,33 @@ button[type="submit"].success {
     color: white;
 }
 
+/* Verification Code Input */
+.verification-code {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin: 30px 0;
+}
+
+.code-input {
+    width: 50px;
+    height: 60px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 700;
+    padding: 0;
+    border: 2px solid rgba(233, 196, 106, 0.3);
+    background: rgba(10, 22, 40, 0.5);
+    color: var(--gold);
+    border-radius: 8px;
+}
+
+.code-input:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 20px rgba(233, 196, 106, 0.2);
+    outline: none;
+}
+
 /* Divider */
 .divider {
     display: flex;
@@ -474,6 +501,76 @@ button[type="submit"].success {
     border-left-color: var(--success);
 }
 
+.message.info {
+    background: rgba(30, 96, 145, 0.1);
+    color: var(--azure);
+    border-left-color: var(--azure);
+}
+
+/* Verification Section */
+.verification-section {
+    display: none;
+    text-align: center;
+}
+
+.verification-section.show {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+
+.signup-section {
+    display: block;
+}
+
+.signup-section.hide {
+    display: none;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.email-display {
+    background: rgba(233, 196, 106, 0.1);
+    padding: 15px;
+    border-radius: 8px;
+    margin: 20px 0;
+    border: 1px solid rgba(233, 196, 106, 0.2);
+}
+
+.email-display p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.email-display strong {
+    color: var(--gold);
+    font-size: 1.1rem;
+    display: block;
+    margin-top: 5px;
+}
+
+.resend-link {
+    color: var(--gold);
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: 0.9rem;
+    margin-top: 20px;
+    display: inline-block;
+}
+
+.resend-link:hover {
+    color: var(--orange);
+}
+
+.resend-link.disabled {
+    color: var(--text-muted);
+    cursor: not-allowed;
+    text-decoration: none;
+}
+
 /* Responsive */
 @media (max-width: 480px) {
     .container {
@@ -498,6 +595,12 @@ button[type="submit"].success {
         width: 105%;
         height: 120%;
         filter: blur(8px);
+    }
+    
+    .code-input {
+        width: 40px;
+        height: 50px;
+        font-size: 20px;
     }
 }
 
@@ -535,75 +638,128 @@ button[type="submit"].success {
         </div>
     </div>
 
-    <div class="message error" id="errorMsg">
-        <span>⚠️</span>
-        <span>Please fill in all required fields</span>
+    <!-- Signup Section -->
+    <div class="signup-section" id="signupSection">
+        <div class="message error" id="errorMsg">
+            <span>⚠️</span>
+            <span>Please fill in all required fields</span>
+        </div>
+
+        <h2>Create Account</h2>
+
+        <form id="signupForm">
+            <div class="form-row">
+                <div class="form-group">
+                    <span class="input-icon">👤</span>
+                    <input type="text" name="firstName" placeholder="First Name" required id="firstName">
+                </div>
+                <div class="form-group">
+                    <span class="input-icon">👤</span>
+                    <input type="text" name="lastName" placeholder="Last Name" required id="lastName">
+                </div>
+            </div>
+
+            <div class="form-group full-width">
+                <span class="input-icon">📧</span>
+                <input type="email" name="email" placeholder="Email Address" required id="email">
+            </div>
+
+            <div class="form-group full-width">
+                <span class="input-icon">📱</span>
+                <input type="tel" name="phone" placeholder="Phone Number" id="phone">
+            </div>
+
+            <div class="form-group full-width">
+                <span class="input-icon">🔒</span>
+                <input type="password" name="password" placeholder="Create Password" required id="password">
+                <span class="password-toggle" id="togglePassword">👁️</span>
+            </div>
+            
+            <div class="password-strength" id="strengthBar">
+                <div class="strength-bar" id="strengthIndicator"></div>
+            </div>
+            <div class="strength-text" id="strengthText">Password strength: <span id="strengthLabel">Weak</span></div>
+
+            <div class="form-group full-width">
+                <span class="input-icon">🔒</span>
+                <input type="password" name="confirmPassword" placeholder="Confirm Password" required id="confirmPassword">
+            </div>
+
+            <label class="terms">
+                <input type="checkbox" required id="termsCheck">
+                <span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></span>
+            </label>
+
+            <button type="submit" id="submitBtn">
+                <span>Create Account</span>
+                <span>→</span>
+            </button>
+        </form>
+
+        <div class="divider">
+            <span>OR</span>
+        </div>
+
+        <div class="social-signup">
+            <button type="button" class="social-btn" title="Google">G</button>
+            <button type="button" class="social-btn" title="Microsoft">M</button>
+        </div>
+
+        <p class="footer-text">Already have an account? <a href="login.html">Sign in</a></p>
     </div>
 
-    <h2>Create Account</h2>
-
-    <form action="/signup" method="POST" id="signupForm">
-        <div class="form-row">
-            <div class="form-group">
-                <span class="input-icon">👤</span>
-                <input type="text" name="firstName" placeholder="First Name" required id="firstName">
-            </div>
-            <div class="form-group">
-                <span class="input-icon">👤</span>
-                <input type="text" name="lastName" placeholder="Last Name" required id="lastName">
-            </div>
-        </div>
-
-        <div class="form-group full-width">
-            <span class="input-icon">📧</span>
-            <input type="email" name="email" placeholder="Email Address" required id="email">
-        </div>
-
-        <div class="form-group full-width">
-            <span class="input-icon">📱</span>
-            <input type="tel" name="phone" placeholder="Phone Number" id="phone">
-        </div>
-
-        <div class="form-group full-width">
-            <span class="input-icon">🔒</span>
-            <input type="password" name="password" placeholder="Create Password" required id="password">
-            <span class="password-toggle" id="togglePassword">👁️</span>
+    <!-- Verification Section -->
+    <div class="verification-section" id="verificationSection">
+        <div class="message error" id="verifyErrorMsg">
+            <span>⚠️</span>
+            <span>Invalid verification code</span>
         </div>
         
-        <div class="password-strength" id="strengthBar">
-            <div class="strength-bar" id="strengthIndicator"></div>
-        </div>
-        <div class="strength-text" id="strengthText">Password strength: <span id="strengthLabel">Weak</span></div>
-
-        <div class="form-group full-width">
-            <span class="input-icon">🔒</span>
-            <input type="password" name="confirmPassword" placeholder="Confirm Password" required id="confirmPassword">
+        <div class="message success" id="verifySuccessMsg">
+            <span>✓</span>
+            <span>Email verified successfully!</span>
         </div>
 
-        <label class="terms">
-            <input type="checkbox" required id="termsCheck">
-            <span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></span>
-        </label>
+        <h2>Verify Your Email</h2>
+        
+        <div class="email-display">
+            <p>We've sent a 6-digit verification code to:</p>
+            <strong id="verifyEmail">email@example.com</strong>
+        </div>
 
-        <button type="submit" id="submitBtn">
-            <span>Create Account</span>
+        <p style="color: var(--text-muted); margin-bottom: 20px;">Enter the code below to activate your account</p>
+
+        <div class="verification-code" id="codeInputs">
+            <input type="text" class="code-input" maxlength="1" data-index="0">
+            <input type="text" class="code-input" maxlength="1" data-index="1">
+            <input type="text" class="code-input" maxlength="1" data-index="2">
+            <input type="text" class="code-input" maxlength="1" data-index="3">
+            <input type="text" class="code-input" maxlength="1" data-index="4">
+            <input type="text" class="code-input" maxlength="1" data-index="5">
+        </div>
+
+        <button type="button" id="verifyBtn" style="margin-top: 20px;">
+            <span>Verify Email</span>
             <span>→</span>
         </button>
-    </form>
 
-    <div class="divider">
-        <span>OR</span>
+        <p style="margin-top: 20px; color: var(--text-muted); font-size: 0.9rem;">
+            Didn't receive the code?<br>
+            <span class="resend-link" id="resendLink">Resend Code</span>
+            <span id="resendTimer" style="display: none; color: var(--text-muted);"></span>
+        </p>
+
+        <p class="footer-text" style="margin-top: 30px;">
+            <a href="#" onclick="backToSignup()">← Back to Sign Up</a>
+        </p>
     </div>
-
-    <div class="social-signup">
-        <button type="button" class="social-btn" title="Google">G</button>
-        <button type="button" class="social-btn" title="Microsoft">M</button>
-    </div>
-
-    <p class="footer-text">Already have an account? <a href="login.html">Sign in</a></p>
 </div>
 
 <script>
+const BACKEND_URL = 'https://megastrike-hydro.onrender.com';
+let pendingEmail = '';
+let verificationCode = '';
+
 // Password visibility toggle
 const togglePassword = document.getElementById('togglePassword');
 const passwordInput = document.getElementById('password');
@@ -693,8 +849,6 @@ form.addEventListener('submit', async function(e) {
     submitBtn.innerHTML = '<span>Creating account...</span> <span>⏳</span>';
     
     try {
-        const BACKEND_URL = 'https://megastrike-hydro.onrender.com'; 
-
         const response = await fetch(`${BACKEND_URL}/api/auth/signup`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -702,21 +856,25 @@ form.addEventListener('submit', async function(e) {
         });
         
         const data = await response.json();
+        
         if (data.success) {
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('user', JSON.stringify(data.user));
-            
-            submitBtn.classList.add('success');
-            submitBtn.innerHTML = '<span>Success! Redirecting...</span> <span>✓</span>';
-            
-            setTimeout(() => {
-                if (data.user && data.user.role === 'admin') {
-                    window.location.href = '/admin.html';
-                } else {
-                    window.location.href = '/dashboard.html';
-                }
-            }, 1500);
-
+            if (data.requiresVerification) {
+                // Show verification section
+                pendingEmail = data.email;
+                document.getElementById('signupSection').classList.add('hide');
+                document.getElementById('verificationSection').classList.add('show');
+                document.getElementById('verifyEmail').textContent = pendingEmail;
+                
+                // Focus first code input
+                setTimeout(() => {
+                    document.querySelector('.code-input[data-index="0"]').focus();
+                }, 100);
+            } else {
+                // Direct login (fallback)
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('user', JSON.stringify(data.user));
+                window.location.href = '/dashboard.html';
+            }
         } else {
             throw new Error(data.error || 'Registration failed');
         }
@@ -743,8 +901,204 @@ confirmPassword.addEventListener('input', function() {
 
 document.querySelectorAll('input').forEach(input => {
     input.addEventListener('focus', function() {
-        this.style.borderColor = 'rgba(233, 196, 106, 0.2)';
+        if (this !== confirmPassword || this.value === passwordInput.value) {
+            this.style.borderColor = 'rgba(233, 196, 106, 0.2)';
+        }
     });
+});
+
+// Verification Code Input Handling
+const codeInputs = document.querySelectorAll('.code-input');
+
+codeInputs.forEach((input, index) => {
+    // Only allow numbers
+    input.addEventListener('keypress', function(e) {
+        if (!/[0-9]/.test(e.key)) {
+            e.preventDefault();
+        }
+    });
+    
+    input.addEventListener('input', function() {
+        if (this.value.length === 1) {
+            // Move to next input
+            if (index < codeInputs.length - 1) {
+                codeInputs[index + 1].focus();
+            }
+        }
+    });
+    
+    input.addEventListener('keydown', function(e) {
+        if (e.key === 'Backspace' && this.value === '') {
+            // Move to previous input
+            if (index > 0) {
+                codeInputs[index - 1].focus();
+            }
+        }
+    });
+    
+    // Handle paste
+    input.addEventListener('paste', function(e) {
+        e.preventDefault();
+        const pastedData = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
+        
+        for (let i = 0; i < pastedData.length && i < codeInputs.length; i++) {
+            codeInputs[i].value = pastedData[i];
+        }
+        
+        // Focus the next empty input or the last one
+        const nextEmpty = Array.from(codeInputs).findIndex(input => !input.value);
+        if (nextEmpty !== -1) {
+            codeInputs[nextEmpty].focus();
+        } else {
+            codeInputs[codeInputs.length - 1].focus();
+        }
+    });
+});
+
+// Verify Button
+document.getElementById('verifyBtn').addEventListener('click', async function() {
+    const code = Array.from(codeInputs).map(input => input.value).join('');
+    
+    if (code.length !== 6) {
+        showVerifyError('Please enter all 6 digits');
+        return;
+    }
+    
+    const verifyBtn = document.getElementById('verifyBtn');
+    const originalContent = verifyBtn.innerHTML;
+    verifyBtn.disabled = true;
+    verifyBtn.innerHTML = '<span>Verifying...</span> <span>⏳</span>';
+    
+    try {
+        const response = await fetch(`${BACKEND_URL}/api/auth/verify-email`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: pendingEmail, code: code })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            // Store token and redirect
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('user', JSON.stringify(data.user));
+            
+            verifyBtn.classList.add('success');
+            verifyBtn.innerHTML = '<span>Success! Redirecting...</span> <span>✓</span>';
+            
+            setTimeout(() => {
+                if (data.user && data.user.role === 'admin') {
+                    window.location.href = '/admin.html';
+                } else {
+                    window.location.href = '/dashboard.html';
+                }
+            }, 1500);
+        } else {
+            throw new Error(data.error || 'Verification failed');
+        }
+    } catch (error) {
+        console.error('Verification error:', error);
+        showVerifyError(error.message || 'Invalid code. Please try again.');
+        verifyBtn.disabled = false;
+        verifyBtn.innerHTML = originalContent;
+        
+        // Clear inputs
+        codeInputs.forEach(input => input.value = '');
+        codeInputs[0].focus();
+    }
+});
+
+function showVerifyError(msg) {
+    const errorDiv = document.getElementById('verifyErrorMsg');
+    errorDiv.querySelector('span:last-child').textContent = msg;
+    errorDiv.classList.add('show');
+    setTimeout(() => errorDiv.classList.remove('show'), 5000);
+}
+
+// Resend Code
+let resendTimer = null;
+let countdown = 60;
+
+document.getElementById('resendLink').addEventListener('click', async function() {
+    if (this.classList.contains('disabled')) return;
+    
+    try {
+        const response = await fetch(`${BACKEND_URL}/api/auth/resend-verification`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: pendingEmail })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            // Start countdown
+            this.classList.add('disabled');
+            const timerSpan = document.getElementById('resendTimer');
+            timerSpan.style.display = 'inline';
+            countdown = 60;
+            
+            resendTimer = setInterval(() => {
+                countdown--;
+                timerSpan.textContent = ` (${countdown}s)`;
+                
+                if (countdown <= 0) {
+                    clearInterval(resendTimer);
+                    this.classList.remove('disabled');
+                    timerSpan.style.display = 'none';
+                }
+            }, 1000);
+            
+            showVerifySuccess('If an account exists with this email, a code has been sent. Please check your inbox and spam folder.');
+        } else {
+            throw new Error(data.error || 'Failed to resend');
+        }
+    } catch (error) {
+        showVerifyError(error.message || 'Failed to resend code');
+    }
+});
+
+function showVerifySuccess(msg) {
+    const successDiv = document.getElementById('verifySuccessMsg');
+    successDiv.querySelector('span:last-child').textContent = msg;
+    successDiv.classList.add('show');
+    setTimeout(() => successDiv.classList.remove('show'), 5000);
+}
+
+// Back to signup
+function backToSignup() {
+    document.getElementById('verificationSection').classList.remove('show');
+    document.getElementById('signupSection').classList.remove('hide');
+    pendingEmail = '';
+    
+    // Clear code inputs
+    codeInputs.forEach(input => input.value = '');
+    
+    // Clear timer
+    if (resendTimer) {
+        clearInterval(resendTimer);
+        document.getElementById('resendLink').classList.remove('disabled');
+        document.getElementById('resendTimer').style.display = 'none';
+    }
+}
+
+// Check if redirected from login with pending verification
+document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const verifyEmail = urlParams.get('verify');
+    
+    if (verifyEmail) {
+        // Pre-fill email and show verification
+        document.getElementById('email').value = verifyEmail;
+        pendingEmail = verifyEmail;
+        document.getElementById('signupSection').classList.add('hide');
+        document.getElementById('verificationSection').classList.add('show');
+        document.getElementById('verifyEmail').textContent = verifyEmail;
+        
+        setTimeout(() => {
+            document.querySelector('.code-input[data-index="0"]').focus();
+        }, 100);
+    }
 });
 </script>
 

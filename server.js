@@ -24,8 +24,8 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-// Generate 6-digit reset code
-function generateResetCode() {
+// Generate 6-digit code
+function generateCode() {
   return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
@@ -52,7 +52,7 @@ async function runMigrations() {
     const testResult = await client.query('SELECT NOW()');
     console.log('Database time:', testResult.rows[0].now);
 
-    // Create users table if not exists
+    // Create users table with email verification fields
     await client.query(`
       CREATE TABLE IF NOT EXISTS users (
         id SERIAL PRIMARY KEY,
@@ -62,7 +62,10 @@ async function runMigrations() {
         phone VARCHAR(20),
         password_hash VARCHAR(255) NOT NULL,
         role VARCHAR(50) DEFAULT 'user',
-        is_active BOOLEAN DEFAULT TRUE,
+        is_active BOOLEAN DEFAULT FALSE,
+        is_verified BOOLEAN DEFAULT FALSE,
+        verification_code VARCHAR(10),
+        verification_code_expires TIMESTAMP,
         profile_picture TEXT,
         reset_code VARCHAR(10),
         reset_code_expires TIMESTAMP,
@@ -72,7 +75,29 @@ async function runMigrations() {
     `);
     console.log('✅ Users table ready');
 
-    // Create consultations table if not exists - WITH name column
+    // Add new columns if they don't exist
+    const userColumns = await client.query(`
+      SELECT column_name FROM information_schema.columns WHERE table_name = 'users'
+    `);
+    const existingUserCols = userColumns.rows.map(r => r.column_name);
+    
+    const columnsToAdd = [
+      { name: 'is_verified', type: 'BOOLEAN DEFAULT FALSE' },
+      { name: 'verification_code', type: 'VARCHAR(10)' },
+      { name: 'verification_code_expires', type: 'TIMESTAMP' },
+      { name: 'reset_code', type: 'VARCHAR(10)' },
+      { name: 'reset_code_expires', type: 'TIMESTAMP' },
+      { name: 'profile_picture', type: 'TEXT' }
+    ];
+
+    for (const col of columnsToAdd) {
+      if (!existingUserCols.includes(col.name)) {
+        await client.query(`ALTER TABLE users ADD COLUMN ${col.name} ${col.type}`);
+        console.log(`✅ Added ${col.name} to users`);
+      }
+    }
+
+    // Create consultations table
     await client.query(`
       CREATE TABLE IF NOT EXISTS consultations (
         id SERIAL PRIMARY KEY,
@@ -92,76 +117,18 @@ async function runMigrations() {
     console.log('✅ Consultations table ready');
 
     // Create contact messages table
-await client.query(`
-  CREATE TABLE IF NOT EXISTS contact_messages (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(200) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    phone VARCHAR(20),
-    subject VARCHAR(255),
-    message TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT NOW()
-  )
-`);
-console.log('✅ Contact messages table ready');
-
-    // Add missing columns to users table
-    const userColumns = await client.query(`
-      SELECT column_name FROM information_schema.columns WHERE table_name = 'users'
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS contact_messages (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(200) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        phone VARCHAR(20),
+        subject VARCHAR(255),
+        message TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT NOW()
+      )
     `);
-    const existingUserCols = userColumns.rows.map(r => r.column_name);
-    
-    if (!existingUserCols.includes('reset_code')) {
-      await client.query(`ALTER TABLE users ADD COLUMN reset_code VARCHAR(10)`);
-      console.log('✅ Added reset_code to users');
-    }
-    if (!existingUserCols.includes('reset_code_expires')) {
-      await client.query(`ALTER TABLE users ADD COLUMN reset_code_expires TIMESTAMP`);
-      console.log('✅ Added reset_code_expires to users');
-    }
-    if (!existingUserCols.includes('profile_picture')) {
-      await client.query(`ALTER TABLE users ADD COLUMN profile_picture TEXT`);
-      console.log('✅ Added profile_picture to users');
-    }
-
-    // Verify consultations table structure
-    const consultColumns = await client.query(`
-      SELECT column_name FROM information_schema.columns WHERE table_name = 'consultations'
-    `);
-    const existingConsultCols = consultColumns.rows.map(r => r.column_name);
-    console.log('Consultations columns:', existingConsultCols);
-
-    // Add missing columns to consultations if needed
-    const requiredCols = [
-      { name: 'user_id', type: 'INTEGER NOT NULL DEFAULT 0' },
-      { name: 'email', type: 'VARCHAR(255)' },
-      { name: 'name', type: 'VARCHAR(200) NOT NULL DEFAULT \'\'' },
-      { name: 'location', type: 'VARCHAR(500) NOT NULL DEFAULT \'\'' },
-      { name: 'land_size', type: 'DECIMAL(10,2)' },
-      { name: 'service_type', type: 'VARCHAR(100) NOT NULL DEFAULT \'\'' },
-      { name: 'budget', type: 'DECIMAL(15,2)' },
-      { name: 'description', type: 'TEXT NOT NULL DEFAULT \'\'' },
-      { name: 'status', type: 'VARCHAR(50) DEFAULT \'pending\'' },
-      { name: 'created_at', type: 'TIMESTAMP DEFAULT NOW()' }
-    ];
-
-    for (const col of requiredCols) {
-      if (!existingConsultCols.includes(col.name)) {
-        console.log(`Adding missing column: ${col.name}`);
-        await client.query(`ALTER TABLE consultations ADD COLUMN ${col.name} ${col.type}`);
-      }
-    }
-
-    // Remove defaults after columns exist
-    try {
-      await client.query(`ALTER TABLE consultations ALTER COLUMN location DROP DEFAULT`);
-      await client.query(`ALTER TABLE consultations ALTER COLUMN user_id DROP DEFAULT`);
-      await client.query(`ALTER TABLE consultations ALTER COLUMN service_type DROP DEFAULT`);
-      await client.query(`ALTER TABLE consultations ALTER COLUMN description DROP DEFAULT`);
-      await client.query(`ALTER TABLE consultations ALTER COLUMN name DROP DEFAULT`);
-    } catch (e) {
-      // Defaults might already be removed
-    }
+    console.log('✅ Contact messages table ready');
 
     console.log('✅ All migrations complete');
 
@@ -212,10 +179,10 @@ app.use((req, res, next) => {
 });
 
 // ==========================
-// AUTH ROUTES
+// EMAIL VERIFICATION ROUTES
 // ==========================
 
-// SIGNUP
+// SIGNUP - Modified to require email verification
 app.post('/api/auth/signup', async (req, res) => {
   console.log('Signup attempt:', req.body.email);
   try {
@@ -230,45 +197,132 @@ app.post('/api/auth/signup', async (req, res) => {
     }
 
     const { rows: existingUsers } = await pool.query(
-      'SELECT id FROM users WHERE email = $1',
+      'SELECT id, is_verified FROM users WHERE email = $1',
       [email.toLowerCase().trim()]
     );
 
-    if (existingUsers.length > 0) {
+    // If user exists but not verified, allow resending code
+    if (existingUsers.length > 0 && !existingUsers[0].is_verified) {
+      // Resend verification code
+      const verificationCode = generateCode();
+      const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+
+      await pool.query(
+        `UPDATE users SET verification_code = $1, verification_code_expires = $2 WHERE id = $3`,
+        [verificationCode, expiresAt, existingUsers[0].id]
+      );
+
+      // Send verification email
+      const mailOptions = {
+        from: `"Megastrike Hydro" <${process.env.EMAIL_USER}>`,
+        to: email.toLowerCase().trim(),
+        subject: 'Verify Your Email - Megastrike Hydro',
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f8fafc; padding: 20px;">
+            <div style="background: #0a1628; padding: 30px; text-align: center;">
+              <h1 style="color: #e9c46a; margin: 0; font-size: 28px;">MEGASTRIKE</h1>
+              <p style="color: #e0e1dd; margin: 5px 0 0 0; font-size: 14px;">Hydro Drilling Solutions</p>
+            </div>
+            <div style="background: white; padding: 40px; border-radius: 0 0 8px 8px;">
+              <h2 style="color: #0a1628; margin-bottom: 20px;">Verify Your Email</h2>
+              <p style="color: #64748b; line-height: 1.6;">Hello ${firstName},</p>
+              <p style="color: #64748b; line-height: 1.6;">Thank you for signing up! Please use the verification code below to activate your account:</p>
+              
+              <div style="background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 100%); padding: 30px; text-align: center; margin: 30px 0; border-radius: 8px;">
+                <p style="color: #e9c46a; margin: 0 0 10px 0; font-size: 14px; text-transform: uppercase; letter-spacing: 2px;">Your Verification Code</p>
+                <h1 style="color: #e9c46a; margin: 0; font-size: 48px; letter-spacing: 15px; font-weight: 700;">${verificationCode}</h1>
+              </div>
+              
+              <p style="color: #64748b; line-height: 1.6; font-size: 14px;">This code will expire in <strong>24 hours</strong>.</p>
+              <p style="color: #64748b; line-height: 1.6; font-size: 14px;">If you didn't create an account, please ignore this email.</p>
+              
+              <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 30px 0;">
+              <p style="color: #94a3b8; font-size: 12px; text-align: center;">
+                Megastrike Hydro Drilling Solutions Ltd<br>
+                Kitale, Kenya<br>
+                This is an automated email, please do not reply.
+              </p>
+            </div>
+          </div>
+        `
+      };
+
+      await transporter.sendMail(mailOptions);
+      console.log('Verification email resent to:', email);
+
+      return res.status(200).json({
+        success: true,
+        message: 'Verification code resent to your email',
+        requiresVerification: true,
+        email: email.toLowerCase().trim()
+      });
+    }
+
+    // If user exists and is verified
+    if (existingUsers.length > 0 && existingUsers[0].is_verified) {
       return res.status(409).json({ success: false, error: 'Email already registered' });
     }
 
+    // New user - create unverified account
     const salt = await bcrypt.genSalt(12);
     const passwordHash = await bcrypt.hash(password, salt);
+    const verificationCode = generateCode();
+    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
 
     const { rows } = await pool.query(
-      `INSERT INTO users (first_name, last_name, email, phone, password_hash)
-       VALUES ($1, $2, $3, $4, $5)
-       RETURNING id, first_name, last_name, email, phone, role`,
-      [firstName, lastName, email.toLowerCase().trim(), phone || null, passwordHash]
+      `INSERT INTO users (first_name, last_name, email, phone, password_hash, is_active, is_verified, verification_code, verification_code_expires)
+       VALUES ($1, $2, $3, $4, $5, FALSE, FALSE, $6, $7)
+       RETURNING id, first_name, last_name, email, phone, role, is_verified`,
+      [firstName, lastName, email.toLowerCase().trim(), phone || null, passwordHash, verificationCode, expiresAt]
     );
 
     const userId = rows[0].id;
     const user = rows[0];
 
-    const token = jwt.sign(
-      { userId, email, role: user.role, firstName: user.first_name, lastName: user.last_name },
-      config.jwtSecret,
-      { expiresIn: '24h' }
-    );
+    // Send verification email
+    const mailOptions = {
+      from: `"Megastrike Hydro" <${process.env.EMAIL_USER}>`,
+      to: email.toLowerCase().trim(),
+      subject: 'Verify Your Email - Megastrike Hydro',
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f8fafc; padding: 20px;">
+          <div style="background: #0a1628; padding: 30px; text-align: center;">
+            <h1 style="color: #e9c46a; margin: 0; font-size: 28px;">MEGASTRIKE</h1>
+            <p style="color: #e0e1dd; margin: 5px 0 0 0; font-size: 14px;">Hydro Drilling Solutions</p>
+          </div>
+          <div style="background: white; padding: 40px; border-radius: 0 0 8px 8px;">
+            <h2 style="color: #0a1628; margin-bottom: 20px;">Verify Your Email</h2>
+            <p style="color: #64748b; line-height: 1.6;">Hello ${firstName},</p>
+            <p style="color: #64748b; line-height: 1.6;">Thank you for signing up! Please use the verification code below to activate your account:</p>
+            
+            <div style="background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 100%); padding: 30px; text-align: center; margin: 30px 0; border-radius: 8px;">
+              <p style="color: #e9c46a; margin: 0 0 10px 0; font-size: 14px; text-transform: uppercase; letter-spacing: 2px;">Your Verification Code</p>
+              <h1 style="color: #e9c46a; margin: 0; font-size: 48px; letter-spacing: 15px; font-weight: 700;">${verificationCode}</h1>
+            </div>
+            
+            <p style="color: #64748b; line-height: 1.6; font-size: 14px;">This code will expire in <strong>24 hours</strong>.</p>
+            <p style="color: #64748b; line-height: 1.6; font-size: 14px;">If you didn't create an account, please ignore this email.</p>
+            
+            <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 30px 0;">
+            <p style="color: #94a3b8; font-size: 12px; text-align: center;">
+              Megastrike Hydro Drilling Solutions Ltd<br>
+              Kitale, Kenya<br>
+              This is an automated email, please do not reply.
+            </p>
+          </div>
+        </div>
+      `
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log('Verification email sent to:', email);
 
     res.status(201).json({
       success: true,
-      message: 'Account created',
-      token,
-      user: { 
-        id: userId, 
-        firstName: user.first_name, 
-        lastName: user.last_name, 
-        email: user.email, 
-        phone: user.phone, 
-        role: user.role 
-      }
+      message: 'Account created. Please check your email for verification code.',
+      requiresVerification: true,
+      email: email.toLowerCase().trim(),
+      userId: userId
     });
 
   } catch (error) {
@@ -277,7 +331,160 @@ app.post('/api/auth/signup', async (req, res) => {
   }
 });
 
-// LOGIN
+// VERIFY EMAIL CODE
+app.post('/api/auth/verify-email', async (req, res) => {
+  try {
+    const { email, code } = req.body;
+
+    if (!email || !code) {
+      return res.status(400).json({ success: false, error: 'Email and verification code required' });
+    }
+
+    const { rows } = await pool.query(
+      `SELECT id, first_name, last_name, email, phone, role, is_verified, 
+              verification_code, verification_code_expires, password_hash
+       FROM users WHERE email = $1`,
+      [email.toLowerCase().trim()]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ success: false, error: 'User not found' });
+    }
+
+    const user = rows[0];
+
+    if (user.is_verified) {
+      return res.status(400).json({ success: false, error: 'Account already verified' });
+    }
+
+    if (user.verification_code !== code) {
+      return res.status(400).json({ success: false, error: 'Invalid verification code' });
+    }
+
+    if (new Date() > new Date(user.verification_code_expires)) {
+      return res.status(400).json({ success: false, error: 'Verification code has expired' });
+    }
+
+    // Activate account
+    await pool.query(
+      `UPDATE users 
+       SET is_verified = TRUE, is_active = TRUE, verification_code = NULL, 
+           verification_code_expires = NULL, last_login = NOW() 
+       WHERE id = $1`,
+      [user.id]
+    );
+
+    // Generate token
+    const token = jwt.sign(
+      { userId: user.id, email: user.email, role: user.role, firstName: user.first_name, lastName: user.last_name },
+      config.jwtSecret,
+      { expiresIn: '24h' }
+    );
+
+    res.json({
+      success: true,
+      message: 'Email verified successfully! Welcome to Megastrike Hydro.',
+      token,
+      user: {
+        id: user.id,
+        firstName: user.first_name,
+        lastName: user.last_name,
+        email: user.email,
+        phone: user.phone,
+        role: user.role,
+        isVerified: true
+      }
+    });
+
+  } catch (error) {
+    console.error('Verify email error:', error);
+    res.status(500).json({ success: false, error: 'Server error during verification' });
+  }
+});
+
+// RESEND VERIFICATION CODE - SECURE VERSION
+app.post('/api/auth/resend-verification', async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ success: false, error: 'Email is required' });
+    }
+
+    const { rows } = await pool.query(
+      'SELECT id, first_name, is_verified FROM users WHERE email = $1',
+      [email.toLowerCase().trim()]
+    );
+
+    // SECURITY FIX: Always return same generic message
+    // Don't reveal if email exists, is verified, or not
+    if (rows.length === 0 || rows[0].is_verified) {
+      return res.json({ 
+        success: true, 
+        message: 'If an account exists with this email, a verification code has been sent' 
+      });
+    }
+
+    const user = rows[0];
+    const verificationCode = generateCode();
+    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
+    await pool.query(
+      `UPDATE users SET verification_code = $1, verification_code_expires = $2 WHERE id = $3`,
+      [verificationCode, expiresAt, user.id]
+    );
+
+    // Send email
+    const mailOptions = {
+      from: `"Megastrike Hydro" <${process.env.EMAIL_USER}>`,
+      to: email.toLowerCase().trim(),
+      subject: 'Verify Your Email - Megastrike Hydro',
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f8fafc; padding: 20px;">
+          <div style="background: #0a1628; padding: 30px; text-align: center;">
+            <h1 style="color: #e9c46a; margin: 0; font-size: 28px;">MEGASTRIKE</h1>
+            <p style="color: #e0e1dd; margin: 5px 0 0 0; font-size: 14px;">Hydro Drilling Solutions</p>
+          </div>
+          <div style="background: white; padding: 40px; border-radius: 0 0 8px 8px;">
+            <h2 style="color: #0a1628; margin-bottom: 20px;">Verify Your Email</h2>
+            <p style="color: #64748b; line-height: 1.6;">Hello ${user.first_name},</p>
+            <p style="color: #64748b; line-height: 1.6;">Here is your new verification code:</p>
+            
+            <div style="background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 100%); padding: 30px; text-align: center; margin: 30px 0; border-radius: 8px;">
+              <p style="color: #e9c46a; margin: 0 0 10px 0; font-size: 14px; text-transform: uppercase; letter-spacing: 2px;">Your Verification Code</p>
+              <h1 style="color: #e9c46a; margin: 0; font-size: 48px; letter-spacing: 15px; font-weight: 700;">${verificationCode}</h1>
+            </div>
+            
+            <p style="color: #64748b; line-height: 1.6; font-size: 14px;">This code will expire in <strong>24 hours</strong>.</p>
+            
+            <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 30px 0;">
+            <p style="color: #94a3b8; font-size: 12px; text-align: center;">
+              Megastrike Hydro Drilling Solutions Ltd<br>
+              Kitale, Kenya
+            </p>
+          </div>
+        </div>
+      `
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log('Verification email resent to:', email);
+
+    // Return same generic message even when email is actually sent
+    res.json({ 
+      success: true, 
+      message: 'If an account exists with this email, a verification code has been sent' 
+    });
+
+  } catch (error) {
+    console.error('Resend verification error:', error);
+    res.status(500).json({ success: false, error: 'Failed to process request' });
+  }
+});
+
+// ==========================
+// LOGIN - Modified to check verification
+// ==========================
 app.post('/api/auth/login', async (req, res) => {
   console.log('Login attempt:', req.body.email);
   try {
@@ -288,7 +495,7 @@ app.post('/api/auth/login', async (req, res) => {
     }
 
     const { rows } = await pool.query(
-      'SELECT * FROM users WHERE email = $1 AND is_active = TRUE',
+      'SELECT * FROM users WHERE email = $1',
       [email.toLowerCase().trim()]
     );
 
@@ -298,9 +505,23 @@ app.post('/api/auth/login', async (req, res) => {
 
     const user = rows[0];
 
+    // Check if email is verified
+    if (!user.is_verified) {
+      return res.status(403).json({ 
+        success: false, 
+        error: 'Please verify your email before logging in',
+        requiresVerification: true,
+        email: user.email
+      });
+    }
+
     const isValid = await bcrypt.compare(password, user.password_hash);
     if (!isValid) {
       return res.status(401).json({ success: false, error: 'Invalid credentials' });
+    }
+
+    if (!user.is_active) {
+      return res.status(403).json({ success: false, error: 'Account is deactivated' });
     }
 
     await pool.query(
@@ -330,7 +551,8 @@ app.post('/api/auth/login', async (req, res) => {
         lastName: user.last_name,
         email: user.email,
         phone: user.phone,
-        role: user.role
+        role: user.role,
+        isVerified: true
       }
     });
 
@@ -350,7 +572,7 @@ app.get('/api/auth/me', authenticateToken, async (req, res) => {
     }
 
     const { rows } = await pool.query(
-      `SELECT id, first_name, last_name, email, phone, role, created_at, profile_picture 
+      `SELECT id, first_name, last_name, email, phone, role, is_verified, created_at, profile_picture 
        FROM users WHERE id = $1`,
       [req.user.userId]
     );
@@ -377,7 +599,7 @@ app.put('/api/auth/profile', authenticateToken, async (req, res) => {
       `UPDATE users 
        SET first_name = $1, last_name = $2, phone = $3 
        WHERE id = $4 
-       RETURNING id, first_name, last_name, email, phone, role`,
+       RETURNING id, first_name, last_name, email, phone, role, is_verified`,
       [firstName, lastName, phone, userId]
     );
 
@@ -426,7 +648,7 @@ app.post('/api/auth/forgot-password', async (req, res) => {
     }
 
     const { rows } = await pool.query(
-      'SELECT id, first_name, email FROM users WHERE email = $1 AND is_active = TRUE',
+      'SELECT id, first_name, email FROM users WHERE email = $1 AND is_active = TRUE AND is_verified = TRUE',
       [email.toLowerCase().trim()]
     );
 
@@ -438,7 +660,7 @@ app.post('/api/auth/forgot-password', async (req, res) => {
     }
 
     const user = rows[0];
-    const resetCode = generateResetCode();
+    const resetCode = generateCode();
     const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
 
     await pool.query(
@@ -586,7 +808,6 @@ app.post('/api/contact', async (req, res) => {
   try {
     const { name, email, phone, subject, message } = req.body;
 
-    // VALIDATION
     if (!name || !email || !message) {
       return res.status(400).json({
         success: false,
@@ -594,7 +815,6 @@ app.post('/api/contact', async (req, res) => {
       });
     }
 
-    // SAVE TO DATABASE
     const { rows } = await pool.query(
       `INSERT INTO contact_messages (name, email, phone, subject, message)
        VALUES ($1, $2, $3, $4, $5)
@@ -608,10 +828,9 @@ app.post('/api/contact', async (req, res) => {
       ]
     );
 
-    // SEND EMAIL NOTIFICATION
     const mailOptions = {
       from: `"Website Contact" <${process.env.EMAIL_USER}>`,
-      to: process.env.EMAIL_USER, // you receive the message
+      to: process.env.EMAIL_USER,
       subject: `New Contact Message: ${subject || 'No Subject'}`,
       html: `
         <h2>New Contact Message</h2>
@@ -645,7 +864,7 @@ app.post('/api/contact', async (req, res) => {
 // CONSULTATIONS
 // ==========================
 
-// Create consultation - FIXED: Added name column
+// Create consultation
 app.post('/api/consultations', authenticateToken, async (req, res) => {
   console.log('Consultation create - User:', req.user.userId);
   
@@ -671,7 +890,6 @@ app.post('/api/consultations', authenticateToken, async (req, res) => {
 
     client = await pool.connect();
 
-    // FIXED: Added name column to INSERT
     const { rows } = await client.query(
       `INSERT INTO consultations 
        (user_id, email, name, location, land_size, service_type, budget, description, status, created_at)
@@ -680,7 +898,7 @@ app.post('/api/consultations', authenticateToken, async (req, res) => {
       [
         userId, 
         userEmail || null, 
-        fullName,  // Added name from JWT token
+        fullName,
         location.trim(), 
         land_size ? parseFloat(land_size) : null, 
         service_type, 
@@ -754,7 +972,6 @@ app.get('/api/consultations/:id', authenticateToken, async (req, res) => {
 // Get all consultations (admin only)
 app.get('/api/admin/consultations', authenticateToken, async (req, res) => {
   try {
-    // Check if user is admin
     if (req.user.role !== 'admin') {
       return res.status(403).json({ success: false, error: 'Admin access required' });
     }
@@ -782,7 +999,7 @@ app.get('/api/admin/users', authenticateToken, async (req, res) => {
     }
 
     const { rows } = await pool.query(
-      `SELECT id, first_name, last_name, email, phone, role, is_active, created_at, last_login 
+      `SELECT id, first_name, last_name, email, phone, role, is_active, is_verified, created_at, last_login 
        FROM users 
        ORDER BY created_at DESC`
     );
@@ -792,6 +1009,57 @@ app.get('/api/admin/users', authenticateToken, async (req, res) => {
   } catch (error) {
     console.error('Get all users error:', error);
     res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// DELETE USER (admin only)
+app.delete('/api/admin/users/:id', authenticateToken, async (req, res) => {
+  try {
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ success: false, error: 'Admin access required' });
+    }
+
+    const { id } = req.params;
+    const adminId = req.user.userId;
+
+    // Prevent admin from deleting themselves
+    if (parseInt(id) === adminId) {
+      return res.status(400).json({ success: false, error: 'Cannot delete your own account' });
+    }
+
+    // Check if user exists
+    const { rows: userCheck } = await pool.query(
+      'SELECT id, role FROM users WHERE id = $1',
+      [id]
+    );
+
+    if (userCheck.length === 0) {
+      return res.status(404).json({ success: false, error: 'User not found' });
+    }
+
+    // Prevent deleting other admins (optional safety measure)
+    if (userCheck[0].role === 'admin') {
+      return res.status(403).json({ success: false, error: 'Cannot delete admin accounts' });
+    }
+
+    // Delete user's consultations first (foreign key constraint handling)
+    await pool.query('DELETE FROM consultations WHERE user_id = $1', [id]);
+    
+    // Delete user
+    const { rows } = await pool.query(
+      'DELETE FROM users WHERE id = $1 RETURNING id, first_name, last_name, email',
+      [id]
+    );
+
+    res.json({ 
+      success: true, 
+      message: 'User deleted successfully',
+      deletedUser: rows[0]
+    });
+
+  } catch (error) {
+    console.error('Delete user error:', error);
+    res.status(500).json({ success: false, error: 'Server error during deletion' });
   }
 });
 

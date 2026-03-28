@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verify Email | Megastrike Hydro Drilling Solutions</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+    --deep-navy: #0a1628;
+    --navy: #0d1b2a;
+    --ocean-blue: #1b263b;
+    --azure: #415a77;
+    --gold: #e9c46a;
+    --orange: #f4a261;
+    --white: #ffffff;
+    --text-light: #e0e1dd;
+    --text-muted: #778da9;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --error: #dc2626;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, var(--deep-navy) 0%, var(--navy) 50%, var(--ocean-blue) 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    position: relative;
+    overflow-x: hidden;
+    color: var(--text-light);
+}
+
+/* Animated Background */
+.bg-pattern {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 20% 50%, rgba(233, 196, 106, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(244, 162, 97, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(233, 196, 106, 0.02) 0%, transparent 50%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Gold accent line */
+.container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--gold), var(--orange), var(--gold));
+    background-size: 200% 100%;
+    animation: shimmer 3s linear infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Container */
+.container {
+    background: rgba(27, 38, 59, 0.95);
+    backdrop-filter: blur(20px);
+    padding: 50px 40px;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), 
+                0 0 0 1px rgba(233, 196, 106, 0.1) inset;
+    position: relative;
+    z-index: 10;
+    animation: slideUp 0.6s ease-out;
+    border: 1px solid rgba(233, 196, 106, 0.1);
+    text-align: center;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Logo Section */
+.logo {
+    text-align: center;
+    margin-bottom: 30px;
+    position: relative;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-wrapper {
+    position: relative;
+    display: inline-block;
+    padding: 10px 20px;
+}
+
+.logo-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 110%;
+    height: 180%;
+    background: radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.85) 25%, rgba(255, 255, 255, 0.6) 50%, rgba(255, 255, 255, 0.3) 70%, rgba(255, 255, 255, 0) 100%);
+    border-radius: 60% 40% 70% 30% / 40% 50% 60% 50%;
+    z-index: -1;
+    filter: blur(6px);
+    opacity: 0.9;
+    animation: organicMorph 8s ease-in-out infinite;
+}
+
+.logo-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 115%;
+    background: radial-gradient(ellipse at 70% 80%, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.5) 40%, rgba(255, 255, 255, 0.2) 70%, rgba(255, 255, 255, 0) 100%);
+    border-radius: 40% 60% 30% 70% / 60% 30% 70% 40%;
+    z-index: -2;
+    filter: blur(10px);
+    opacity: 0.7;
+    animation: organicMorph 10s ease-in-out infinite reverse;
+}
+
+@keyframes organicMorph {
+    0%, 100% {
+        border-radius: 60% 40% 70% 30% / 40% 50% 60% 50%;
+    }
+    25% {
+        border-radius: 40% 60% 50% 50% / 60% 40% 60% 40%;
+    }
+    50% {
+        border-radius: 50% 50% 40% 60% / 50% 60% 40% 60%;
+    }
+    75% {
+        border-radius: 70% 30% 60% 40% / 40% 60% 50% 50%;
+    }
+}
+
+.logo-img {
+    height: 120px;
+    width: auto;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+    position: relative;
+    z-index: 1;
+    display: block;
+}
+
+h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: var(--text-muted);
+    margin-bottom: 30px;
+    font-size: 1rem;
+}
+
+/* Email Display */
+.email-display {
+    background: rgba(233, 196, 106, 0.1);
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    border: 1px solid rgba(233, 196, 106, 0.2);
+}
+
+.email-display p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin: 0 0 5px 0;
+}
+
+.email-display strong {
+    color: var(--gold);
+    font-size: 1.1rem;
+    display: block;
+    word-break: break-all;
+}
+
+/* Verification Code Input */
+.verification-code {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin: 30px 0;
+}
+
+.code-input {
+    width: 50px;
+    height: 60px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 700;
+    padding: 0;
+    border: 2px solid rgba(233, 196, 106, 0.3);
+    background: rgba(10, 22, 40, 0.5);
+    color: var(--gold);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.code-input:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 20px rgba(233, 196, 106, 0.2);
+    outline: none;
+    transform: scale(1.05);
+}
+
+/* Button */
+button {
+    width: 100%;
+    padding: 16px;
+    background: var(--gold);
+    color: var(--deep-navy);
+    border: 2px solid var(--gold);
+    border-radius: 0;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+button:hover:not(:disabled) {
+    background: transparent;
+    color: var(--gold);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(233, 196, 106, 0.2);
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+button.success {
+    background: var(--success);
+    border-color: var(--success);
+    color: white;
+}
+
+/* Messages */
+.message {
+    padding: 14px;
+    border-radius: 0;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    display: none;
+    align-items: center;
+    gap: 10px;
+    border-left: 3px solid;
+    text-align: left;
+}
+
+.message.show {
+    display: flex;
+}
+
+.message.error {
+    background: rgba(220, 38, 38, 0.1);
+    color: #ef4444;
+    border-left-color: var(--error);
+}
+
+.message.success {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success);
+    border-left-color: var(--success);
+}
+
+/* Resend Link */
+.resend-section {
+    margin-top: 25px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.resend-link {
+    color: var(--gold);
+    cursor: pointer;
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+.resend-link:hover {
+    color: var(--orange);
+}
+
+.resend-link.disabled {
+    color: var(--text-muted);
+    cursor: not-allowed;
+    text-decoration: none;
+}
+
+#resendTimer {
+    color: var(--text-muted);
+}
+
+/* Footer Links */
+.footer-links {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(233, 196, 106, 0.1);
+}
+
+.footer-links a {
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: var(--orange);
+}
+
+/* Success State */
+.success-state {
+    display: none;
+    text-align: center;
+}
+
+.success-state.show {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+
+.success-icon {
+    font-size: 80px;
+    color: var(--success);
+    margin-bottom: 20px;
+    animation: scaleIn 0.5s ease;
+}
+
+@keyframes scaleIn {
+    from { transform: scale(0); }
+    to { transform: scale(1); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.success-state h3 {
+    color: white;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.success-state p {
+    color: var(--text-muted);
+    margin-bottom: 30px;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .container {
+        padding: 40px 25px;
+    }
+    
+    .logo-img {
+        height: 100px;
+    }
+    
+    .code-input {
+        width: 40px;
+        height: 50px;
+        font-size: 20px;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg-pattern"></div>
+
+<div class="container">
+    <!-- Verification Form -->
+    <div id="verifyForm">
+        <div class="logo">
+            <div class="logo-wrapper">
+                <img src="images/logo.png" alt="Megastrike Hydro Drilling Solutions" class="logo-img">
+            </div>
+        </div>
+
+        <div class="message error" id="errorMsg">
+            <span>⚠️</span>
+            <span>Invalid verification code</span>
+        </div>
+
+        <h2>Verify Your Email</h2>
+        <p class="subtitle">Enter the 6-digit code we sent to your email</p>
+        
+        <div class="email-display">
+            <p>Verification code sent to:</p>
+            <strong id="emailDisplay">loading...</strong>
+        </div>
+
+        <div class="verification-code" id="codeInputs">
+            <input type="text" class="code-input" maxlength="1" data-index="0">
+            <input type="text" class="code-input" maxlength="1" data-index="1">
+            <input type="text" class="code-input" maxlength="1" data-index="2">
+            <input type="text" class="code-input" maxlength="1" data-index="3">
+            <input type="text" class="code-input" maxlength="1" data-index="4">
+            <input type="text" class="code-input" maxlength="1" data-index="5">
+        </div>
+
+        <button type="button" id="verifyBtn">
+            <span>Verify Email</span>
+            <span>→</span>
+        </button>
+
+        <div class="resend-section">
+            Didn't receive the code?<br>
+            <span class="resend-link" id="resendLink">Resend Code</span>
+            <span id="resendTimer"></span>
+        </div>
+
+        <div class="footer-links">
+            <a href="signup.html">← Back to Sign Up</a> | 
+            <a href="login.html">Sign In →</a>
+        </div>
+    </div>
+
+    <!-- Success State -->
+    <div class="success-state" id="successState">
+        <div class="success-icon">✓</div>
+        <h3>Email Verified!</h3>
+        <p>Your account has been activated successfully.</p>
+        <button type="button" onclick="goToDashboard()" id="dashboardBtn">
+            <span>Go to Dashboard</span>
+            <span>→</span>
+        </button>
+    </div>
+</div>
+
+<script>
+const BACKEND_URL = 'https://megastrike-hydro.onrender.com';
+let pendingEmail = '';
+let authToken = '';
+let userData = null;
+
+// Get email from URL parameter or localStorage
+document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const email = urlParams.get('email') || localStorage.getItem('pendingVerificationEmail');
+    
+    if (!email) {
+        // No email provided, redirect to signup
+        window.location.href = 'signup.html';
+        return;
+    }
+    
+    pendingEmail = email;
+    document.getElementById('emailDisplay').textContent = email;
+    localStorage.setItem('pendingVerificationEmail', email);
+    
+    // Focus first input
+    setTimeout(() => {
+        document.querySelector('.code-input[data-index="0"]').focus();
+    }, 100);
+});
+
+// Code Input Handling
+const codeInputs = document.querySelectorAll('.code-input');
+
+codeInputs.forEach((input, index) => {
+    // Only allow numbers
+    input.addEventListener('keypress', function(e) {
+        if (!/[0-9]/.test(e.key)) {
+            e.preventDefault();
+        }
+    });
+    
+    input.addEventListener('input', function() {
+        if (this.value.length === 1) {
+            if (index < codeInputs.length - 1) {
+                codeInputs[index + 1].focus();
+            }
+        }
+    });
+    
+    input.addEventListener('keydown', function(e) {
+        if (e.key === 'Backspace' && this.value === '') {
+            if (index > 0) {
+                codeInputs[index - 1].focus();
+            }
+        }
+    });
+    
+    // Handle paste
+    input.addEventListener('paste', function(e) {
+        e.preventDefault();
+        const pastedData = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
+        
+        for (let i = 0; i < pastedData.length && i < codeInputs.length; i++) {
+            codeInputs[i].value = pastedData[i];
+        }
+        
+        const nextEmpty = Array.from(codeInputs).findIndex(input => !input.value);
+        if (nextEmpty !== -1) {
+            codeInputs[nextEmpty].focus();
+        } else {
+            codeInputs[codeInputs.length - 1].focus();
+        }
+    });
+});
+
+// Verify Button
+document.getElementById('verifyBtn').addEventListener('click', async function() {
+    const code = Array.from(codeInputs).map(input => input.value).join('');
+    
+    if (code.length !== 6) {
+        showError('Please enter all 6 digits');
+        return;
+    }
+    
+    const verifyBtn = document.getElementById('verifyBtn');
+    const originalContent = verifyBtn.innerHTML;
+    verifyBtn.disabled = true;
+    verifyBtn.innerHTML = '<span>Verifying...</span> <span>⏳</span>';
+    
+    try {
+        const response = await fetch(`${BACKEND_URL}/api/auth/verify-email`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: pendingEmail, code: code })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            // Store auth data
+            authToken = data.token;
+            userData = data.user;
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('user', JSON.stringify(data.user));
+            localStorage.removeItem('pendingVerificationEmail');
+            
+            // Show success state
+            document.getElementById('verifyForm').style.display = 'none';
+            document.getElementById('successState').classList.add('show');
+        } else {
+            throw new Error(data.error || 'Verification failed');
+        }
+    } catch (error) {
+        console.error('Verification error:', error);
+        showError(error.message || 'Invalid code. Please try again.');
+        verifyBtn.disabled = false;
+        verifyBtn.innerHTML = originalContent;
+        
+        // Clear inputs
+        codeInputs.forEach(input => input.value = '');
+        codeInputs[0].focus();
+    }
+});
+
+function showError(msg) {
+    const errorDiv = document.getElementById('errorMsg');
+    errorDiv.querySelector('span:last-child').textContent = msg;
+    errorDiv.classList.add('show');
+    setTimeout(() => errorDiv.classList.remove('show'), 5000);
+}
+
+// Resend Code
+let resendTimer = null;
+let countdown = 60;
+
+document.getElementById('resendLink').addEventListener('click', async function() {
+    if (this.classList.contains('disabled')) return;
+    
+    try {
+        const response = await fetch(`${BACKEND_URL}/api/auth/resend-verification`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: pendingEmail })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            this.classList.add('disabled');
+            const timerSpan = document.getElementById('resendTimer');
+            timerSpan.style.display = 'inline';
+            countdown = 60;
+            
+            resendTimer = setInterval(() => {
+                countdown--;
+                timerSpan.textContent = ` (${countdown}s)`;
+                
+                if (countdown <= 0) {
+                    clearInterval(resendTimer);
+                    this.classList.remove('disabled');
+                    timerSpan.style.display = 'none';
+                }
+            }, 1000);
+        } else {
+            throw new Error(data.error || 'Failed to resend');
+        }
+    } catch (error) {
+        showError(error.message || 'Failed to resend code');
+    }
+});
+
+// Go to Dashboard
+function goToDashboard() {
+    if (userData && userData.role === 'admin') {
+        window.location.href = '/admin.html';
+    } else {
+        window.location.href = '/dashboard.html';
+    }
+}
+</script>
+
+</body>
+</html>

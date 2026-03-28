@@ -700,8 +700,30 @@ form.addEventListener('submit', async function(e) {
         
         const data = await response.json();
         
+        // ============================================
+        // EMAIL VERIFICATION CHECK - ADD THIS SECTION
+        // ============================================
+        if (data.requiresVerification) {
+            // User needs to verify email first
+            submitBtn.classList.remove('loading');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<span>Sign In</span> <span>→</span>';
+            
+            // Store email for verification page
+            localStorage.setItem('pendingVerificationEmail', email);
+            
+            // Show message and redirect to verification
+            showError('Please verify your email before logging in. Redirecting...');
+            
+            setTimeout(() => {
+                window.location.href = `verify-email.html?email=${encodeURIComponent(email)}`;
+            }, 2000);
+            return;
+        }
+        // ============================================
+        
         if (data.success) {
-            // FIX 1: Save user data (not remove it!)
+            // Save user data
             localStorage.setItem('token', data.token);
             localStorage.setItem('user', JSON.stringify(data.user));
             
@@ -717,7 +739,7 @@ form.addEventListener('submit', async function(e) {
             successAlert.classList.add('show');
             
             setTimeout(() => {
-                // FIX 2: Route based on role - admins to admin, users to dashboard
+                // Route based on role - admins to admin, users to dashboard
                 if (data.user && data.user.role === 'admin') {
                     window.location.href = '/admin.html';
                 } else {
