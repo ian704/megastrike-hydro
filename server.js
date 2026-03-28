@@ -91,6 +91,20 @@ async function runMigrations() {
     `);
     console.log('✅ Consultations table ready');
 
+    // Create contact messages table
+await client.query(`
+  CREATE TABLE IF NOT EXISTS contact_messages (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    phone VARCHAR(20),
+    subject VARCHAR(255),
+    message TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW()
+  )
+`);
+console.log('✅ Contact messages table ready');
+
     // Add missing columns to users table
     const userColumns = await client.query(`
       SELECT column_name FROM information_schema.columns WHERE table_name = 'users'
@@ -560,6 +574,70 @@ app.post('/api/auth/reset-password', async (req, res) => {
   } catch (error) {
     console.error('Reset password error:', error);
     res.status(500).json({ success: false, error: 'Server error' });
+  }
+});
+
+// ==========================
+// CONTACT FORM
+// ==========================
+app.post('/api/contact', async (req, res) => {
+  console.log('Contact form submission:', req.body);
+
+  try {
+    const { name, email, phone, subject, message } = req.body;
+
+    // VALIDATION
+    if (!name || !email || !message) {
+      return res.status(400).json({
+        success: false,
+        error: 'Name, email, and message are required'
+      });
+    }
+
+    // SAVE TO DATABASE
+    const { rows } = await pool.query(
+      `INSERT INTO contact_messages (name, email, phone, subject, message)
+       VALUES ($1, $2, $3, $4, $5)
+       RETURNING *`,
+      [
+        name.trim(),
+        email.toLowerCase().trim(),
+        phone || null,
+        subject || 'General Inquiry',
+        message.trim()
+      ]
+    );
+
+    // SEND EMAIL NOTIFICATION
+    const mailOptions = {
+      from: `"Website Contact" <${process.env.EMAIL_USER}>`,
+      to: process.env.EMAIL_USER, // you receive the message
+      subject: `New Contact Message: ${subject || 'No Subject'}`,
+      html: `
+        <h2>New Contact Message</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Phone:</strong> ${phone || 'N/A'}</p>
+        <p><strong>Subject:</strong> ${subject || 'N/A'}</p>
+        <p><strong>Message:</strong></p>
+        <p>${message}</p>
+      `
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    res.status(201).json({
+      success: true,
+      message: 'Message sent successfully',
+      contact: rows[0]
+    });
+
+  } catch (error) {
+    console.error('Contact form error:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to send message'
+    });
   }
 });
 

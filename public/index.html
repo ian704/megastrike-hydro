@@ -20,7 +20,26 @@
 <meta name="twitter:title" content="Megastrike Hydro Drilling Solutions">
 <meta name="twitter:description" content="Professional borehole drilling services in Kenya.">
 <meta name="twitter:image" content="https://megastrike-hydro.onrender.com/images/logo.png">
-<style>
+
+<!-- Favicon -->
+<link rel="icon" href="/images/logo.png" type="image/png">
+
+<!-- Structured Data (SEO BOOST) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Megastrike Hydro Drilling Solutions Ltd",
+  "url": "https://megastrike-hydro.onrender.com",
+  "logo": "https://megastrike-hydro.onrender.com/images/logo.png",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+254729317914",
+    "contactType": "customer service",
+    "areaServed": "KE"
+  }
+}
+</script>
     
 :root {
     --deep-navy: #0a1628;
@@ -363,10 +382,10 @@ nav {
     background: linear-gradient(135deg, rgba(10,22,40,0.9) 0%, rgba(13,27,42,0.85) 50%, rgba(27,38,59,0.8) 100%);
 }
 
-.slide:nth-child(1) { background-image: url('images/at-work.jpg'); }
-.slide:nth-child(2) { background-image: url('images/co-truck.jpg'); }
-.slide:nth-child(3) { background-image: url('images/properties.jpg'); }
-.slide:nth-child(4) { background-image: url('images/drilling.jpg'); }
+.slide:nth-child(1) { background-image: url('/images/at-work.jpg'); }
+.slide:nth-child(2) { background-image: url('/images/co-truck.jpg'); }
+.slide:nth-child(3) { background-image: url('/images/properties.jpg'); }
+.slide:nth-child(4) { background-image: url('/images/drilling.jpg'); }
 
 .slide-indicators {
     position: absolute;
@@ -1005,6 +1024,7 @@ nav {
 .service-card:nth-child(8) { animation-delay: 0.45s; }
 
 </style>
+
 </head>
 <body>
 
@@ -1189,27 +1209,27 @@ nav {
         <div class="gallery-slideshow-container">
             <div class="gallery-slideshow" id="gallerySlideshow">
                 <div class="gallery-slide">
-                    <img src="images/one.jpg" alt="Drilling Operation">
+                    <img src="/images/one.jpg" alt="Drilling Operation">
                     <div class="gallery-caption">Professional Drilling Operations</div>
                 </div>
                 <div class="gallery-slide">
-                    <img src="images/two.jpg" alt="Equipment">
+                    <img src="/images/two.jpg" alt="Equipment">
                     <div class="gallery-caption">State-of-the-Art Equipment</div>
                 </div>
                 <div class="gallery-slide">
-                    <img src="images/three.jpg" alt="Site Work">
+                    <img src="/images/three.jpg" alt="Site Work">
                     <div class="gallery-caption">On-Site Project Execution</div>
                 </div>
                 <div class="gallery-slide">
-                    <img src="images/solar.jpg" alt="Solar Installation">
+                    <img src="/images/solar.jpg" alt="Solar Installation">
                     <div class="gallery-caption">Solar Pump Solutions</div>
                 </div>
                 <div class="gallery-slide">
-                    <img src="images/tower.jpg" alt="Water Tower">
+                    <img src="/images/tower.jpg" alt="Water Tower">
                     <div class="gallery-caption">Water Tower Construction</div>
                 </div>
                 <div class="gallery-slide">
-                    <img src="images/site.jpg" alt="Project Site">
+                    <img src="/images/site.jpg" alt="Project Site">
                     <div class="gallery-caption">Completed Project Sites</div>
                 </div>
             </div>
@@ -1238,12 +1258,12 @@ nav {
         <p><strong>Email:</strong> megastrikehydrodrillingsolltd@gmail.com</p>
         <p><strong>Phone:</strong> +254729317914</p>
 
-        <form class="contact-form">
-            <input type="text" placeholder="Your Name" required><br><br>
-            <input type="email" placeholder="Your Email" required><br><br>
-            <textarea placeholder="Your Message" rows="5" required></textarea><br><br>
-            <button type="submit">Send Message</button>
-        </form>
+        <form class="contact-form" id="contactForm">
+    <input type="text" id="name" placeholder="Your Name" required>
+    <input type="email" id="email" placeholder="Your Email" required>
+    <textarea id="message" placeholder="Your Message" rows="5" required></textarea>
+    <button type="submit">Send Message</button>
+</form>
     </div>
 </section>
 
@@ -1388,6 +1408,36 @@ function updateNavigationButtons() {
 
 // Run on page load
 document.addEventListener('DOMContentLoaded', updateNavigationButtons);
+
+// CONTACT FORM SUBMIT
+document.getElementById('contactForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const formData = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        message: document.getElementById('message').value
+    };
+
+    try {
+        const res = await fetch('https://megastrike-hydro.onrender.com/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+        });
+
+        if (res.ok) {
+            alert('✅ Message sent successfully!');
+            document.getElementById('contactForm').reset();
+        } else {
+            alert('❌ Failed to send message');
+        }
+    } catch (err) {
+        console.error(err);
+        alert('❌ Server error');
+    }
+});
+
 </script>
 
 </body>
