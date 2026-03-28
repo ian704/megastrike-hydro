@@ -40,7 +40,8 @@
   }
 }
 </script>
-    
+
+<style>
 :root {
     --deep-navy: #0a1628;
     --navy: #0d1b2a;
@@ -1022,7 +1023,6 @@ nav {
 .service-card:nth-child(6) { animation-delay: 0.35s; }
 .service-card:nth-child(7) { animation-delay: 0.4s; }
 .service-card:nth-child(8) { animation-delay: 0.45s; }
-
 </style>
 
 </head>
@@ -1067,7 +1067,7 @@ nav {
         <li><a href="#gallery" onclick="toggleMobileMenu()">Gallery</a></li>
         <li><a href="#contacts" onclick="toggleMobileMenu()">Contact</a></li>
         <!-- Dashboard link for all users -->
-        <li><a href="/dashboard.html" onclick="toggleMobileMenu()" id="mobileDashboardLink">Dashboard</a></li>
+        <li><a href="/dashboard.html" onclick="toggleMobileMenu()" id="mobileDashboardLink" style="display: none;">Dashboard</a></li>
         <!-- Sign Up link -->
         <li><a href="/signup.html" onclick="toggleMobileMenu()" id="mobileSignupLink">Sign Up</a></li>
         <!-- Admin link - ONLY visible to admins (injected by JS) -->
@@ -1383,11 +1383,15 @@ function updateNavigationButtons() {
     const signupBtn = document.getElementById('signupBtn');
     const dashboardBtn = document.getElementById('dashboardBtn');
     const adminBtn = document.getElementById('adminBtn');
+    const mobileDashboardLink = document.getElementById('mobileDashboardLink');
+    const mobileSignupLink = document.getElementById('mobileSignupLink');
     
     if (token && userStr) {
         // User is logged in - hide signup, show dashboard
         if (signupBtn) signupBtn.style.display = 'none';
+        if (mobileSignupLink) mobileSignupLink.style.display = 'none';
         if (dashboardBtn) dashboardBtn.style.display = 'inline-flex';
+        if (mobileDashboardLink) mobileDashboardLink.style.display = 'block';
         
         try {
             const user = JSON.parse(userStr);
@@ -1401,7 +1405,9 @@ function updateNavigationButtons() {
     } else {
         // Not logged in - show signup, hide dashboard and admin
         if (signupBtn) signupBtn.style.display = 'inline-flex';
+        if (mobileSignupLink) mobileSignupLink.style.display = 'block';
         if (dashboardBtn) dashboardBtn.style.display = 'none';
+        if (mobileDashboardLink) mobileDashboardLink.style.display = 'none';
         if (adminBtn) adminBtn.style.display = 'none';
     }
 }
