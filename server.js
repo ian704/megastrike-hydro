@@ -9,22 +9,12 @@ const { authenticateToken } = require('./middleware/auth');
 const morgan = require('morgan');
 const helmet = require('helmet');
 const path = require('path');
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 
 const app = express();
 
-// ==========================
-// EMAIL CONFIGURATION
-// ==========================
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
-  }
-});
 
 // Generate 6-digit code
 function generateCode() {
@@ -249,15 +239,12 @@ app.post('/api/auth/signup', async (req, res) => {
         `
       };
 
-      await transporter.sendMail(mailOptions);
-      console.log('Verification email resent to:', email);
-
-      return res.status(200).json({
-        success: true,
-        message: 'Verification code resent to your email',
-        requiresVerification: true,
-        email: email.toLowerCase().trim()
-      });
+await resend.emails.send({
+  from: "Megastrike <onboarding@resend.dev>",
+  to: mailOptions.to,
+  subject: mailOptions.subject,
+  html: mailOptions.html
+});
     }
 
     // If user exists and is verified
@@ -316,8 +303,13 @@ app.post('/api/auth/signup', async (req, res) => {
       `
     };
 
-    await transporter.sendMail(mailOptions);
-    console.log('Verification email sent to:', email);
+    await resend.emails.send({
+  from: "Megastrike <onboarding@resend.dev>",
+  to: mailOptions.to,
+  subject: mailOptions.subject,
+  html: mailOptions.html
+});
+
 
     res.status(201).json({
       success: true,
@@ -469,8 +461,12 @@ app.post('/api/auth/resend-verification', async (req, res) => {
       `
     };
 
-    await transporter.sendMail(mailOptions);
-    console.log('Verification email resent to:', email);
+await resend.emails.send({
+  from: "Megastrike <onboarding@resend.dev>",
+  to: mailOptions.to,
+  subject: mailOptions.subject,
+  html: mailOptions.html
+});
 
     // Return same generic message even when email is actually sent
     res.json({ 
@@ -694,8 +690,12 @@ app.post('/api/auth/forgot-password', async (req, res) => {
       `
     };
 
-    await transporter.sendMail(mailOptions);
-    console.log('Reset email sent to:', user.email);
+await resend.emails.send({
+  from: "Megastrike <onboarding@resend.dev>",
+  to: mailOptions.to,
+  subject: mailOptions.subject,
+  html: mailOptions.html
+});
 
     res.json({ 
       success: true, 
@@ -845,7 +845,12 @@ app.post('/api/contact', async (req, res) => {
       `
     };
 
-    await transporter.sendMail(mailOptions);
+    await resend.emails.send({
+  from: "Megastrike <onboarding@resend.dev>",
+  to: mailOptions.to,
+  subject: mailOptions.subject,
+  html: mailOptions.html
+});
 
     res.status(201).json({
       success: true,
