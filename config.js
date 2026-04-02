@@ -1,7 +1,7 @@
 // config.js
 require('dotenv').config();
 
-const requiredEnv = ['DATABASE_URL', 'JWT_SECRET', 'PORT'];
+const requiredEnv = ['DATABASE_URL', 'JWT_SECRET', 'PORT', 'RESEND_API_KEY'];
 
 requiredEnv.forEach((key) => {
   if (!process.env[key]) {

@@ -10,15 +10,38 @@ const morgan = require('morgan');
 const helmet = require('helmet');
 const path = require('path');
 const { Resend } = require('resend');
-const resend = new Resend(process.env.RESEND_API_KEY);
 
+// Initialize Resend only if API key exists
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 const app = express();
-
 
 // Generate 6-digit code
 function generateCode() {
   return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
+// Helper function to send email safely
+async function sendEmail(mailOptions) {
+  if (!resend) {
+    console.warn('RESEND_API_KEY not configured, email not sent');
+    console.log('Would have sent email to:', mailOptions.to);
+    return { success: false, error: 'Email service not configured' };
+  }
+  
+  try {
+    const result = await resend.emails.send({
+      from: "Megastrike <onboarding@resend.dev>",
+      to: mailOptions.to,
+      subject: mailOptions.subject,
+      html: mailOptions.html
+    });
+    console.log('Email sent successfully to:', mailOptions.to);
+    return { success: true, result };
+  } catch (error) {
+    console.error('Email send failed:', error);
+    throw error;
+  }
 }
 
 // ==========================
@@ -29,7 +52,7 @@ console.log('Time:', new Date().toISOString());
 console.log('NODE_ENV:', process.env.NODE_ENV || 'not set');
 console.log('DATABASE_URL exists:', !!process.env.DATABASE_URL);
 console.log('JWT_SECRET exists:', !!process.env.JWT_SECRET);
-console.log('EMAIL_USER exists:', !!process.env.EMAIL_USER);
+console.log('RESEND_API_KEY exists:', !!process.env.RESEND_API_KEY);
 
 // ==========================
 // DATABASE MIGRATIONS
@@ -195,18 +218,15 @@ app.post('/api/auth/signup', async (req, res) => {
 
     // If user exists but not verified, allow resending code
     if (existingUsers.length > 0 && !existingUsers[0].is_verified) {
-      // Resend verification code
       const verificationCode = generateCode();
-      const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+      const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
       await pool.query(
         `UPDATE users SET verification_code = $1, verification_code_expires = $2 WHERE id = $3`,
         [verificationCode, expiresAt, existingUsers[0].id]
       );
 
-      // Send verification email
-      const mailOptions = {
-        from: `"Megastrike Hydro" <${process.env.EMAIL_USER}>`,
+      await sendEmail({
         to: email.toLowerCase().trim(),
         subject: 'Verify Your Email - Megastrike Hydro',
         html: `
@@ -237,14 +257,14 @@ app.post('/api/auth/signup', async (req, res) => {
             </div>
           </div>
         `
-      };
+      });
 
-await resend.emails.send({
-  from: "Megastrike <onboarding@resend.dev>",
-  to: mailOptions.to,
-  subject: mailOptions.subject,
-  html: mailOptions.html
-});
+      return res.json({
+        success: true,
+        message: 'Verification code resent. Please check your email.',
+        requiresVerification: true,
+        email: email.toLowerCase().trim()
+      });
     }
 
     // If user exists and is verified
@@ -256,7 +276,7 @@ await resend.emails.send({
     const salt = await bcrypt.genSalt(12);
     const passwordHash = await bcrypt.hash(password, salt);
     const verificationCode = generateCode();
-    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
     const { rows } = await pool.query(
       `INSERT INTO users (first_name, last_name, email, phone, password_hash, is_active, is_verified, verification_code, verification_code_expires)
@@ -266,11 +286,9 @@ await resend.emails.send({
     );
 
     const userId = rows[0].id;
-    const user = rows[0];
 
     // Send verification email
-    const mailOptions = {
-      from: `"Megastrike Hydro" <${process.env.EMAIL_USER}>`,
+    await sendEmail({
       to: email.toLowerCase().trim(),
       subject: 'Verify Your Email - Megastrike Hydro',
       html: `
@@ -301,15 +319,7 @@ await resend.emails.send({
           </div>
         </div>
       `
-    };
-
-    await resend.emails.send({
-  from: "Megastrike <onboarding@resend.dev>",
-  to: mailOptions.to,
-  subject: mailOptions.subject,
-  html: mailOptions.html
-});
-
+    });
 
     res.status(201).json({
       success: true,
@@ -411,7 +421,6 @@ app.post('/api/auth/resend-verification', async (req, res) => {
     );
 
     // SECURITY FIX: Always return same generic message
-    // Don't reveal if email exists, is verified, or not
     if (rows.length === 0 || rows[0].is_verified) {
       return res.json({ 
         success: true, 
@@ -428,9 +437,7 @@ app.post('/api/auth/resend-verification', async (req, res) => {
       [verificationCode, expiresAt, user.id]
     );
 
-    // Send email
-    const mailOptions = {
-      from: `"Megastrike Hydro" <${process.env.EMAIL_USER}>`,
+    await sendEmail({
       to: email.toLowerCase().trim(),
       subject: 'Verify Your Email - Megastrike Hydro',
       html: `
@@ -459,16 +466,8 @@ app.post('/api/auth/resend-verification', async (req, res) => {
           </div>
         </div>
       `
-    };
+    });
 
-await resend.emails.send({
-  from: "Megastrike <onboarding@resend.dev>",
-  to: mailOptions.to,
-  subject: mailOptions.subject,
-  html: mailOptions.html
-});
-
-    // Return same generic message even when email is actually sent
     res.json({ 
       success: true, 
       message: 'If an account exists with this email, a verification code has been sent' 
@@ -666,8 +665,7 @@ app.post('/api/auth/forgot-password', async (req, res) => {
       [resetCode, expiresAt, user.id]
     );
 
-    const mailOptions = {
-      from: `"Megastrike Hydro" <${process.env.EMAIL_USER}>`,
+    await sendEmail({
       to: user.email,
       subject: 'Password Reset Code',
       html: `
@@ -688,14 +686,7 @@ app.post('/api/auth/forgot-password', async (req, res) => {
           </p>
         </div>
       `
-    };
-
-await resend.emails.send({
-  from: "Megastrike <onboarding@resend.dev>",
-  to: mailOptions.to,
-  subject: mailOptions.subject,
-  html: mailOptions.html
-});
+    });
 
     res.json({ 
       success: true, 
@@ -830,27 +821,22 @@ app.post('/api/contact', async (req, res) => {
       ]
     );
 
-    const mailOptions = {
-      from: `"Website Contact" <${process.env.EMAIL_USER}>`,
-      to: process.env.EMAIL_USER,
-      subject: `New Contact Message: ${subject || 'No Subject'}`,
-      html: `
-        <h2>New Contact Message</h2>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Phone:</strong> ${phone || 'N/A'}</p>
-        <p><strong>Subject:</strong> ${subject || 'N/A'}</p>
-        <p><strong>Message:</strong></p>
-        <p>${message}</p>
-      `
-    };
-
-    await resend.emails.send({
-  from: "Megastrike <onboarding@resend.dev>",
-  to: mailOptions.to,
-  subject: mailOptions.subject,
-  html: mailOptions.html
-});
+    // Send notification email to admin (if EMAIL_USER is configured)
+    if (process.env.EMAIL_USER) {
+      await sendEmail({
+        to: process.env.EMAIL_USER,
+        subject: `New Contact Message: ${subject || 'No Subject'}`,
+        html: `
+          <h2>New Contact Message</h2>
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Phone:</strong> ${phone || 'N/A'}</p>
+          <p><strong>Subject:</strong> ${subject || 'N/A'}</p>
+          <p><strong>Message:</strong></p>
+          <p>${message}</p>
+        `
+      });
+    }
 
     res.status(201).json({
       success: true,
