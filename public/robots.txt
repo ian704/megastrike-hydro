@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+# Disallow admin and private pages
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://megastrike-hydro.onrender.com/sitemap.xml
+
+# Crawl delay for bots
+Crawl-delay: 10
