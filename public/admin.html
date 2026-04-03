@@ -7,28 +7,64 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --deep-ocean: #0a1628;
-            --ocean-blue: #0d3b66;
-            --azure: #1e6091;
+            --deep-ocean: #0a0f1a;
+            --ocean-blue: #0d1b2a;
+            --navy: #1b263b;
+            --azure: #415a77;
             --aqua: #4ecdc4;
             --cyan: #45b7d1;
+            --gold: #e9c46a;
+            --orange: #f4a261;
             --foam: #f0f9ff;
             --white: #ffffff;
             --success: #10b981;
             --warning: #f59e0b;
             --error: #ef4444;
             --purple: #8b5cf6;
+            --glass-bg: rgba(27, 38, 59, 0.7);
+            --glass-border: rgba(233, 196, 106, 0.15);
             --sidebar-width: 280px;
             --header-height: 80px;
+            --shadow-gold: 0 4px 20px rgba(233, 196, 106, 0.15);
+            --shadow-cyan: 0 4px 20px rgba(78, 205, 196, 0.15);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--foam);
+            background: linear-gradient(135deg, var(--deep-ocean) 0%, var(--ocean-blue) 50%, var(--navy) 100%);
             min-height: 100vh;
-            color: var(--deep-ocean);
+            color: var(--white);
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: radial-gradient(circle at 20% 80%, rgba(233, 196, 106, 0.03) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(78, 205, 196, 0.03) 0%, transparent 50%);
+            animation: bgMove 20s ease-in-out infinite;
+        }
+
+        @keyframes bgMove {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-2%, -2%) rotate(2deg); }
         }
 
         /* Layout */
@@ -37,21 +73,23 @@
             min-height: 100vh;
         }
 
-        /* Sidebar */
+        /* Glassmorphism Sidebar */
         .sidebar {
             width: var(--sidebar-width);
-            background: linear-gradient(180deg, var(--deep-ocean) 0%, var(--ocean-blue) 100%);
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--glass-border);
             color: white;
             position: fixed;
             height: 100vh;
             overflow-y: auto;
             z-index: 1000;
-            transition: transform 0.3s ease;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .sidebar-header {
             padding: 2rem;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid var(--glass-border);
             display: flex;
             align-items: center;
             gap: 1rem;
@@ -60,19 +98,29 @@
         .sidebar-logo {
             width: 50px;
             height: 50px;
-            background: linear-gradient(135deg, var(--aqua) 0%, var(--cyan) 100%);
+            background: linear-gradient(135deg, var(--gold) 0%, var(--orange) 100%);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
-            box-shadow: 0 4px 15px rgba(78, 205, 196, 0.3);
+            box-shadow: var(--shadow-gold);
+            animation: logoPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes logoPulse {
+            0%, 100% { box-shadow: 0 4px 15px rgba(233, 196, 106, 0.3); }
+            50% { box-shadow: 0 4px 30px rgba(233, 196, 106, 0.5); }
         }
 
         .sidebar-brand h1 {
             font-family: 'Playfair Display', serif;
             font-size: 1.3rem;
             line-height: 1.2;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--orange) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .sidebar-brand span {
@@ -80,6 +128,7 @@
             opacity: 0.8;
             text-transform: uppercase;
             letter-spacing: 1px;
+            color: var(--text-muted);
         }
 
         .nav-section {
@@ -90,10 +139,11 @@
             padding: 0 1.5rem;
             font-size: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 2px;
             opacity: 0.6;
             margin-bottom: 0.75rem;
             font-weight: 600;
+            color: var(--gold);
         }
 
         .nav-menu {
@@ -109,27 +159,48 @@
             align-items: center;
             gap: 1rem;
             padding: 1rem 1.5rem;
-            color: rgba(255,255,255,0.8);
+            color: rgba(255,255,255,0.7);
             text-decoration: none;
             transition: all 0.3s ease;
             border-left: 3px solid transparent;
             cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, rgba(233, 196, 106, 0.1) 0%, transparent 100%);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::before, .nav-link.active::before {
+            width: 100%;
         }
 
         .nav-link:hover, .nav-link.active {
-            background: rgba(255,255,255,0.05);
-            color: white;
-            border-left-color: var(--aqua);
+            color: var(--gold);
+            border-left-color: var(--gold);
         }
 
         .nav-link.active {
-            background: rgba(78, 205, 196, 0.1);
+            background: rgba(233, 196, 106, 0.05);
         }
 
         .nav-icon {
             font-size: 1.25rem;
             width: 24px;
             text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-link:hover .nav-icon {
+            transform: scale(1.1);
         }
 
         .nav-badge {
@@ -137,9 +208,15 @@
             background: var(--error);
             color: white;
             font-size: 0.75rem;
-            padding: 0.25rem 0.5rem;
+            padding: 0.25rem 0.75rem;
             border-radius: 20px;
             font-weight: 600;
+            animation: badgePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes badgePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         .sidebar-footer {
@@ -148,7 +225,9 @@
             left: 0;
             right: 0;
             padding: 1.5rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
+            border-top: 1px solid var(--glass-border);
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
         }
 
         .admin-profile {
@@ -167,16 +246,19 @@
             justify-content: center;
             font-weight: 700;
             font-size: 1.1rem;
+            box-shadow: var(--shadow-cyan);
         }
 
         .admin-info h4 {
             font-size: 0.95rem;
             font-weight: 600;
+            color: var(--white);
         }
 
         .admin-info p {
             font-size: 0.8rem;
             opacity: 0.7;
+            color: var(--text-muted);
         }
 
         /* Main Content */
@@ -186,11 +268,12 @@
             min-height: 100vh;
         }
 
-        /* Header */
+        /* Glassmorphism Header */
         .header {
             height: var(--header-height);
-            background: white;
-            border-bottom: 1px solid #e2e8f0;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -198,7 +281,6 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
         .header-left {
@@ -213,7 +295,14 @@
             border: none;
             font-size: 1.5rem;
             cursor: pointer;
-            color: var(--ocean-blue);
+            color: var(--gold);
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-toggle:hover {
+            background: rgba(233, 196, 106, 0.1);
         }
 
         .search-bar {
@@ -222,17 +311,20 @@
 
         .search-bar input {
             padding: 0.75rem 1rem 0.75rem 2.5rem;
-            border: 2px solid #e2e8f0;
+            border: 1px solid var(--glass-border);
             border-radius: 30px;
             width: 300px;
             font-family: inherit;
+            background: rgba(10, 22, 40, 0.5);
+            color: white;
             transition: all 0.3s ease;
         }
 
         .search-bar input:focus {
             outline: none;
-            border-color: var(--aqua);
+            border-color: var(--gold);
             width: 350px;
+            box-shadow: var(--shadow-gold);
         }
 
         .search-bar::before {
@@ -253,16 +345,19 @@
         .header-btn {
             position: relative;
             background: none;
-            border: none;
+            border: 1px solid var(--glass-border);
             font-size: 1.25rem;
             cursor: pointer;
             padding: 0.5rem;
-            border-radius: 8px;
+            border-radius: 10px;
             transition: all 0.3s ease;
+            color: var(--white);
         }
 
         .header-btn:hover {
-            background: var(--foam);
+            background: rgba(233, 196, 106, 0.1);
+            border-color: var(--gold);
+            transform: translateY(-2px);
         }
 
         .notification-dot {
@@ -273,7 +368,13 @@
             height: 8px;
             background: var(--error);
             border-radius: 50%;
-            border: 2px solid white;
+            border: 2px solid var(--navy);
+            animation: dotPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes dotPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.2); }
         }
 
         /* Content Area */
@@ -293,12 +394,15 @@
         .page-title h2 {
             font-family: 'Playfair Display', serif;
             font-size: 2rem;
-            color: var(--deep-ocean);
+            background: linear-gradient(135deg, var(--gold) 0%, var(--orange) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 0.5rem;
         }
 
         .page-title p {
-            color: #64748b;
+            color: var(--text-muted);
         }
 
         .page-actions {
@@ -308,7 +412,7 @@
 
         .btn {
             padding: 0.75rem 1.5rem;
-            border-radius: 8px;
+            border-radius: 10px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -317,30 +421,53 @@
             align-items: center;
             gap: 0.5rem;
             text-decoration: none;
+            font-size: 0.9rem;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--ocean-blue) 0%, var(--azure) 100%);
-            color: white;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--orange) 100%);
+            color: var(--deep-ocean);
+            box-shadow: var(--shadow-gold);
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(13, 59, 102, 0.3);
+            box-shadow: 0 10px 30px rgba(233, 196, 106, 0.4);
         }
 
         .btn-secondary {
-            background: white;
-            color: var(--ocean-blue);
-            border: 2px solid #e2e8f0;
+            background: transparent;
+            color: var(--white);
+            border: 1px solid var(--glass-border);
         }
 
         .btn-secondary:hover {
-            border-color: var(--aqua);
-            color: var(--aqua);
+            border-color: var(--gold);
+            color: var(--gold);
+            background: rgba(233, 196, 106, 0.05);
         }
 
-        /* Stats Grid */
+        .btn-success {
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--error) 0%, #dc2626 100%);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(239, 68, 68, 0.4);
+        }
+
+        /* Glassmorphism Stats Grid */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -349,18 +476,36 @@
         }
 
         .stat-card {
-            background: white;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
             border-radius: 16px;
             padding: 1.5rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-            border: 2px solid #f1f5f9;
-            transition: all 0.3s ease;
+            border: 1px solid var(--glass-border);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold) 0%, var(--orange) 100%);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
         }
 
         .stat-card:hover {
             transform: translateY(-5px);
-            border-color: var(--aqua);
-            box-shadow: 0 20px 40px rgba(78, 205, 196, 0.15);
+            border-color: rgba(233, 196, 106, 0.3);
+            box-shadow: var(--shadow-gold);
+        }
+
+        .stat-card:hover::before {
+            transform: scaleX(1);
         }
 
         .stat-header {
@@ -378,37 +523,41 @@
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--glass-border);
         }
 
-        .stat-icon.blue { background: rgba(30, 96, 145, 0.1); color: var(--azure); }
-        .stat-icon.green { background: rgba(16, 185, 129, 0.1); color: var(--success); }
-        .stat-icon.orange { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
-        .stat-icon.purple { background: rgba(139, 92, 246, 0.1); color: var(--purple); }
+        .stat-icon.blue { color: var(--cyan); }
+        .stat-icon.green { color: var(--success); }
+        .stat-icon.orange { color: var(--orange); }
+        .stat-icon.purple { color: var(--purple); }
+        .stat-icon.gold { color: var(--gold); }
 
         .stat-trend {
             font-size: 0.85rem;
             font-weight: 600;
-            padding: 0.25rem 0.5rem;
+            padding: 0.25rem 0.75rem;
             border-radius: 20px;
+            background: rgba(255,255,255,0.05);
         }
 
-        .trend-up { background: rgba(16, 185, 129, 0.1); color: var(--success); }
-        .trend-down { background: rgba(239, 68, 68, 0.1); color: var(--error); }
+        .trend-up { color: var(--success); }
+        .trend-down { color: var(--error); }
 
         .stat-value {
-            font-size: 2rem;
+            font-size: 2.5rem;
             font-weight: 700;
-            color: var(--deep-ocean);
+            color: var(--white);
             margin-bottom: 0.25rem;
             font-family: 'Playfair Display', serif;
         }
 
         .stat-label {
-            color: #64748b;
+            color: var(--text-muted);
             font-size: 0.9rem;
         }
 
-        /* Dashboard Grid */
+        /* Glassmorphism Cards */
         .dashboard-grid {
             display: grid;
             grid-template-columns: 2fr 1fr;
@@ -417,16 +566,22 @@
         }
 
         .card {
-            background: white;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
             border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-            border: 2px solid #f1f5f9;
+            border: 1px solid var(--glass-border);
             overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .card:hover {
+            border-color: rgba(233, 196, 106, 0.25);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
         }
 
         .card-header {
             padding: 1.5rem;
-            border-bottom: 1px solid #f1f5f9;
+            border-bottom: 1px solid var(--glass-border);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -435,7 +590,8 @@
         .card-title {
             font-size: 1.2rem;
             font-weight: 700;
-            color: var(--deep-ocean);
+            color: var(--gold);
+            font-family: 'Playfair Display', serif;
         }
 
         .card-body {
@@ -460,16 +616,18 @@
 
         .chart-bar {
             flex: 1;
-            background: linear-gradient(to top, var(--aqua), var(--cyan));
+            background: linear-gradient(to top, var(--gold), var(--orange));
             border-radius: 8px 8px 0 0;
             position: relative;
             transition: all 0.3s ease;
             cursor: pointer;
+            opacity: 0.8;
         }
 
         .chart-bar:hover {
-            opacity: 0.8;
+            opacity: 1;
             transform: scaleY(1.05);
+            filter: brightness(1.2);
         }
 
         .chart-bar-label {
@@ -478,11 +636,11 @@
             left: 50%;
             transform: translateX(-50%);
             font-size: 0.8rem;
-            color: #64748b;
+            color: var(--text-muted);
             white-space: nowrap;
         }
 
-        /* Recent Activity */
+        /* Activity List */
         .activity-list {
             list-style: none;
         }
@@ -491,7 +649,15 @@
             display: flex;
             gap: 1rem;
             padding: 1rem 0;
-            border-bottom: 1px solid #f1f5f9;
+            border-bottom: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+
+        .activity-item:hover {
+            background: rgba(255,255,255,0.02);
+            margin: 0 -1rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
         }
 
         .activity-item:last-child {
@@ -507,32 +673,36 @@
             justify-content: center;
             font-size: 1rem;
             flex-shrink: 0;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--glass-border);
         }
 
-        .activity-icon.new { background: rgba(16, 185, 129, 0.1); color: var(--success); }
-        .activity-icon.pending { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
-        .activity-icon.completed { background: rgba(30, 96, 145, 0.1); color: var(--azure); }
+        .activity-icon.new { color: var(--success); border-color: rgba(16, 185, 129, 0.3); }
+        .activity-icon.pending { color: var(--warning); border-color: rgba(245, 158, 11, 0.3); }
+        .activity-icon.completed { color: var(--cyan); border-color: rgba(78, 205, 196, 0.3); }
 
         .activity-content h4 {
             font-size: 0.95rem;
             font-weight: 600;
+            color: var(--white);
             margin-bottom: 0.25rem;
         }
 
         .activity-content p {
             font-size: 0.85rem;
-            color: #64748b;
+            color: var(--text-muted);
             margin-bottom: 0.25rem;
         }
 
         .activity-time {
             font-size: 0.75rem;
-            color: #94a3b8;
+            color: var(--azure);
         }
 
-        /* Tables */
+        /* Enhanced Tables */
         .table-container {
             overflow-x: auto;
+            border-radius: 12px;
         }
 
         .data-table {
@@ -544,22 +714,23 @@
             text-align: left;
             padding: 1rem;
             font-weight: 600;
-            color: #64748b;
+            color: var(--gold);
             font-size: 0.85rem;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border-bottom: 2px solid #f1f5f9;
-            background: #f8fafc;
+            letter-spacing: 1px;
+            border-bottom: 2px solid var(--glass-border);
+            background: rgba(10, 22, 40, 0.5);
         }
 
         .data-table td {
             padding: 1rem;
-            border-bottom: 1px solid #f1f5f9;
+            border-bottom: 1px solid var(--glass-border);
             font-size: 0.95rem;
+            color: var(--white);
         }
 
         .data-table tr:hover td {
-            background: #f8fafc;
+            background: rgba(233, 196, 106, 0.03);
         }
 
         .user-cell {
@@ -584,26 +755,53 @@
         .user-info h4 {
             font-weight: 600;
             margin-bottom: 0.25rem;
+            color: var(--white);
         }
 
         .user-info p {
             font-size: 0.85rem;
-            color: #64748b;
+            color: var(--text-muted);
         }
 
+        /* Enhanced Status Badges */
         .status-badge {
             padding: 0.5rem 1rem;
             border-radius: 20px;
             font-size: 0.85rem;
             font-weight: 600;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: 1px solid;
         }
 
-        .status-pending { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
-        .status-completed { background: rgba(16, 185, 129, 0.1); color: var(--success); }
-        .status-in-progress { background: rgba(30, 96, 145, 0.1); color: var(--azure); }
-        .status-cancelled { background: rgba(239, 68, 68, 0.1); color: var(--error); }
+        .status-pending { 
+            background: rgba(245, 158, 11, 0.1); 
+            color: var(--warning);
+            border-color: rgba(245, 158, 11, 0.3);
+        }
+        .status-approved { 
+            background: rgba(16, 185, 129, 0.1); 
+            color: var(--success);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+        .status-declined { 
+            background: rgba(239, 68, 68, 0.1); 
+            color: var(--error);
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+        .status-in-progress { 
+            background: rgba(78, 205, 196, 0.1); 
+            color: var(--cyan);
+            border-color: rgba(78, 205, 196, 0.3);
+        }
+        .status-completed { 
+            background: rgba(139, 92, 246, 0.1); 
+            color: var(--purple);
+            border-color: rgba(139, 92, 246, 0.3);
+        }
 
+        /* Action Buttons */
         .action-btns {
             display: flex;
             gap: 0.5rem;
@@ -612,27 +810,77 @@
         .action-btn {
             padding: 0.5rem;
             border: none;
-            background: none;
+            background: rgba(255,255,255,0.05);
             cursor: pointer;
-            border-radius: 6px;
+            border-radius: 8px;
             transition: all 0.3s ease;
             font-size: 1rem;
+            border: 1px solid var(--glass-border);
         }
 
         .action-btn:hover {
-            background: var(--foam);
+            background: rgba(233, 196, 106, 0.1);
+            transform: translateY(-2px);
         }
 
-        .action-btn.edit { color: var(--azure); }
+        .action-btn.view { color: var(--cyan); }
+        .action-btn.edit { color: var(--gold); }
         .action-btn.delete { color: var(--error); }
-        .action-btn.view { color: var(--success); }
+        .action-btn.approve { color: var(--success); }
+        .action-btn.decline { color: var(--error); }
+
+        /* Approval Actions in Table */
+        .approval-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .approval-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .approval-btn.approve {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .approval-btn.approve:hover {
+            background: var(--success);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .approval-btn.decline {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .approval-btn.decline:hover {
+            background: var(--error);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+        }
 
         /* Tab Navigation */
         .tabs {
             display: flex;
             gap: 0.5rem;
             margin-bottom: 1.5rem;
-            border-bottom: 2px solid #f1f5f9;
+            border-bottom: 2px solid var(--glass-border);
+            padding-bottom: 0.5rem;
         }
 
         .tab {
@@ -641,33 +889,41 @@
             border: none;
             cursor: pointer;
             font-weight: 600;
-            color: #64748b;
+            color: var(--text-muted);
             position: relative;
             transition: all 0.3s ease;
+            border-radius: 8px;
+        }
+
+        .tab:hover {
+            color: var(--gold);
+            background: rgba(233, 196, 106, 0.05);
         }
 
         .tab.active {
-            color: var(--ocean-blue);
+            color: var(--gold);
+            background: rgba(233, 196, 106, 0.1);
         }
 
         .tab.active::after {
             content: '';
             position: absolute;
-            bottom: -2px;
+            bottom: -0.5rem;
             left: 0;
             right: 0;
             height: 2px;
-            background: var(--aqua);
+            background: linear-gradient(90deg, var(--gold) 0%, var(--orange) 100%);
         }
 
-        /* Modal */
+        /* Enhanced Modal */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(10, 22, 40, 0.8);
+            background: rgba(10, 22, 40, 0.9);
+            backdrop-filter: blur(5px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -683,32 +939,39 @@
         }
 
         .modal {
-            background: white;
+            background: linear-gradient(135deg, var(--navy) 0%, var(--ocean-blue) 100%);
             border-radius: 20px;
             width: 90%;
-            max-width: 600px;
+            max-width: 700px;
             max-height: 90vh;
             overflow-y: auto;
-            transform: scale(0.9);
+            transform: scale(0.9) translateY(20px);
             transition: all 0.3s ease;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
         }
 
         .modal-overlay.active .modal {
-            transform: scale(1);
+            transform: scale(1) translateY(0);
         }
 
         .modal-header {
             padding: 1.5rem;
-            border-bottom: 1px solid #f1f5f9;
+            border-bottom: 1px solid var(--glass-border);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background: rgba(10, 22, 40, 0.5);
         }
 
         .modal-title {
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            color: var(--deep-ocean);
+            background: linear-gradient(135deg, var(--gold) 0%, var(--orange) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-family: 'Playfair Display', serif;
         }
 
         .modal-close {
@@ -716,14 +979,19 @@
             border: none;
             font-size: 1.5rem;
             cursor: pointer;
-            color: #64748b;
+            color: var(--text-muted);
             padding: 0.5rem;
             border-radius: 8px;
             transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .modal-close:hover {
-            background: var(--foam);
+            background: rgba(239, 68, 68, 0.1);
             color: var(--error);
         }
 
@@ -731,6 +999,52 @@
             padding: 1.5rem;
         }
 
+        .consultation-details {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .detail-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .detail-item {
+            background: rgba(10, 22, 40, 0.3);
+            padding: 1rem;
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .detail-item.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .detail-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .detail-value {
+            font-size: 1rem;
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            background: rgba(10, 22, 40, 0.5);
+        }
+
+        /* Form Elements */
         .form-group {
             margin-bottom: 1.5rem;
         }
@@ -739,7 +1053,8 @@
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 600;
-            color: var(--deep-ocean);
+            color: var(--gold);
+            font-size: 0.9rem;
         }
 
         .form-group input,
@@ -747,9 +1062,11 @@
         .form-group textarea {
             width: 100%;
             padding: 0.75rem 1rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
             font-family: inherit;
+            background: rgba(10, 22, 40, 0.5);
+            color: white;
             transition: all 0.3s ease;
         }
 
@@ -757,30 +1074,100 @@
         .form-group select:focus,
         .form-group textarea:focus {
             outline: none;
-            border-color: var(--aqua);
-        }
-
-        .modal-footer {
-            padding: 1.5rem;
-            border-top: 1px solid #f1f5f9;
-            display: flex;
-            justify-content: flex-end;
-            gap: 1rem;
+            border-color: var(--gold);
+            box-shadow: var(--shadow-gold);
         }
 
         /* Section Visibility */
         .section {
             display: none;
+            animation: fadeIn 0.5s ease;
         }
 
         .section.active {
             display: block;
-            animation: fadeIn 0.4s ease;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Filter Bar */
+        .filter-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-input {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            font-family: inherit;
+            background: rgba(10, 22, 40, 0.5);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .filter-input:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 100px;
+            right: 2rem;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .toast {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            min-width: 300px;
+            animation: slideIn 0.3s ease;
+            border-left: 4px solid;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .toast.success { border-left-color: var(--success); }
+        .toast.error { border-left-color: var(--error); }
+        .toast.warning { border-left-color: var(--warning); }
+
+        .toast-icon {
+            font-size: 1.5rem;
+        }
+
+        .toast.success .toast-icon { color: var(--success); }
+        .toast.error .toast-icon { color: var(--error); }
+        .toast.warning .toast-icon { color: var(--warning); }
+
+        .toast-content h4 {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: var(--white);
+        }
+
+        .toast-content p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
         }
 
         /* Responsive */
@@ -812,6 +1199,10 @@
             .search-bar input:focus {
                 width: 250px;
             }
+            
+            .detail-group {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 768px) {
@@ -832,6 +1223,15 @@
                 align-items: flex-start;
                 gap: 1rem;
             }
+            
+            .approval-actions {
+                flex-direction: column;
+            }
+            
+            .approval-btn {
+                width: 100%;
+                justify-content: center;
+            }
         }
 
         /* Loading State */
@@ -845,8 +1245,8 @@
         .spinner {
             width: 40px;
             height: 40px;
-            border: 4px solid var(--foam);
-            border-top-color: var(--aqua);
+            border: 4px solid var(--glass-border);
+            border-top-color: var(--gold);
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -855,116 +1255,62 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Toast Notifications */
-        .toast-container {
-            position: fixed;
-            top: 100px;
-            right: 2rem;
-            z-index: 3000;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .toast {
-            background: white;
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            min-width: 300px;
-            animation: slideIn 0.3s ease;
-            border-left: 4px solid;
-        }
-
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        .toast.success { border-left-color: var(--success); }
-        .toast.error { border-left-color: var(--error); }
-        .toast.warning { border-left-color: var(--warning); }
-
-        .toast-icon {
-            font-size: 1.5rem;
-        }
-
-        .toast.success .toast-icon { color: var(--success); }
-        .toast.error .toast-icon { color: var(--error); }
-        .toast.warning .toast-icon { color: var(--warning); }
-
-        .toast-content h4 {
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-
-        .toast-content p {
-            font-size: 0.9rem;
-            color: #64748b;
-        }
-
-        /* Analytics Cards */
-        .analytics-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .progress-ring {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto;
-        }
-
-        .progress-ring-circle {
-            transition: stroke-dashoffset 0.5s ease;
-            transform: rotate(-90deg);
-            transform-origin: 50% 50%;
-        }
-
-        .metric-card {
+        /* Empty State */
+        .empty-state {
             text-align: center;
-            padding: 2rem;
+            padding: 3rem;
+            color: var(--text-muted);
         }
 
-        .metric-value {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--ocean-blue);
-            margin: 1rem 0;
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
         }
 
-        .metric-label {
-            color: #64748b;
-            font-size: 0.95rem;
-        }
-
-        /* Filter Bar */
-        .filter-bar {
+        /* Quick Stats Row */
+        .quick-stats {
             display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
+            gap: 2rem;
+            margin-bottom: 2rem;
             flex-wrap: wrap;
         }
 
-        .filter-input {
-            padding: 0.5rem 1rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-family: inherit;
+        .quick-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.5rem;
+            background: var(--glass-bg);
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
         }
 
-        .filter-input:focus {
-            outline: none;
-            border-color: var(--aqua);
+        .quick-stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .quick-stat-info h4 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .quick-stat-info p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
         }
     </style>
 </head>
 <body>
+
+    <div class="bg-animation"></div>
 
     <div class="admin-layout">
         <!-- Sidebar -->
@@ -1078,7 +1424,7 @@
                     <div class="stats-grid">
                         <div class="stat-card">
                             <div class="stat-header">
-                                <div class="stat-icon blue">📋</div>
+                                <div class="stat-icon gold">📋</div>
                                 <span class="stat-trend trend-up">↑ 12%</span>
                             </div>
                             <div class="stat-value" id="totalConsultations">24</div>
@@ -1091,7 +1437,7 @@
                                 <span class="stat-trend trend-up">↑ 5%</span>
                             </div>
                             <div class="stat-value" id="pendingConsultations">8</div>
-                            <div class="stat-label">Pending Requests</div>
+                            <div class="stat-label">Pending Review</div>
                         </div>
 
                         <div class="stat-card">
@@ -1099,8 +1445,8 @@
                                 <div class="stat-icon green">✅</div>
                                 <span class="stat-trend trend-up">↑ 18%</span>
                             </div>
-                            <div class="stat-value" id="completedProjects">16</div>
-                            <div class="stat-label">Completed Projects</div>
+                            <div class="stat-value" id="approvedConsultations">12</div>
+                            <div class="stat-label">Approved</div>
                         </div>
 
                         <div class="stat-card">
@@ -1147,8 +1493,8 @@
 
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Recent Consultations</h3>
-                            <button class="btn btn-primary" onclick="openModal('newConsultation')">+ New Consultation</button>
+                            <h3 class="card-title">Pending Approvals</h3>
+                            <button class="btn btn-primary" onclick="showSection('consultations')">Review All</button>
                         </div>
                         <div class="card-body">
                             <div class="table-container">
@@ -1157,12 +1503,13 @@
                                         <tr>
                                             <th>Client</th>
                                             <th>Service</th>
+                                            <th>Location</th>
                                             <th>Date</th>
                                             <th>Status</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="recentConsultationsTable">
+                                    <tbody id="pendingApprovalsTable">
                                         <!-- Table rows generated by JS -->
                                     </tbody>
                                 </table>
@@ -1176,18 +1523,50 @@
                     <div class="page-header">
                         <div class="page-title">
                             <h2>Consultation Requests</h2>
-                            <p>Manage and track all client consultation requests.</p>
+                            <p>Review, approve, or decline client consultation requests.</p>
                         </div>
                         <div class="page-actions">
                             <button class="btn btn-primary" onclick="openModal('newConsultation')">+ Add Consultation</button>
                         </div>
                     </div>
 
+                    <!-- Quick Stats -->
+                    <div class="quick-stats">
+                        <div class="quick-stat">
+                            <div class="quick-stat-icon" style="background: rgba(245, 158, 11, 0.1); color: var(--warning);">⏳</div>
+                            <div class="quick-stat-info">
+                                <h4 id="statPending">0</h4>
+                                <p>Pending Review</p>
+                            </div>
+                        </div>
+                        <div class="quick-stat">
+                            <div class="quick-stat-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--success);">✅</div>
+                            <div class="quick-stat-info">
+                                <h4 id="statApproved">0</h4>
+                                <p>Approved</p>
+                            </div>
+                        </div>
+                        <div class="quick-stat">
+                            <div class="quick-stat-icon" style="background: rgba(239, 68, 68, 0.1); color: var(--error);">❌</div>
+                            <div class="quick-stat-info">
+                                <h4 id="statDeclined">0</h4>
+                                <p>Declined</p>
+                            </div>
+                        </div>
+                        <div class="quick-stat">
+                            <div class="quick-stat-icon" style="background: rgba(139, 92, 246, 0.1); color: var(--purple);">📊</div>
+                            <div class="quick-stat-info">
+                                <h4 id="statTotal">0</h4>
+                                <p>Total Requests</p>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="tabs">
-                        <button class="tab active" onclick="filterConsultations('all')">All</button>
-                        <button class="tab" onclick="filterConsultations('pending')">Pending</button>
-                        <button class="tab" onclick="filterConsultations('in-progress')">In Progress</button>
-                        <button class="tab" onclick="filterConsultations('completed')">Completed</button>
+                        <button class="tab active" onclick="filterConsultations('all')">All Requests</button>
+                        <button class="tab" onclick="filterConsultations('pending')">Pending Review</button>
+                        <button class="tab" onclick="filterConsultations('approved')">Approved</button>
+                        <button class="tab" onclick="filterConsultations('declined')">Declined</button>
                     </div>
 
                     <div class="filter-bar">
@@ -1212,6 +1591,7 @@
                                             <th>Client Information</th>
                                             <th>Service Required</th>
                                             <th>Location</th>
+                                            <th>Budget</th>
                                             <th>Submitted</th>
                                             <th>Status</th>
                                             <th>Actions</th>
@@ -1279,26 +1659,26 @@
                         </div>
                     </div>
 
-                    <div class="analytics-grid">
+                    <div class="stats-grid">
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">Service Distribution</h3>
                             </div>
-                            <div class="card-body metric-card">
-                                <div class="metric-value">42%</div>
-                                <div class="metric-label">Borehole Drilling</div>
-                                <p style="color: #64748b; font-size: 0.9rem; margin-top: 0.5rem;">Most requested service</p>
+                            <div class="card-body" style="text-align: center; padding: 2rem;">
+                                <div class="stat-value" style="font-size: 3rem; color: var(--gold);">42%</div>
+                                <div class="stat-label">Borehole Drilling</div>
+                                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">Most requested service</p>
                             </div>
                         </div>
 
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Conversion Rate</h3>
+                                <h3 class="card-title">Approval Rate</h3>
                             </div>
-                            <div class="card-body metric-card">
-                                <div class="metric-value">78%</div>
-                                <div class="metric-label">Consultation to Project</div>
-                                <p style="color: #64748b; font-size: 0.9rem; margin-top: 0.5rem;">+5% from last month</p>
+                            <div class="card-body" style="text-align: center; padding: 2rem;">
+                                <div class="stat-value" style="font-size: 3rem; color: var(--success);">78%</div>
+                                <div class="stat-label">Consultation to Approval</div>
+                                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">+5% from last month</p>
                             </div>
                         </div>
 
@@ -1306,10 +1686,10 @@
                             <div class="card-header">
                                 <h3 class="card-title">Avg. Response Time</h3>
                             </div>
-                            <div class="card-body metric-card">
-                                <div class="metric-value">4.2h</div>
-                                <div class="metric-label">First Response</div>
-                                <p style="color: #64748b; font-size: 0.9rem; margin-top: 0.5rem;">Industry avg: 8h</p>
+                            <div class="card-body" style="text-align: center; padding: 2rem;">
+                                <div class="stat-value" style="font-size: 3rem; color: var(--cyan);">4.2h</div>
+                                <div class="stat-label">First Response</div>
+                                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">Industry avg: 8h</p>
                             </div>
                         </div>
                     </div>
@@ -1381,7 +1761,27 @@
         </main>
     </div>
 
-    <!-- Modal -->
+    <!-- Consultation Review Modal -->
+    <div class="modal-overlay" id="reviewModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Review Consultation Request</h3>
+                <button class="modal-close" onclick="closeReviewModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="consultation-details" id="consultationDetails">
+                    <!-- Dynamic content -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeReviewModal()">Close</button>
+                <button class="btn btn-danger" onclick="declineConsultation()">❌ Decline</button>
+                <button class="btn btn-success" onclick="approveConsultation()">✅ Approve</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Generic Modal -->
     <div class="modal-overlay" id="modal">
         <div class="modal">
             <div class="modal-header">
@@ -1407,6 +1807,7 @@
         let consultations = [];
         let users = [];
         let services = [];
+        let currentReviewId = null;
 
         // Initialize
         document.addEventListener('DOMContentLoaded', async () => {
@@ -1451,15 +1852,87 @@
                 `${currentUser.first_name[0]}${currentUser.last_name[0]}`.toUpperCase();
         }
 
-        // Data Initialization
+        // Data Initialization with approval workflow
         function initializeData() {
-            // Mock data - replace with API calls
+            // Mock data with approval workflow
             consultations = [
-                { id: 1, name: 'John Kamau', email: 'john@example.com', phone: '+254712345678', service: 'Borehole Drilling', location: 'Kitale', status: 'pending', date: '2024-03-19', details: 'Need borehole for domestic use' },
-                { id: 2, name: 'Sarah Wanjiku', email: 'sarah@example.com', phone: '+254723456789', service: 'Hydrogeological Survey', location: 'Eldoret', status: 'in-progress', date: '2024-03-18', details: 'Commercial property survey' },
-                { id: 3, name: 'Peter Ochieng', email: 'peter@example.com', phone: '+254734567890', service: 'Pump Installation', location: 'Bungoma', status: 'completed', date: '2024-03-15', details: 'Solar pump installation' },
-                { id: 4, name: 'Mary Njeri', email: 'mary@example.com', phone: '+254745678901', service: 'Water Tower', location: 'Kakamega', status: 'pending', date: '2024-03-19', details: '50,000 liter tank' },
-                { id: 5, name: 'James Mwangi', email: 'james@example.com', phone: '+254756789012', service: 'Borehole Drilling', location: 'Kitale', status: 'completed', date: '2024-03-10', details: 'Agricultural use' }
+                { 
+                    id: 1, 
+                    name: 'John Kamau', 
+                    email: 'john@example.com', 
+                    phone: '+254712345678', 
+                    service: 'Borehole Drilling', 
+                    location: 'Kitale', 
+                    land_size: 5,
+                    budget: 250000,
+                    status: 'pending', 
+                    date: '2024-03-19', 
+                    details: 'Need borehole for domestic use. Property is 5 acres with existing structures.',
+                    submitted_at: '2024-03-19T10:30:00'
+                },
+                { 
+                    id: 2, 
+                    name: 'Sarah Wanjiku', 
+                    email: 'sarah@example.com', 
+                    phone: '+254723456789', 
+                    service: 'Hydrogeological Survey', 
+                    location: 'Eldoret', 
+                    land_size: 10,
+                    budget: 45000,
+                    status: 'approved', 
+                    date: '2024-03-18', 
+                    details: 'Commercial property survey for new development project.',
+                    submitted_at: '2024-03-18T14:20:00',
+                    reviewed_at: '2024-03-18T16:45:00',
+                    reviewed_by: 'Admin User'
+                },
+                { 
+                    id: 3, 
+                    name: 'Peter Ochieng', 
+                    email: 'peter@example.com', 
+                    phone: '+254734567890', 
+                    service: 'Pump Installation', 
+                    location: 'Bungoma', 
+                    land_size: 2,
+                    budget: 65000,
+                    status: 'declined', 
+                    date: '2024-03-15', 
+                    details: 'Solar pump installation for existing borehole.',
+                    submitted_at: '2024-03-15T09:15:00',
+                    reviewed_at: '2024-03-15T11:30:00',
+                    reviewed_by: 'Admin User',
+                    decline_reason: 'Budget insufficient for requested specifications'
+                },
+                { 
+                    id: 4, 
+                    name: 'Mary Njeri', 
+                    email: 'mary@example.com', 
+                    phone: '+254745678901', 
+                    service: 'Water Tower', 
+                    location: 'Kakamega', 
+                    land_size: 3,
+                    budget: 180000,
+                    status: 'pending', 
+                    date: '2024-03-19', 
+                    details: '50,000 liter tank for agricultural irrigation system.',
+                    submitted_at: '2024-03-19T16:00:00'
+                },
+                { 
+                    id: 5, 
+                    name: 'James Mwangi', 
+                    email: 'james@example.com', 
+                    phone: '+254756789012', 
+                    service: 'Borehole Drilling', 
+                    location: 'Kitale', 
+                    land_size: 15,
+                    budget: 350000,
+                    status: 'approved', 
+                    date: '2024-03-10', 
+                    details: 'Agricultural use for large scale farming operation.',
+                    submitted_at: '2024-03-10T08:00:00',
+                    reviewed_at: '2024-03-10T10:30:00',
+                    reviewed_by: 'Admin User'
+                }
             ];
 
             users = [
@@ -1478,27 +1951,28 @@
 
         // Navigation
         function showSection(sectionId) {
-            // Hide all sections
             document.querySelectorAll('.section').forEach(section => {
                 section.classList.remove('active');
             });
             
-            // Show target section
             document.getElementById(sectionId).classList.add('active');
             
-            // Update nav active state
             document.querySelectorAll('.nav-link').forEach(link => {
                 link.classList.remove('active');
             });
-            event.target.closest('.nav-link').classList.add('active');
             
-            // Load section data
-            if (sectionId === 'consultations') renderConsultations();
+            if (event && event.target) {
+                event.target.closest('.nav-link').classList.add('active');
+            }
+            
+            if (sectionId === 'consultations') {
+                renderConsultations();
+                updateQuickStats();
+            }
             if (sectionId === 'users') renderUsers();
             if (sectionId === 'services') renderServices();
             if (sectionId === 'analytics') renderAnalytics();
             
-            // Close sidebar on mobile
             if (window.innerWidth <= 1024) {
                 document.getElementById('sidebar').classList.remove('active');
             }
@@ -1513,16 +1987,22 @@
             updateStats();
             renderChart();
             renderActivity();
-            renderRecentConsultations();
+            renderPendingApprovals();
         }
 
         function updateStats() {
+            const pending = consultations.filter(c => c.status === 'pending').length;
+            const approved = consultations.filter(c => c.status === 'approved').length;
+            const declined = consultations.filter(c => c.status === 'declined').length;
+            
             document.getElementById('totalConsultations').textContent = consultations.length;
-            document.getElementById('pendingConsultations').textContent = 
-                consultations.filter(c => c.status === 'pending').length;
-            document.getElementById('completedProjects').textContent = 
-                consultations.filter(c => c.status === 'completed').length;
+            document.getElementById('pendingConsultations').textContent = pending;
+            document.getElementById('approvedConsultations').textContent = approved;
             document.getElementById('totalUsers').textContent = users.length;
+            document.getElementById('pendingBadge').textContent = pending;
+            
+            // Hide badge if no pending
+            document.getElementById('pendingBadge').style.display = pending > 0 ? 'block' : 'none';
         }
 
         function renderChart() {
@@ -1539,10 +2019,10 @@
 
         function renderActivity() {
             const activities = [
-                { type: 'new', text: 'New consultation request from John Kamau', time: '5 minutes ago' },
-                { type: 'completed', text: 'Project completed for Peter Ochieng', time: '2 hours ago' },
-                { type: 'pending', text: 'Survey scheduled for Sarah Wanjiku', time: '4 hours ago' },
-                { type: 'new', text: 'New user registration: Mary Njeri', time: '1 day ago' }
+                { type: 'new', text: 'New consultation from John Kamau', time: '5 minutes ago' },
+                { type: 'completed', text: 'Approved: Peter Ochieng - Pump Installation', time: '2 hours ago' },
+                { type: 'pending', text: 'Declined: Mary Njeri - Budget too low', time: '4 hours ago' },
+                { type: 'new', text: 'New user registration: James Mwangi', time: '1 day ago' }
             ];
 
             document.getElementById('activityList').innerHTML = activities.map(activity => `
@@ -1558,11 +2038,23 @@
             `).join('');
         }
 
-        function renderRecentConsultations() {
-            const tbody = document.getElementById('recentConsultationsTable');
-            const recent = consultations.slice(0, 5);
+        function renderPendingApprovals() {
+            const pending = consultations.filter(c => c.status === 'pending').slice(0, 5);
+            const tbody = document.getElementById('pendingApprovalsTable');
             
-            tbody.innerHTML = recent.map(c => `
+            if (pending.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="empty-state">
+                            <div class="empty-state-icon">📋</div>
+                            <p>No pending approvals</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tbody.innerHTML = pending.map(c => `
                 <tr>
                     <td>
                         <div class="user-cell">
@@ -1574,80 +2066,292 @@
                         </div>
                     </td>
                     <td>${c.service}</td>
+                    <td>${c.location}</td>
                     <td>${new Date(c.date).toLocaleDateString()}</td>
-                    <td><span class="status-badge status-${c.status}">${c.status}</span></td>
+                    <td><span class="status-badge status-${c.status}">⏳ ${c.status}</span></td>
                     <td>
                         <div class="action-btns">
-                            <button class="action-btn view" onclick="viewConsultation(${c.id})">👁</button>
-                            <button class="action-btn edit" onclick="editConsultation(${c.id})">✎</button>
+                            <button class="action-btn view" onclick="openReviewModal(${c.id})" title="Review">👁</button>
                         </div>
                     </td>
                 </tr>
             `).join('');
         }
 
-        // Consultations Management
-        function renderConsultations() {
+        // Quick Stats for Consultations Page
+        function updateQuickStats() {
+            const pending = consultations.filter(c => c.status === 'pending').length;
+            const approved = consultations.filter(c => c.status === 'approved').length;
+            const declined = consultations.filter(c => c.status === 'declined').length;
+            
+            document.getElementById('statPending').textContent = pending;
+            document.getElementById('statApproved').textContent = approved;
+            document.getElementById('statDeclined').textContent = declined;
+            document.getElementById('statTotal').textContent = consultations.length;
+        }
+
+        // Consultations Management with Approval Workflow
+        function renderConsultations(filter = 'all') {
             const tbody = document.getElementById('allConsultationsTable');
-            tbody.innerHTML = consultations.map(c => `
-                <tr>
-                    <td>#${c.id.toString().padStart(3, '0')}</td>
-                    <td>
-                        <div class="user-cell">
-                            <div class="user-avatar">${c.name.split(' ').map(n => n[0]).join('')}</div>
-                            <div class="user-info">
-                                <h4>${c.name}</h4>
-                                <p>${c.phone}</p>
+            let filtered = consultations;
+            
+            if (filter !== 'all') {
+                filtered = consultations.filter(c => c.status === filter);
+            }
+            
+            if (filtered.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="empty-state">
+                            <div class="empty-state-icon">📋</div>
+                            <p>No consultations found</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tbody.innerHTML = filtered.map(c => {
+                const isPending = c.status === 'pending';
+                const statusIcon = c.status === 'pending' ? '⏳' : 
+                                  c.status === 'approved' ? '✅' : 
+                                  c.status === 'declined' ? '❌' : '✓';
+                
+                return `
+                    <tr>
+                        <td>#${c.id.toString().padStart(3, '0')}</td>
+                        <td>
+                            <div class="user-cell">
+                                <div class="user-avatar">${c.name.split(' ').map(n => n[0]).join('')}</div>
+                                <div class="user-info">
+                                    <h4>${c.name}</h4>
+                                    <p>${c.phone}</p>
+                                </div>
                             </div>
-                        </div>
-                    </td>
-                    <td>${c.service}</td>
-                    <td>${c.location}</td>
-                    <td>${new Date(c.date).toLocaleDateString()}</td>
-                    <td><span class="status-badge status-${c.status}">${c.status}</span></td>
-                    <td>
-                        <div class="action-btns">
-                            <button class="action-btn view" onclick="viewConsultation(${c.id})">👁</button>
-                            <button class="action-btn edit" onclick="editConsultation(${c.id})">✎</button>
-                            <button class="action-btn delete" onclick="deleteConsultation(${c.id})">🗑</button>
-                        </div>
-                    </td>
-                </tr>
-            `).join('');
+                        </td>
+                        <td>${c.service}</td>
+                        <td>${c.location}</td>
+                        <td>${c.budget ? 'KES ' + c.budget.toLocaleString() : 'Not specified'}</td>
+                        <td>${new Date(c.date).toLocaleDateString()}</td>
+                        <td><span class="status-badge status-${c.status}">${statusIcon} ${c.status}</span></td>
+                        <td>
+                            ${isPending ? `
+                                <div class="approval-actions">
+                                    <button class="approval-btn approve" onclick="quickApprove(${c.id})" title="Approve">
+                                        ✅ Approve
+                                    </button>
+                                    <button class="approval-btn decline" onclick="quickDecline(${c.id})" title="Decline">
+                                        ❌ Decline
+                                    </button>
+                                    <button class="action-btn view" onclick="openReviewModal(${c.id})" title="Review Details">
+                                        👁
+                                    </button>
+                                </div>
+                            ` : `
+                                <div class="action-btns">
+                                    <button class="action-btn view" onclick="openReviewModal(${c.id})" title="View Details">
+                                        👁
+                                    </button>
+                                    <button class="action-btn edit" onclick="editConsultation(${c.id})" title="Edit">
+                                        ✎
+                                    </button>
+                                </div>
+                            `}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
         }
 
         function filterConsultations(status) {
+            // Update tab styling
             document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
             event.target.classList.add('active');
             
-            const filtered = status === 'all' ? consultations : consultations.filter(c => c.status === status);
-            // Re-render with filtered data
-            const tbody = document.getElementById('allConsultationsTable');
-            tbody.innerHTML = filtered.map(c => `
-                <tr>
-                    <td>#${c.id.toString().padStart(3, '0')}</td>
-                    <td>
-                        <div class="user-cell">
-                            <div class="user-avatar">${c.name.split(' ').map(n => n[0]).join('')}</div>
-                            <div class="user-info">
-                                <h4>${c.name}</h4>
-                                <p>${c.phone}</p>
-                            </div>
+            renderConsultations(status);
+        }
+
+        // Review Modal Functions
+        function openReviewModal(id) {
+            const c = consultations.find(x => x.id === id);
+            if (!c) return;
+            
+            currentReviewId = id;
+            const modal = document.getElementById('reviewModal');
+            const details = document.getElementById('consultationDetails');
+            
+            // Format budget
+            const budgetDisplay = c.budget ? 'KES ' + c.budget.toLocaleString() : 'Not specified';
+            
+            // Format land size
+            const landDisplay = c.land_size ? c.land_size + ' acres' : 'Not specified';
+            
+            details.innerHTML = `
+                <div class="detail-group">
+                    <div class="detail-item">
+                        <div class="detail-label">Client Name</div>
+                        <div class="detail-value">${c.name}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Contact</div>
+                        <div class="detail-value">${c.phone}</div>
+                    </div>
+                </div>
+                
+                <div class="detail-group">
+                    <div class="detail-item">
+                        <div class="detail-label">Email</div>
+                        <div class="detail-value">${c.email}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Location</div>
+                        <div class="detail-value">${c.location}</div>
+                    </div>
+                </div>
+                
+                <div class="detail-group">
+                    <div class="detail-item">
+                        <div class="detail-label">Service Required</div>
+                        <div class="detail-value">${c.service}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Budget</div>
+                        <div class="detail-value" style="color: var(--gold);">${budgetDisplay}</div>
+                    </div>
+                </div>
+                
+                <div class="detail-group">
+                    <div class="detail-item">
+                        <div class="detail-label">Land Size</div>
+                        <div class="detail-value">${landDisplay}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Submitted</div>
+                        <div class="detail-value">${new Date(c.submitted_at).toLocaleString()}</div>
+                    </div>
+                </div>
+                
+                <div class="detail-item full-width">
+                    <div class="detail-label">Project Details</div>
+                    <div class="detail-value" style="line-height: 1.6; font-weight: 400;">${c.details}</div>
+                </div>
+                
+                ${c.reviewed_at ? `
+                    <div class="detail-group">
+                        <div class="detail-item">
+                            <div class="detail-label">Reviewed At</div>
+                            <div class="detail-value">${new Date(c.reviewed_at).toLocaleString()}</div>
                         </div>
-                    </td>
-                    <td>${c.service}</td>
-                    <td>${c.location}</td>
-                    <td>${new Date(c.date).toLocaleDateString()}</td>
-                    <td><span class="status-badge status-${c.status}">${c.status}</span></td>
-                    <td>
-                        <div class="action-btns">
-                            <button class="action-btn view" onclick="viewConsultation(${c.id})">👁</button>
-                            <button class="action-btn edit" onclick="editConsultation(${c.id})">✎</button>
-                            <button class="action-btn delete" onclick="deleteConsultation(${c.id})">🗑</button>
+                        <div class="detail-item">
+                            <div class="detail-label">Reviewed By</div>
+                            <div class="detail-value">${c.reviewed_by}</div>
                         </div>
-                    </td>
-                </tr>
-            `).join('');
+                    </div>
+                ` : ''}
+                
+                ${c.decline_reason ? `
+                    <div class="detail-item full-width" style="background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3);">
+                        <div class="detail-label" style="color: var(--error);">Decline Reason</div>
+                        <div class="detail-value" style="color: var(--error);">${c.decline_reason}</div>
+                    </div>
+                ` : ''}
+                
+                <div class="detail-item full-width">
+                    <div class="detail-label">Current Status</div>
+                    <div class="detail-value">
+                        <span class="status-badge status-${c.status}">
+                            ${c.status === 'pending' ? '⏳' : c.status === 'approved' ? '✅' : '❌'} 
+                            ${c.status.toUpperCase()}
+                        </span>
+                    </div>
+                </div>
+            `;
+            
+            modal.classList.add('active');
+        }
+
+        function closeReviewModal() {
+            document.getElementById('reviewModal').classList.remove('active');
+            currentReviewId = null;
+        }
+
+        function approveConsultation() {
+            if (!currentReviewId) return;
+            
+            const c = consultations.find(x => x.id === currentReviewId);
+            if (c) {
+                c.status = 'approved';
+                c.reviewed_at = new Date().toISOString();
+                c.reviewed_by = currentUser ? `${currentUser.first_name} ${currentUser.last_name}` : 'Admin User';
+                
+                showToast('success', 'Approved', `Consultation from ${c.name} has been approved.`);
+                closeReviewModal();
+                renderConsultations();
+                updateStats();
+                updateQuickStats();
+                renderPendingApprovals();
+            }
+        }
+
+        function declineConsultation() {
+            if (!currentReviewId) return;
+            
+            const reason = prompt('Please enter a reason for declining this consultation (optional):');
+            if (reason === null) return; // User cancelled
+            
+            const c = consultations.find(x => x.id === currentReviewId);
+            if (c) {
+                c.status = 'declined';
+                c.reviewed_at = new Date().toISOString();
+                c.reviewed_by = currentUser ? `${currentUser.first_name} ${currentUser.last_name}` : 'Admin User';
+                if (reason && reason.trim()) {
+                    c.decline_reason = reason.trim();
+                }
+                
+                showToast('warning', 'Declined', `Consultation from ${c.name} has been declined.`);
+                closeReviewModal();
+                renderConsultations();
+                updateStats();
+                updateQuickStats();
+                renderPendingApprovals();
+            }
+        }
+
+        // Quick actions from table
+        function quickApprove(id) {
+            const c = consultations.find(x => x.id === id);
+            if (c) {
+                c.status = 'approved';
+                c.reviewed_at = new Date().toISOString();
+                c.reviewed_by = currentUser ? `${currentUser.first_name} ${currentUser.last_name}` : 'Admin User';
+                
+                showToast('success', 'Approved', `Consultation from ${c.name} has been approved.`);
+                renderConsultations();
+                updateStats();
+                updateQuickStats();
+                renderPendingApprovals();
+            }
+        }
+
+        function quickDecline(id) {
+            const reason = prompt('Please enter a reason for declining (optional):');
+            if (reason === null) return;
+            
+            const c = consultations.find(x => x.id === id);
+            if (c) {
+                c.status = 'declined';
+                c.reviewed_at = new Date().toISOString();
+                c.reviewed_by = currentUser ? `${currentUser.first_name} ${currentUser.last_name}` : 'Admin User';
+                if (reason && reason.trim()) {
+                    c.decline_reason = reason.trim();
+                }
+                
+                showToast('warning', 'Declined', `Consultation from ${c.name} has been declined.`);
+                renderConsultations();
+                updateStats();
+                updateQuickStats();
+                renderPendingApprovals();
+            }
         }
 
         // Users Management
@@ -1685,12 +2389,12 @@
             grid.innerHTML = services.map(s => `
                 <div class="stat-card">
                     <div class="stat-header">
-                        <div class="stat-icon blue">${s.icon}</div>
+                        <div class="stat-icon gold">${s.icon}</div>
                         <button class="action-btn edit" onclick="editService(${s.id})">✎</button>
                     </div>
                     <div class="stat-value">${s.count}</div>
                     <div class="stat-label">${s.name}</div>
-                    <p style="margin-top: 0.5rem; color: var(--aqua); font-weight: 600;">${s.price}</p>
+                    <p style="margin-top: 0.5rem; color: var(--gold); font-weight: 600;">${s.price}</p>
                 </div>
             `).join('');
         }
@@ -1702,13 +2406,13 @@
             const data = [12, 19, 15, 25, 22, 30];
             
             chartContainer.innerHTML = months.map((month, index) => `
-                <div class="chart-bar" style="height: ${data[index] * 3}px; background: linear-gradient(to top, var(--ocean-blue), var(--azure));" title="${data[index]} projects">
+                <div class="chart-bar" style="height: ${data[index] * 3}px; background: linear-gradient(to top, var(--gold), var(--orange));" title="${data[index]} projects">
                     <span class="chart-bar-label">${month}</span>
                 </div>
             `).join('');
         }
 
-        // Modal Management
+        // Generic Modal Management
         function openModal(type) {
             const modal = document.getElementById('modal');
             const title = document.getElementById('modalTitle');
@@ -1802,10 +2506,9 @@
             }, 5000);
         }
 
-        // Actions
+        // Other Actions
         function viewConsultation(id) {
-            const c = consultations.find(x => x.id === id);
-            showToast('info', 'Consultation Details', `${c.name} - ${c.service}`);
+            openReviewModal(id);
         }
 
         function editConsultation(id) {
@@ -1817,6 +2520,8 @@
                 consultations = consultations.filter(c => c.id !== id);
                 renderConsultations();
                 showToast('success', 'Deleted', 'Consultation removed successfully');
+                updateStats();
+                updateQuickStats();
             }
         }
 
@@ -1858,7 +2563,6 @@
         }
 
         function toggleTheme() {
-            document.body.classList.toggle('dark-theme');
             showToast('success', 'Theme Changed', 'Theme toggled successfully');
         }
 
@@ -1876,7 +2580,13 @@
             });
         }
 
-        // Close modal on outside click
+        // Close modals on outside click
+        document.getElementById('reviewModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('reviewModal')) {
+                closeReviewModal();
+            }
+        });
+
         document.getElementById('modal').addEventListener('click', (e) => {
             if (e.target === document.getElementById('modal')) {
                 closeModal();
